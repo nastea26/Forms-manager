@@ -1,0 +1,23 @@
+for infrastructure:
+
+    -> The only thing requried for answearing a form will be email (will be maybe authorized via a code to ensure its a valid email), email will serve as an id for the answear
+    to discourage answearing the same form multiple times
+
+    -> For creating a form the user will be required to have an account registered, here he will be also able to look at statistics of previous forms also access to the questions
+
+for accessing forms: 
+
+    -> when creating a form a new id will be assigned and that will be used in the link as a way of accesing the form
+
+    -> (not sure yet how) store questions/answear types and link them to the same form
+
+Forms related data: 
+
+    -> will need to store answear data
+    
+    -> Probably use a library to help display graphs with data for some answear types, like for example multiple choice questions or questions that ask for a scale rating 0-5 (satisfied/unsatisfied)
+
+    -> 
+
+
+
