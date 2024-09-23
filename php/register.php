@@ -1,7 +1,6 @@
 <?php
 
 // this is not good its just for testing
-
 include 'conntect.php';
 $email = $_POST['email'];
 $password = $_POST['password'];

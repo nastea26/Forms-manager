@@ -1,14 +1,13 @@
 <?php 
 // reuqired for using .env vars
-use Dotenv\Dotenv;
 require_once '../vendor/autoload.php';
-
+use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable('../');
 $dotenv->load();
 
-$host = getenv('DB_HOST');
-$database = getenv('DB_DATABASE');
-$username = getenv('DB_USERNAME');
-$password = getenv('DB_PASSWORD');
+$host = $_ENV['DB_HOST'];
+$database = $_ENV['DB_DATABASE'];
+$username = $_ENV['DB_USERNAME'];
+$password = $_ENV['DB_PASSWORD'];
 
-$conn=mysqli_connect($host,$username,$password,$database)or die("an error occured while connecting to the database");
+$conn = mysqli_connect($host,$username,$password,$database,3306);
