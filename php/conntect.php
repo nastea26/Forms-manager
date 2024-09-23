@@ -10,4 +10,4 @@ $database = $_ENV['DB_DATABASE'];
 $username = $_ENV['DB_USERNAME'];
 $password = $_ENV['DB_PASSWORD'];
 
-$conn = mysqli_connect($host,$username,$password,$database,3306);
+$conn = mysqli_connect($host,$username,$password,$database);
