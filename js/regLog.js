@@ -34,7 +34,6 @@ repeatEl.addEventListener('input',()=>{
 })
 
 formEl.addEventListener('submit',(e)=>{
-    console.log('test')
     e.preventDefault()
     let email = passEl.value.trim();
     let pass = passEl.value.trim();
