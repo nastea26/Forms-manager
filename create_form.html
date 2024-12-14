@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="form-builder">
+        <h1>Create a New Form</h1>
+        <form id="form" method="POST" action="php/save_form.php">
+            <input type="text" name="title" placeholder="Form Title" required>
+            <textarea name="description" placeholder="Form Description"></textarea>
+            <div id="questions"></div>
+            <button type="button" onclick="addQuestion()">Add Question</button>
+            <button type="submit">Save Form</button>
+        </form>
+    </div>
+
+    <script>
+        let questionCount = 0;
+
+        function addQuestion() {
+            questionCount++;
+            const questionDiv = document.createElement('div');
+            questionDiv.innerHTML = `
+                <input type="text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                <select name="questions[${questionCount}][type]">
+                    <option value="text">Text</option>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+                <label>
+                    <input type="checkbox" name="questions[${questionCount}][required]"> Required
+                </label>
+                <div class="options"></div>
+                <button type="button" onclick="addOption(this)">Add Option</button>
+            `;
+            document.getElementById('questions').appendChild(questionDiv);
+        }
+
+        function addOption(button) {
+            const optionsDiv = button.previousElementSibling;
+            const questionDiv = button.parentElement;
+            const questionIndex = questionDiv.querySelector('select').name.match(/\d+/)[0];
+            const optionInput = document.createElement('input');
+            optionInput.type = 'text';
+            optionInput.name = `questions[${questionIndex}][options][]`;
+            optionInput.placeholder = 'Option Text';
+            optionsDiv.appendChild(optionInput);
+        }
+    </script>
+</body>
+</html>

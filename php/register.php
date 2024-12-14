@@ -3,6 +3,10 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     header('Location: ../register.html?error=BadReq');
     exit;
 }
+if (!isset($_SESSION)) session_start();
+
+if(!(isset($_POST['csrf_token']) && hash_equals($_SESSION['CSRF_Token'],$_POST['csrf_token']))) die("Invalid CSRF token");
+
 
 $email = $_POST['email'];
 $password = $_POST['password'];
@@ -30,46 +34,21 @@ if($password!==$repeat_Password){
     header('Location: ../register.html?error=Mismatch');
     exit();
 }
-
 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
 
-include 'connect.php';
-function valuesInUse($conn,$response){
-    if($response){
-        $row = mysqli_fetch_row(result: $response);
-        if($row[0]>0)return true;
-        return false;
-    }
-    header('Location: ../register.html?error=Query-Error');
-    $conn->close();
+include 'db.php';
+$safeEmail = $database->mysqliSanitizeString($email);
+
+$emailInUse = $database->searchQuery("SELECT COUNT(*) FROM users WHERE email='$safeEmail'",count: true);
+if($emailInUse[0] == true || $emailInUse[1] =="err"){
+    header('Location:../register.html');
     exit();
 }
-
-$safeEmail = mysqli_real_escape_string($conn, $email);
-
-$emailQuery = "SELECT COUNT(*) FROM users WHERE email ='".$safeEmail."';";
-$emailQueryRes = mysqli_query($conn,$emailQuery);
-if(valuesInUse($conn,$emailQueryRes)){
-    header('Location: ../register.html?error=InUse');
-    $conn->close();
+$res  = $database->insertInto('users',['email','pass'],[$safeEmail,$hashedPassword]);
+if($res){
+    header('Location: ../');
     exit();
 }
-
-
-$query = "INSERT INTO users (email,pass) VALUES(?,?)";
-$stmt = mysqli_prepare($conn,$query);
-
-
-
-if(!$stmt){
-    header('Location: ../register.html');
-    $conn->close();
-    exit();
-}
-
-mysqli_stmt_bind_param($stmt, "ss", $safeEmail, $hashedPassword);
-mysqli_stmt_execute($stmt);
-$conn->close();
-header('Location: ../');
+header('Location:../register.html');
 exit();
