@@ -1,0 +1,136 @@
+/* Variables */
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container, .dashboard-container, .results-container {
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container .title, .dashboard-container .title, .results-container .title {
+  text-align: center;
+  font-size: 2rem;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+/* Button Styles */
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 1rem;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.button:hover {
+  background-color: #0062cc;
+}
+
+.create-form-button, .back-button{
+  margin-bottom: 20px;
+}
+
+/* Dashboard Page (My Forms) */
+.dashboard-container .forms-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-container .forms-list .form-item {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.dashboard-container .forms-list .form-item .form-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.dashboard-container .forms-list .form-item .form-description {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.dashboard-container .forms-list .form-item .form-actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 10px;
+}
+
+/* Results Page (Form Results) */
+.results-container .responses-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.results-container .responses-list .response-item {
+  margin-bottom: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+
+.results-container .responses-list .response-item .response-header {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.results-container .responses-list .response-item .response-date {
+  font-size: 0.875rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.results-container .responses-list .response-item .answers-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.results-container .responses-list .response-item .answers-list .answer-item {
+  margin-bottom: 10px;
+}
+
+.results-container .responses-list .response-item .answers-list .answer-item .question-text {
+  font-weight: bold;
+  color: #333;
+}
+
+.results-container .responses-list .response-item .answers-list .answer-item .answer-text {
+  margin-left: 5px;
+}
+/*# sourceMappingURL=dashboard_results.css.map */

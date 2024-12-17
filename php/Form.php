@@ -97,5 +97,47 @@ class Form {
     
         return true;
     }
+
+    //get all forms created by a user by id
+    public function getUserForms($userId) {
+        $sql = "SELECT id, title, description, created_at, is_active FROM forms WHERE user_id = ?";
+        $stmt = $this->db->searchQuery($sql, [$userId]);
+        return $stmt->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Fetch all responses and answers for a specific form
+    public function getFormResponses($formId) {
+        // Fetch form responses
+        $responsesQuery = "SELECT id AS response_id, respondednt_id, created_at FROM responses WHERE form_id = ?";
+        $responsesStmt = $this->db->searchQuery($responsesQuery, [$formId]);
+        $responses = $responsesStmt->fetch_all(MYSQLI_ASSOC);
+
+        foreach ($responses as &$response) {
+            $answersQuery = "
+                SELECT q.question_text, a.answer_text 
+                FROM answers a
+                JOIN questions q ON a.question_id = q.id
+                WHERE a.response_id = ?";
+            $answersStmt = $this->db->searchQuery($answersQuery, [$response['response_id']]);
+            $response['answers'] = $answersStmt->fetch_all(MYSQLI_ASSOC);
+        }
+
+        return $responses;
+    }
+
+    // (for charts or quick view)
+    public function getFormResponseSummary($formId) {
+        $summaryQuery = "
+            SELECT 
+                q.id AS question_id, q.question_text, 
+                a.answer_text, COUNT(a.answer_text) AS response_count
+            FROM questions q
+            LEFT JOIN answers a ON q.id = a.question_id
+            WHERE q.form_id = ?
+            GROUP BY q.id, a.answer_text
+            ORDER BY q.id, response_count DESC";
+        $summaryStmt = $this->db->searchQuery($summaryQuery, [$formId]);
+        return $summaryStmt->fetch_all(MYSQLI_ASSOC);
+    }
 }
 

@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Builder</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/formMaker.css">
 </head>
 <body>
     <div id="form-builder">
         <h1>Create a New Form</h1>
         <form id="form" method="POST" action="php/save_form.php">
-            <input type="text" name="title" placeholder="Form Title" required>
-            <textarea name="description" placeholder="Form Description"></textarea>
-            <div id="questions"></div>
-            <button type="button" onclick="addQuestion()">Add Question</button>
-            <button type="submit">Save Form</button>
+            <input type="text" class="form-title" name="title" placeholder="Form Title" required>
+            <textarea class="form-description" name="description" placeholder="Form Description"></textarea>
+            <div id="questions" class="questions-container"></div>
+            <button type="button" id="add-question" onclick="addQuestion()" aria-label="Add Question">+</button>
+            <button type="submit" class="save-form">Save Form</button>
         </form>
     </div>
 
@@ -24,20 +24,25 @@
         function addQuestion() {
             questionCount++;
             const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
             questionDiv.innerHTML = `
-                <input type="text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
-                <select name="questions[${questionCount}][type]">
+                <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
                     <option value="text">Text</option>
                     <option value="multiple_choice">Multiple Choice</option>
                     <option value="checkbox">Checkbox</option>
                 </select>
-                <label>
+                <label class="required-toggle">
                     <input type="checkbox" name="questions[${questionCount}][required]"> Required
                 </label>
                 <div class="options"></div>
-                <button type="button" onclick="addOption(this)">Add Option</button>
+                <button type="button" class="add-option" onclick="addOption(this)" disabled>Add Option</button>
             `;
             document.getElementById('questions').appendChild(questionDiv);
+
+            // Automatically add one option if the type is multiple_choice or checkbox
+            const typeSelect = questionDiv.querySelector('.question-type');
+            handleTypeChange(typeSelect, questionCount);
         }
 
         function addOption(button) {
@@ -48,7 +53,31 @@
             optionInput.type = 'text';
             optionInput.name = `questions[${questionIndex}][options][]`;
             optionInput.placeholder = 'Option Text';
+            optionInput.classList.add('option-input');
             optionsDiv.appendChild(optionInput);
+        }
+
+        function handleTypeChange(select, questionIndex) {
+            const questionDiv = select.parentElement;
+            const optionsDiv = questionDiv.querySelector('.options');
+            const addOptionButton = questionDiv.querySelector('.add-option');
+
+            // Clear existing options
+            optionsDiv.innerHTML = '';
+
+            if (select.value === 'text') {
+                addOptionButton.disabled = true;
+            } else {
+                addOptionButton.disabled = false;
+
+                // Automatically add one option for multiple-choice or checkbox types
+                const optionInput = document.createElement('input');
+                optionInput.type = 'text';
+                optionInput.name = `questions[${questionIndex}][options][]`;
+                optionInput.placeholder = 'Option Text';
+                optionInput.classList.add('option-input');
+                optionsDiv.appendChild(optionInput);
+            }
         }
     </script>
 </body>

@@ -11,30 +11,30 @@ if (empty($_SESSION["CSRF_Token"])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>register</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles/regLog.css">
     <script src="js/regLog.js" defer></script>
-    <style>
-        .reg-err{
-            color: red;
-            display: block;
-        }
-    </style>
 </head>
 <body>
-    <form action="php/register.php" method="POST" class="regLog-form reg-form">
-        <label for="email">Email:</label>
-        <input type="email" name="email" class="text-input email-input email-input-reg email-reg ">
-        <span class="email-reg-err reg-err"></span>
-        <label for="password">Password</label>
-        <input type="password" name="password" class="text-input password-input password-input-reg password-reg">
-        <span class="password-reg-err reg-err"></span>
-        <label for="passwordRepeat">Repeat password</label>
-        <input type="password" name="passwordRepeat" class="text-input password-input password-input-reg repeat-reg">
-        <span class="repeat-reg-err reg-err"></span>
-        <input type="hidden" name="csrf_token" value="<?php echo $_SESSION["CSRF_Token"]?>">
-        <button type="submit">register</button>
-        <span class="from-reg-err reg-err"></span>
-    </form>
+    <div id="register-page">
+        <h2 class="welcome-title">Create Your Account</h2>
+        <form action="php/register.php" method="POST" class="form-container register-form">
+            <label for="email" class="form-label">Email:</label>
+            <input id="email" type="email" name="email" class="text-input email-input" placeholder="Enter your email" required>
+            <span class="error-message email-error"></span>
+
+            <label for="password" class="form-label">Password:</label>
+            <input id="password" type="password" name="password" class="text-input password-input" placeholder="Enter your password" required>
+            <span class="error-message password-error"></span>
+
+            <label for="passwordRepeat" class="form-label">Repeat Password:</label>
+            <input id="passwordRepeat" type="password" name="passwordRepeat" class="text-input password-repeat-input" placeholder="Repeat your password" required>
+            <span class="error-message repeat-password-error"></span>
+
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION["CSRF_Token"] ?>">
+            <button type="submit" class="form-button register-button">Register</button>
+            <span class="error-message form-error"></span>
+        </form>
+    </div>
 </body>
 </html>

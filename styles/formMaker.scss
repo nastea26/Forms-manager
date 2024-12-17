@@ -1,0 +1,142 @@
+/* Variables */
+$primary-color: #007bff;
+$background-color: #f7f7f7;
+$text-color: #333;
+$form-width: 600px;
+$border-radius: 10px;
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.6;
+}
+
+#form-builder {
+  max-width: $form-width;
+  margin: 30px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+
+  .form-title,
+  .form-description {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    padding: 10px;
+    margin: 0;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 5px rgba($primary-color, 0.3);
+    }
+  }
+
+  .questions-container {
+    margin-bottom: 20px;
+
+    .question {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: $border-radius;
+
+      .question-text {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .question-type,
+      .required-toggle {
+        margin-right: 10px;
+      }
+
+      .options {
+        margin-top: 10px;
+
+        .option-input {
+          display: block;
+          width: 90%;
+          margin-bottom: 10px;
+          padding: 10px;
+          font-size: 0.9rem;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          box-sizing: border-box;
+        }
+      }
+
+      .add-option {
+        margin-top: 10px;
+        padding: 5px 10px;
+        font-size: 0.9rem;
+        background-color: $primary-color;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        &:disabled {
+          background-color: #ddd;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+
+  #add-question {
+    display: block;
+    margin: 10px auto;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    color: #fff;
+    background-color: $primary-color;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  .save-form {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: $primary-color;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+}

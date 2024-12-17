@@ -1,0 +1,115 @@
+/* Variables */
+/* Global Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 100vh;
+}
+
+#welcome-title {
+  text-align: center;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.form-container {
+  background: #ffffff;
+  width: 400px;
+  padding: 20px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.form-container .form-label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  text-align: left;
+  /* Aligns text to the left */
+  display: block;
+  /* Ensures label width matches its content */
+}
+
+.form-container .text-input {
+  width: 100%;
+  /* Matches input width to the container */
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.form-container .text-input:focus {
+  border-color: #007bff;
+  outline: none;
+  -webkit-box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+.form-container .form-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.form-container .form-button:hover {
+  background-color: #0062cc;
+}
+
+.form-container .error-message {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+/* Login and Register Specific */
+#login-page,
+#register-page {
+  text-align: center;
+}
+
+#login-page h2,
+#register-page h2 {
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+#login-page .login-form .login-button,
+#login-page .register-form .register-button,
+#register-page .login-form .login-button,
+#register-page .register-form .register-button {
+  width: 100%;
+  font-size: 1rem;
+  padding: 10px;
+}
+/*# sourceMappingURL=regLog.css.map */

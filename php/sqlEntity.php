@@ -15,6 +15,7 @@ class SqlEntity extends Connect{
                 'string' => 's',
                 'integer' => 'i',
                 'double' => 'd',
+                'boolean' => 'i',
                 default => 'b',
             };
         }
@@ -24,32 +25,43 @@ class SqlEntity extends Connect{
         if($returnId) return $this->conn->insert_id;
         return True;
     }
-    public function searchQuery(string $query, array $params = [], bool $count = false) {
-        $stmt = mysqli_prepare($this->conn, $query);
-        if ($stmt === false) {
-            return [False, "message"=>"Prepare failed: " . mysqli_error($this->conn)];
-        }
-    
-        // Bind parameters dynamically if provided
-        if (!empty($params)) {
-            // Generate a string of types based on the parameters
-            $types = str_repeat('s', count($params)); // Use 's' for string by default
-            mysqli_stmt_bind_param($stmt, $types, ...$params);
-        }
-    
-        // Execute the query
-        if (!mysqli_stmt_execute($stmt)) {
-            return [False, "message"=>"Execution failed: " . mysqli_error($this->conn)];
-        }
-    
-        $result = mysqli_stmt_get_result($stmt);
-        if ($count) {
-            $row = mysqli_fetch_row($result);
-            return [$row[0] > 0, $row[0]];
-        }
-    
-        return $result;
+
+public function searchQuery(string $query, array $params = [], bool $count = false): mixed {
+    $stmt = mysqli_prepare($this->conn, $query);
+    if ($stmt === false) {
+        return [false, "message" => "Prepare failed: " . mysqli_error($this->conn)];
     }
+
+    // set datatpyes responsively (just like insert into)
+    if (!empty($params)) {
+        $types = '';
+        foreach ($params as $param) {
+            $types .= match (gettype($param)) {
+                'string' => 's',
+                'integer' => 'i',
+                'double' => 'd',
+                default => 'b', 
+            };
+        }
+
+        mysqli_stmt_bind_param($stmt, $types, ...$params);
+    }
+
+    if (!mysqli_stmt_execute($stmt)) {
+        return [false, "message" => "Execution failed: " . mysqli_error($this->conn)];
+    }
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    // If $count is true, return the number of rows
+    if ($count) {
+        $row = mysqli_fetch_row($result);
+        return [$row[0] > 0, $row[0]];
+    }
+
+    return $result ?: true;
+}
+
     public function sqlResponseToArray($res){
         $rows = [];
         while($row = mysqli_fetch_array($res)){

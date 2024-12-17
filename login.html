@@ -4,18 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <script src="js/regLog.js"></script>
+    <link rel="stylesheet" href="styles/regLog.css" >
+    <script src="js/regLog.js" defer></script>
 </head>
 <body>
-    <form action="../php/login.php" method="POST">
-        <label for="email">Email: </label>
-        <input name="email" type="email" class="text-input email-input email-input-reg email-reg">
-        <span class="email-reg-err log-err"></span>
-        <label for="password">Password: </label>
-        <input name="password" type="password" class="text-input password-input password-input-reg password-reg">
-        <span class="password-reg-err reg-err"></span>
-        <input type="submit" value="Log in">
-        <span class="from-reg-err reg-err"></span>
-    </form>
+    <div id="login-page">
+        <h2 class="welcome-title">Welcome to Forms!</h2>
+        <form action="../php/login.php" method="POST" class="form-container login-form">
+            <label for="email" class="form-label">Email:</label>
+            <input id="email" name="email" type="email" class="text-input email-input" placeholder="Enter your email" required>
+            <span class="error-message email-error"></span>
+
+            <label for="password" class="form-label">Password:</label>
+            <input id="password" name="password" type="password" class="text-input password-input" placeholder="Enter your password" required>
+            <span class="error-message password-error"></span>
+
+            <input type="submit" value="Log in" class="form-button login-button">
+            <span class="error-message form-error"></span>
+        </form>
+    </div>
 </body>
 </html>

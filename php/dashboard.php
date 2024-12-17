@@ -1,0 +1,42 @@
+<?php
+require 'db.php';
+require 'Form.php';
+session_start();
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
+
+$formHandler = new Form($database);
+$userId = $_SESSION['user_id'];
+$forms = $formHandler->getUserForms($userId);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Forms</title>
+    <link rel="stylesheet" href="../styles/dashboard_results.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1 class="dashboard-title">My Forms</h1>
+        <a href="../create_form.html" class="button create-form-button">Create New Form</a>
+        <ul class="forms-list">
+            <?php foreach ($forms as $form): ?>
+                <li class="form-item">
+                    <h2 class="form-title"><?= htmlspecialchars($form['title']) ?></h2>
+                    <p class="form-description"><?= htmlspecialchars($form['description']) ?></p>
+                    <div class="form-actions">
+                        <a href="form_results.php?form_id=<?= $form['id'] ?>" class="button view-results-button">View Results</a>
+                        <a href="edit_form.php?form_id=<?= $form['id'] ?>" class="button edit-form-button">Edit Form</a>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+</body>
+</html>

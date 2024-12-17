@@ -1,0 +1,91 @@
+/* Variables for consistency */
+$primary-color: #007bff;
+$danger-color: #d9534f;
+$background-color: #f7f7f7;
+$text-color: #333;
+$form-width: 600px;
+$border-radius: 10px;
+$font-size:20px;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: $background-color;
+  color: $text-color;
+}
+
+h1, p {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.question{
+    font-size: $font-size;
+}
+
+form {
+  max-width: $form-width;
+  margin: 20px auto;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 5px rgba($primary-color, 0.3);
+    }
+  }
+
+  textarea {
+    resize: none;
+    height: 100px;
+  }
+
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+
+    input[type="checkbox"],
+    input[type="radio"] {
+      margin-right: 10px;
+      accent-color: $primary-color; // Custom checkbox/radio color
+    }
+  }
+
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: $primary-color;
+    color: #fff;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  /* Required field styling */
+  p span {
+    color: $danger-color; // Red for required indicators
+    font-weight: bold;
+  }
+}

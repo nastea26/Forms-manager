@@ -9,6 +9,7 @@ $form = $formHandler->getFormDetails($_GET['id']);
 <html>
 <head>
     <title><?= htmlspecialchars($form['title']) ?></title>
+    <link rel="stylesheet" href="../styles/style.css">
 </head>
 <body>
     <h1><?= htmlspecialchars($form['title']) ?></h1>
@@ -16,7 +17,7 @@ $form = $formHandler->getFormDetails($_GET['id']);
     <form action="submit_response.php" method="POST">
         <input type="hidden" name="form_id" value="<?= $form['id'] ?>">
         <?php foreach ($form['questions'] as $question): ?>
-            <p>
+            <p class="question">
                 <?= htmlspecialchars($question['question_text']) ?>
                 <?php if ($question['is_required']): ?> <span>*</span><?php endif; ?>
             </p>
