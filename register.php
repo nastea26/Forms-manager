@@ -4,10 +4,16 @@ if (!isset($_SESSION)) session_start();
 if (empty($_SESSION["CSRF_Token"])) {
     $_SESSION["CSRF_Token"] = bin2hex(random_bytes(32));
 }
+
+if (isset($_SESSION['user_id'])) {
+    header('Location: /');
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +21,8 @@ if (empty($_SESSION["CSRF_Token"])) {
     <link rel="stylesheet" href="styles/regLog.css">
     <script src="js/regLog.js" defer></script>
 </head>
+<?php include 'assets/header.php'; ?>
+
 <body>
     <div id="register-page">
         <h2 class="welcome-title">Create Your Account</h2>
@@ -37,4 +45,5 @@ if (empty($_SESSION["CSRF_Token"])) {
         </form>
     </div>
 </body>
+
 </html>

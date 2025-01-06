@@ -1,11 +1,5 @@
-/* Variables */
-$primary-color: #007bff;
-$error-color: #e74c3c;
-$background-color: #f7f7f7;
-$text-color: #333;
-$border-radius: 10px;
+@import 'variables';
 
-/* Global Styles */
 body {
   margin: 0;
   padding: 0;
@@ -19,7 +13,7 @@ body {
   padding: 20px;
 }
 
-.container {
+.dashboard-form-container {
   width: 100%;
   max-width: 800px;
   background: #fff;
@@ -35,7 +29,6 @@ body {
   }
 }
 
-/* Button Styles */
 .button {
   display: inline-block;
   padding: 10px 20px;
@@ -51,13 +44,13 @@ body {
     background-color: darken($primary-color, 10%);
   }
 }
-.create-form-button{
-    margin-bottom: 20px;
+
+.create-form-button {
+  margin-bottom: 20px;
 }
 
-/* Dashboard Page (My Forms) */
 .dashboard-container {
-  @extend .container;
+  @extend .dashboard-form-container;
 
   .forms-list {
     list-style: none;
@@ -84,55 +77,6 @@ body {
       .form-actions {
         display: flex;
         gap: 10px;
-      }
-    }
-  }
-}
-
-/* Results Page (Form Results) */
-.results-container {
-  @extend .container;
-
-  .responses-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    .response-item {
-      margin-bottom: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: $border-radius;
-
-      .response-header {
-        font-size: 1.25rem;
-        color: $text-color;
-        margin-bottom: 5px;
-      }
-
-      .response-date {
-        font-size: 0.875rem;
-        color: #666;
-        margin-bottom: 10px;
-      }
-
-      .answers-list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        .answer-item {
-          margin-bottom: 10px;
-
-          .question-text {
-            font-weight: bold;
-            color: $text-color;
-          }
-
-          .answer-text {
-            margin-left: 5px;
-          }
-        }
       }
     }
   }

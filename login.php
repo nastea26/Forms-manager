@@ -1,12 +1,22 @@
+<?php
+if (isset($_SESSION['user_id'])) {
+    header('Location: /');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="styles/regLog.css" >
+    <link rel="stylesheet" href="styles/regLog.css">
     <script src="js/regLog.js" defer></script>
 </head>
+<?php include 'assets/header.php'; ?>
+
 <body>
     <div id="login-page">
         <h2 class="welcome-title">Welcome to Forms!</h2>
@@ -24,4 +34,5 @@
         </form>
     </div>
 </body>
+
 </html>

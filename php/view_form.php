@@ -1,16 +1,20 @@
 <?php
-include 'Form.php'; // Assuming the Form class is included here
+include 'Form.php';
 include 'db.php';
 $formHandler = new Form($database);
 $form = $formHandler->getFormDetails($_GET['id']);
+
+include '../assets/header.php';
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title><?= htmlspecialchars($form['title']) ?></title>
     <link rel="stylesheet" href="../styles/style.css">
 </head>
+
 <body>
     <h1><?= htmlspecialchars($form['title']) ?></h1>
     <p><?= htmlspecialchars($form['description']) ?></p>
@@ -28,9 +32,9 @@ $form = $formHandler->getFormDetails($_GET['id']);
             <?php elseif (in_array($question['answer_type'], ['multiple_choice', 'checkbox'])): ?>
                 <?php foreach ($question['choices'] as $choice): ?>
                     <label>
-                        <input type="<?= $question['answer_type'] == 'multiple_choice' ? 'radio' : 'checkbox' ?>" 
-                               name="answers[<?= $question['id'] ?>][]" 
-                               value="<?= htmlspecialchars($choice['option_text']) ?>">
+                        <input type="<?= $question['answer_type'] == 'multiple_choice' ? 'radio' : 'checkbox' ?>"
+                            name="answers[<?= $question['id'] ?>][]"
+                            value="<?= htmlspecialchars($choice['option_text']) ?>">
                         <?= htmlspecialchars($choice['option_text']) ?>
                     </label>
                 <?php endforeach; ?>
@@ -39,4 +43,5 @@ $form = $formHandler->getFormDetails($_GET['id']);
         <button type="submit">Submit</button>
     </form>
 </body>
+
 </html>

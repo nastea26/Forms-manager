@@ -26,16 +26,20 @@ if (!$formData) {
     echo "Form not found.";
     exit();
 }
+
+include '../assets/header.php';
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Form</title>
     <link rel="stylesheet" href="../styles/formMaker.css">
 </head>
+
 <body>
     <div id="form-builder">
         <h1>Edit Form</h1>
@@ -45,7 +49,7 @@ if (!$formData) {
             <input type="hidden" name="form_id" value="<?= htmlspecialchars($formId) ?>">
 
             <label for="title">Form Title:</label>
-            <input type="text" name="title" id="title" class="form-title" 
+            <input type="text" name="title" id="title" class="form-title"
                 value="<?= htmlspecialchars($formData['title']) ?>" required>
 
             <label for="description">Description:</label>
@@ -57,7 +61,7 @@ if (!$formData) {
                     <div class="question">
                         <input type="hidden" name="question_ids[]" value="<?= $question['id'] ?>">
                         <label for="question_<?= $question['id'] ?>">Question:</label>
-                        <input type="text" name="questions[]" id="question_<?= $question['id'] ?>" 
+                        <input type="text" name="questions[]" id="question_<?= $question['id'] ?>"
                             class="question-text" value="<?= htmlspecialchars($question['question_text']) ?>" required>
                         <label>
                             <input type="checkbox" name="deleted_questions[]" value="<?= $question['id'] ?>">
@@ -74,7 +78,7 @@ if (!$formData) {
 
     <script>
         // JavaScript to handle adding/removing questions dynamically
-        document.getElementById('add-question').addEventListener('click', function () {
+        document.getElementById('add-question').addEventListener('click', function() {
             const questionDiv = document.createElement('div');
             questionDiv.classList.add('question');
 
@@ -93,10 +97,11 @@ if (!$formData) {
 
         // Enable removing dynamically added questions
         document.querySelectorAll('.remove-question').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', function() {
                 button.closest('.question').remove();
             });
         });
     </script>
 </body>
+
 </html>
