@@ -19,6 +19,10 @@ if (!$formId) {
     exit();
 }
 
+
+include 'checkUserFormAccess.php';
+if (checkAccessToFrom($formHandler, $formId, "Form Results")) exit();
+
 // Fetch the form and its questions
 $formData = $formHandler->getFormDetails($formId);
 

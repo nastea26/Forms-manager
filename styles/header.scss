@@ -7,7 +7,7 @@ header {
   width: 100%;
   height: $header-height;
   background-color: $primary-color;
-  color: $text-color;
+  color: $header-text-color;
   z-index: 1000;
 
   .header-container {
@@ -21,7 +21,7 @@ header {
   .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: $text-color;
+    color: $header-text-color;
     text-decoration: none;
   }
 
@@ -38,7 +38,7 @@ header {
     .bar {
       width: 100%;
       height: 3px;
-      background-color: $text-color;
+      background-color: $header-text-color;
       border-radius: 2px;
       transition: all 0.3s ease-in-out;
     }
@@ -55,7 +55,7 @@ header {
       li {
         a {
           text-decoration: none;
-          color: $text-color;
+          color: $header-text-color;
           font-size: 1rem;
 
           &:hover {

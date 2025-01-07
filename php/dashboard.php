@@ -9,8 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $formHandler = new Form($database);
-$userId = $_SESSION['user_id'];
-$forms = $formHandler->getUserForms($userId);
+$forms = $formHandler->getUserForms($_SESSION['user_id']);
 
 ?>
 

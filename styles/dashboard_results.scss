@@ -1,5 +1,6 @@
 @import 'variables';
 
+$contrast_color : #fff;
 body {
   margin: 0;
   padding: 0;
@@ -16,7 +17,7 @@ body {
 .dashboard-form-container {
   width: 100%;
   max-width: 800px;
-  background: #fff;
+  background: $contrast_color;
   padding: 20px;
   border-radius: $border-radius;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -33,7 +34,7 @@ body {
   display: inline-block;
   padding: 10px 20px;
   font-size: 1rem;
-  color: #fff;
+  color: $contrast_color;
   background-color: $primary-color;
   border: none;
   border-radius: $border-radius;
@@ -42,6 +43,13 @@ body {
 
   &:hover {
     background-color: darken($primary-color, 10%);
+  }
+
+  &:disabled {
+    background-color: lighten($primary-color, 10%);
+    color: $contrast_color;
+    cursor: not-allowed;
+    opacity: 0.6; // Gives a "grayed-out" appearance
   }
 }
 

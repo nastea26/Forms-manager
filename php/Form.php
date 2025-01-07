@@ -44,7 +44,7 @@ class Form
         return $this->db->searchQuery($sql, [$formId])->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getFormDetails($formId)
+    public function getFormDetails($formId): array
     {
         // Fetch form metadata
         $sqlForm = "SELECT * FROM forms WHERE id = ?";

@@ -5,7 +5,7 @@ header {
   width: 100%;
   height: 60px;
   background-color: #007bff;
-  color: #333;
+  color: #fff;
   z-index: 1000;
 }
 
@@ -26,7 +26,7 @@ header .header-container {
 header .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #333;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -49,7 +49,7 @@ header .hamburger-menu {
 header .hamburger-menu .bar {
   width: 100%;
   height: 3px;
-  background-color: #333;
+  background-color: #fff;
   border-radius: 2px;
   -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
@@ -67,7 +67,7 @@ header .menu ul {
 
 header .menu ul li a {
   text-decoration: none;
-  color: #333;
+  color: #fff;
   font-size: 1rem;
 }
 

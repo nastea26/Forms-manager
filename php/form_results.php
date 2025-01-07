@@ -11,6 +11,11 @@ if (!isset($_SESSION['user_id'])) {
 $formHandler = new Form($database);
 $formId = $_GET['form_id'] ?? null;
 
+// add something for when the parameter from_id isnt specified
+
+include 'checkUserFormAccess.php';
+if (checkAccessToFrom($formHandler, $formId, "Form Results")) exit();
+
 if (!$formId) {
     header('Location: dashboard.php');
     exit();
@@ -133,8 +138,8 @@ include '../assets/header.php';
             </div>
 
             <div class="navigation-buttons">
-                <button id="prevButton" disabled>Previous</button>
-                <button id="nextButton">Next</button>
+                <button id="prevButton" class="button" disabled>Previous</button>
+                <button id="nextButton" class="button">Next</button>
             </div>
         </div>
     </main>
