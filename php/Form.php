@@ -24,7 +24,7 @@ class Form
         return $this->db->insertInto($table, $columns, $values, True);
     }
 
-    public function addOption($questionId, $text)
+    public function addOption($questionId, $text): string
     {
         $table = "choices";
         $columns = ["question_id", "option_text", "created_at"];
@@ -172,5 +172,20 @@ class Form
         }
 
         return $questions;
+    }
+
+    public function deleteQuestions(array $questionIds): bool
+    {
+        $placeholders = implode(',', array_fill(0, count($questionIds), '?'));
+
+        // Delete related options
+        $deleteOptionsQuery = "DELETE FROM choices WHERE question_id IN ($placeholders)";
+        if (!$this->db->searchQuery($deleteOptionsQuery, $questionIds)) {
+            return false;
+        }
+
+        // Delete questions
+        $deleteQuestionsQuery = "DELETE FROM questions WHERE id IN ($placeholders)";
+        return $this->db->searchQuery($deleteQuestionsQuery, $questionIds) ? true : false;
     }
 }

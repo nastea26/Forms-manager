@@ -2,7 +2,7 @@
 session_start();
 
 // Check if the user is logged in
-$isLoggedIn = isset($_SESSION['user_id']); // Adjust `user_id` based on your session variable
+$isLoggedIn = isset($_SESSION['user_id']);
 ?>
 
 <head>

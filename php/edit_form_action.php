@@ -1,6 +1,6 @@
 <?php
-require 'Form.php';
 require 'db.php';
+require 'Form.php';
 session_start();
 
 // Ensure the user is logged in
@@ -9,49 +9,83 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Initialize Form instance
 $formHandler = new Form($database);
 
-// Validate the request
-if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['form_id'])) {
-    echo "Invalid request.";
+$formId = $_POST['form_id'] ?? null;
+if (!$formId) {
+    echo "Form ID is required.";
     exit();
 }
 
-$formId = $_POST['form_id'];
-$title = $_POST['title'];
-$description = $_POST['description'];
+// Get form title and description
+$title = trim($_POST['title'] ?? '');
+$description = trim($_POST['description'] ?? '');
+
+if (empty($title) || empty($description)) {
+    echo "Form title and description are required.";
+    exit();
+}
+
+$isActive = isset($_POST['is_active']) ? 1 : 0;
+
+// Update form title, description, and active status
+$updateFormQuery = "UPDATE forms SET title = ?, description = ?, is_active = ? WHERE id = ?";
+$database->searchQuery($updateFormQuery, [$title, $description, $isActive, $formId]);
+
+// Process questions
 $questions = $_POST['questions'] ?? [];
-$questionIds = $_POST['question_ids'] ?? [];
-$deletedQuestions = $_POST['deleted_questions'] ?? [];
+$deletedQuestions = [];
 
-// Update the form's title and description
-$updateFormQuery = "UPDATE forms SET title = ?, description = ? WHERE id = ?";
-if (!$database->searchQuery($updateFormQuery, [$title, $description, $formId])) {
-    echo "Failed to update form details.";
-    exit();
-}
+$validTypes = ['text', 'multiple_choice', 'checkbox'];
 
-// Process questions: update, add, or delete
-foreach ($questions as $index => $questionText) {
-    $questionId = $questionIds[$index] ?? null;
+foreach ($questions as $index => $question) {
+    $questionId = $question['id'] ?? null;
+    $questionText = trim($question['text'] ?? '');
+    $questionType = in_array($question['type'] ?? 'text', $validTypes) ? $question['type'] : 'text';
+    $isRequired = isset($question['required']) ? 1 : 0;
+    if (isset($question['delete']) && $question['delete'] == 1) {
+        if ($questionId) {
+            $deletedQuestions[] = $questionId;
+        }
+        continue; // Skip deleted questions
+    }
 
-    if ($questionId && !in_array($questionId, $deletedQuestions)) {
+    if (empty($questionText)) {
+        continue; // Skip empty questions
+    }
+
+    if ($questionId) {
         // Update existing question
-        $updateQuestionQuery = "UPDATE questions SET question_text = ? WHERE id = ?";
-        $database->searchQuery($updateQuestionQuery, [$questionText, $questionId]);
-    } elseif (!$questionId) {
-        // Add new question
-        $formHandler->addQuestion($formId, $questionText, 'text', 1); // Defaulting to 'text' type and required=true
+        $updateQuestionQuery = "UPDATE questions SET question_text = ?, answer_type = ?, is_required = ? WHERE id = ?";
+        $database->searchQuery($updateQuestionQuery, [$questionText, $questionType, $isRequired, $questionId]);
+
+        // Delete existing options if type changes to text
+        if (!in_array($questionType, ['multiple_choice', 'checkbox'])) {
+            $deleteOptionsQuery = "DELETE FROM choices WHERE question_id = ?";
+            $database->searchQuery($deleteOptionsQuery, [$questionId]);
+        }
+    } else {
+        // Add a new question using addQuestion
+        $questionId = $formHandler->addQuestion($formId, $questionText, $questionType, $isRequired);
+    }
+
+    // Add options for multiple-choice or checkbox questions
+    if (in_array($questionType, ['multiple_choice', 'checkbox'])) {
+        $options = $question['options'] ?? [];
+        foreach ($options as $optionText) {
+            $optionText = trim($optionText);
+            if (!empty($optionText)) {
+                $formHandler->addOption($questionId, $optionText);
+            }
+        }
     }
 }
 
-// Remove questions flagged for deletion
+// Delete removed questions using deleteQuestions method
 if (!empty($deletedQuestions)) {
-    $placeholders = implode(',', array_fill(0, count($deletedQuestions), '?'));
-    $deleteQuestionsQuery = "DELETE FROM questions WHERE id IN ($placeholders)";
-    $database->searchQuery($deleteQuestionsQuery, $deletedQuestions);
+    $formHandler->deleteQuestions($deletedQuestions);
 }
 
-// Redirect to the dashboard or a success page
-header('Location: dashboard.php');
+header("Location: dashboard.php");
 exit();

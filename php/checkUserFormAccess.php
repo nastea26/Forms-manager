@@ -22,7 +22,14 @@ function checkAccessToFrom(object $formHandler, $formId, string $pageTitle): boo
 
         <body>
             <main>
-                <h1 style='font-size:35px;text-align:center;'>YOU DO NOT HAVE ACCESS TO VIEW THE RESULTS OF THIS FORM!</h1>
+                <?php
+                if ($pageTitle == "Edit Form") {
+                    echo "<h1 style='font-size:35px;text-align:center;'>YOU DO NOT HAVE ACCESS TO EDIT FORM!</h1>";
+                } else {
+                    echo "<h1 style='font-size:35px;text-align:center;'>YOU DO NOT HAVE ACCESS TO VIEW THE RESULTS OF THIS FORM!</h1>";
+                }
+                ?>
+
             </main>
         </body>
 

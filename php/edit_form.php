@@ -19,19 +19,29 @@ if (!$formId) {
     exit();
 }
 
-
 include 'checkUserFormAccess.php';
-if (checkAccessToFrom($formHandler, $formId, "Form Results")) exit();
+if (checkAccessToFrom($formHandler, $formId, "Edit Form")) exit();
 
 // Fetch the form and its questions
+$formResponses = $formHandler->getFormResponses($formId);
+if ($formResponses) {
+    include '../assets/editForbiden.php';
+    formHasAnswers();
+    exit();
+}
+
 $formData = $formHandler->getFormDetails($formId);
+$formIsActive = $formData["is_active"];
+if ($formIsActive) {
+    include '../assets/editForbiden.php';
+    formIsActive($database, $formId);
+    exit();
+}
 
 if (!$formData) {
     echo "Form not found.";
     exit();
 }
-
-include '../assets/header.php';
 ?>
 
 <!DOCTYPE html>
@@ -44,68 +54,138 @@ include '../assets/header.php';
     <link rel="stylesheet" href="../styles/formMaker.css">
 </head>
 
+<?php include '../assets/header.php'; ?>
+
 <body>
-    <div id="form-builder">
-        <h1>Edit Form</h1>
+    <main>
+        <div id="form-builder">
+            <h1>Edit Form</h1>
 
-        <form method="POST" action="edit_form_action.php" class="form">
-            <!-- Hidden form ID -->
-            <input type="hidden" name="form_id" value="<?= htmlspecialchars($formId) ?>">
+            <form method="POST" action="edit_form_action.php" class="form">
+                <!-- Hidden form ID -->
+                <input type="hidden" name="form_id" value="<?= htmlspecialchars($formId) ?>">
 
-            <label for="title">Form Title:</label>
-            <input type="text" name="title" id="title" class="form-title"
-                value="<?= htmlspecialchars($formData['title']) ?>" required>
+                <label for="title">Form Title:</label>
+                <input type="text" name="title" id="title" class="form-title"
+                    value="<?= htmlspecialchars($formData['title']) ?>" required>
 
-            <label for="description">Description:</label>
-            <textarea name="description" id="description" class="form-description" required><?= htmlspecialchars(trim($formData['description'])) ?></textarea>
+                <label for="description">Description:</label>
+                <textarea name="description" id="description" class="form-description" required><?= htmlspecialchars(trim($formData['description'])) ?></textarea>
 
-            <h2>Questions</h2>
-            <div id="questions" class="questions-container">
-                <?php foreach ($formData['questions'] as $question): ?>
-                    <div class="question">
-                        <input type="hidden" name="question_ids[]" value="<?= $question['id'] ?>">
-                        <label for="question_<?= $question['id'] ?>">Question:</label>
-                        <input type="text" name="questions[]" id="question_<?= $question['id'] ?>"
-                            class="question-text" value="<?= htmlspecialchars($question['question_text']) ?>" required>
-                        <label>
-                            <input type="checkbox" name="deleted_questions[]" value="<?= $question['id'] ?>">
-                            Delete this question
-                        </label>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+                <h2>Questions</h2>
+                <div id="questions" class="questions-container">
+                    <?php foreach ($formData['questions'] as $questionIndex => $question): ?>
+                        <div class="question">
+                            <input type="hidden" name="questions[<?= $questionIndex ?>][id]" value="<?= $question['id'] ?>">
 
-            <button type="button" id="add-question">+</button>
-            <button type="submit" class="save-form">Save Changes</button>
-        </form>
-    </div>
+                            <input type="text" class="question-text" name="questions[<?= $questionIndex ?>][text]"
+                                value="<?= htmlspecialchars($question['question_text']) ?>" required>
 
-    <script>
-        // JavaScript to handle adding/removing questions dynamically
-        document.getElementById('add-question').addEventListener('click', function() {
-            const questionDiv = document.createElement('div');
-            questionDiv.classList.add('question');
+                            <select class="question-type" name="questions[<?= $questionIndex ?>][type]"
+                                onchange="handleTypeChange(this, <?= $questionIndex ?>)">
+                                <option value="text" <?= $question['answer_type'] === 'text' ? 'selected' : '' ?>>Text</option>
+                                <option value="multiple_choice" <?= $question['answer_type'] === 'multiple_choice' ? 'selected' : '' ?>>Multiple Choice</option>
+                                <option value="checkbox" <?= $question['answer_type'] === 'checkbox' ? 'selected' : '' ?>>Checkbox</option>
+                            </select>
 
-            questionDiv.innerHTML = `
-                <input type="hidden" name="question_ids[]" value="">
-                <label>Question:</label>
-                <input type="text" name="questions[]" class="question-text" value="" required>
-                <label>
-                    <input type="checkbox" name="deleted_questions[]" value="" disabled>
-                    Delete this question
-                </label>
-            `;
+                            <label class="required-toggle">
+                                <input type="checkbox" name="questions[<?= $questionIndex ?>][required]"
+                                    <?= $question['is_required'] ? 'checked' : '' ?>> Required
+                            </label>
 
-            document.getElementById('questions').appendChild(questionDiv);
-        });
+                            <div class="options">
+                                <?php if (isset($question['options']) && is_array($question['options'])): ?>
+                                    <?php foreach ($question['options'] as $option): ?>
+                                        <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][options][]"
+                                            value="<?= htmlspecialchars($option) ?>" placeholder="Option Text">
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </div>
 
-        // Enable removing dynamically added questions
-        document.querySelectorAll('.remove-question').forEach(button => {
-            button.addEventListener('click', function() {
-                button.closest('.question').remove();
-            });
-        });
-    </script>
+                            <button type="button" class="add-option" onclick="addOption(this)">Add Option</button>
+
+                            <label>
+                                <input type="checkbox" name="questions[<?= $questionIndex ?>][delete]" value="1">
+                                Delete this question
+                            </label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <button type="button" id="add-question" onclick="addQuestion()">+</button>
+
+                <hr>
+
+                <!-- Checkbox for setting form as active -->
+                <div>
+                    <label for="is_active">
+                        <input type="checkbox" name="is_active" id="is_active" value="1" <?= $formIsActive ? 'checked' : '' ?>>
+                        Set this form as active
+                    </label>
+                </div>
+
+                <button type="submit" class="save-form">Save Changes</button>
+            </form>
+        </div>
+
+        <script>
+            let questionCount = <?= count($formData['questions']) ?>;
+
+            function addQuestion() {
+                questionCount++;
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+                    <input type="hidden" name="questions[${questionCount}][id]" value="">
+                    <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                    <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
+                        <option value="text">Text</option>
+                        <option value="multiple_choice">Multiple Choice</option>
+                        <option value="checkbox">Checkbox</option>
+                    </select>
+                    <label class="required-toggle">
+                        <input type="checkbox" name="questions[${questionCount}][required]"> Required
+                    </label>
+                    <div class="options"></div>
+                    <button type="button" class="add-option" onclick="addOption(this)">Add Option</button>
+                    <label>
+                        <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
+                    </label>
+                `;
+                document.getElementById('questions').appendChild(questionDiv);
+            }
+
+            function addOption(button) {
+                const optionsDiv = button.previousElementSibling;
+                const optionInput = document.createElement('input');
+                optionInput.type = 'text';
+                optionInput.name = `questions[${questionCount}][options][]`;
+                optionInput.placeholder = 'Option Text';
+                optionInput.classList.add('option-input');
+                optionsDiv.appendChild(optionInput);
+            }
+
+            function handleTypeChange(select, questionIndex) {
+                const questionDiv = select.parentElement;
+                const optionsDiv = questionDiv.querySelector('.options');
+                const addOptionButton = questionDiv.querySelector('.add-option');
+
+                optionsDiv.innerHTML = '';
+                if (select.value === 'multiple_choice' || select.value === 'checkbox') {
+                    addOptionButton.disabled = false;
+
+                    const optionInput = document.createElement('input');
+                    optionInput.type = 'text';
+                    optionInput.name = `questions[${questionIndex}][options][]`;
+                    optionInput.placeholder = 'Option Text';
+                    optionInput.classList.add('option-input');
+                    optionsDiv.appendChild(optionInput);
+                } else {
+                    addOptionButton.disabled = true;
+                }
+            }
+        </script>
+    </main>
 </body>
 
 </html>
