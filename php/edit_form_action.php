@@ -39,7 +39,7 @@ $deletedQuestions = [];
 
 $validTypes = ['text', 'multiple_choice', 'checkbox'];
 
-foreach ($questions as $index => $question) {
+foreach ($questions as $question) {
     $questionId = $question['id'] ?? null;
     $questionText = trim($question['text'] ?? '');
     $questionType = in_array($question['type'] ?? 'text', $validTypes) ? $question['type'] : 'text';
@@ -60,23 +60,78 @@ foreach ($questions as $index => $question) {
         $updateQuestionQuery = "UPDATE questions SET question_text = ?, answer_type = ?, is_required = ? WHERE id = ?";
         $database->searchQuery($updateQuestionQuery, [$questionText, $questionType, $isRequired, $questionId]);
 
-        // Delete existing options if type changes to text
-        if (!in_array($questionType, ['multiple_choice', 'checkbox'])) {
+        // Handle options for multiple-choice or checkbox questions
+        if (in_array($questionType, ['multiple_choice', 'checkbox'])) {
+            $submittedOptions = $question['choices'] ?? [];
+
+            // Fetch existing options from the database
+            $existingOptionsQuery = "SELECT id, option_text FROM choices WHERE question_id = ?";
+            $existingOptions = $database->searchQuery($existingOptionsQuery, [$questionId])->fetch_all(MYSQLI_ASSOC);
+
+            // Convert existing options to associative arrays for comparison
+            $existingOptionsMap = [];
+            foreach ($existingOptions as $option) {
+                $existingOptionsMap[$option['id']] = $option['option_text'];
+            }
+
+            // Determine which options to add, update, or delete
+            $submittedOptionTexts = array_filter(array_map(function ($choice) {
+                return isset($choice['text']) && is_string($choice['text']) ? trim($choice['text']) : null;
+            }, $submittedOptions));
+            $processedOptionIds = [];
+
+            foreach ($submittedOptionTexts as $submittedText) {
+                $existingOptionId = array_search($submittedText, $existingOptionsMap, true);
+
+                if ($existingOptionId !== false) {
+                    // Option exists, no change needed
+                    $processedOptionIds[] = $existingOptionId;
+                    unset($existingOptionsMap[$existingOptionId]); // Mark as processed
+                } else {
+                    // Add new option only if it doesn't already exist
+                    $formHandler->addOption($questionId, $submittedText);
+                }
+            }
+
+            // Remove any options that were not processed (i.e., removed by the user)
+            foreach ($existingOptionsMap as $optionId => $optionText) {
+                $deleteOptionQuery = "DELETE FROM choices WHERE id = ?";
+                $database->searchQuery($deleteOptionQuery, [$optionId]);
+            }
+        } else {
+            // Delete existing options if type changes to text
             $deleteOptionsQuery = "DELETE FROM choices WHERE question_id = ?";
             $database->searchQuery($deleteOptionsQuery, [$questionId]);
         }
     } else {
         // Add a new question using addQuestion
         $questionId = $formHandler->addQuestion($formId, $questionText, $questionType, $isRequired);
-    }
 
-    // Add options for multiple-choice or checkbox questions
-    if (in_array($questionType, ['multiple_choice', 'checkbox'])) {
-        $options = $question['options'] ?? [];
-        foreach ($options as $optionText) {
-            $optionText = trim($optionText);
-            if (!empty($optionText)) {
-                $formHandler->addOption($questionId, $optionText);
+        if (!$questionId) {
+            error_log("Failed to add question. Form ID: $formId, Question Text: $questionText");
+            echo "Failed to add question.";
+            exit();
+        }
+
+        // Add options for new multiple-choice or checkbox questions
+        if (in_array($questionType, ['multiple_choice', 'checkbox'])) {
+            $options = $question['choices'] ?? [];
+
+            // Map and filter the options to ensure valid strings
+            $submittedOptionTexts = array_filter(array_map(function ($choice) {
+                return isset($choice['text']) && is_string($choice['text']) ? trim($choice['text']) : null;
+            }, $options));
+
+            foreach ($submittedOptionTexts as $optionText) {
+                if (!empty($optionText)) {
+                    $result = $formHandler->addOption($questionId, $optionText);
+
+                    if (!$result) {
+                        error_log("Failed to add option. Question ID: $questionId, Option Text: $optionText");
+                        echo "Failed to add option.";
+                        exit();
+                    }
+                }
             }
         }
     }

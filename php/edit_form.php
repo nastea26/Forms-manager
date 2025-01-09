@@ -32,6 +32,7 @@ if ($formResponses) {
 
 $formData = $formHandler->getFormDetails($formId);
 $formIsActive = $formData["is_active"];
+
 if ($formIsActive) {
     include '../assets/editForbiden.php';
     formIsActive($database, $formId);
@@ -94,15 +95,19 @@ if (!$formData) {
                             </label>
 
                             <div class="options">
-                                <?php if (isset($question['options']) && is_array($question['options'])): ?>
-                                    <?php foreach ($question['options'] as $option): ?>
-                                        <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][options][]"
-                                            value="<?= htmlspecialchars($option) ?>" placeholder="Option Text">
+                                <?php if (isset($question['choices']) && is_array($question['choices'])): ?>
+                                    <?php foreach ($question['choices'] as $choiceIndex => $choice): ?>
+                                        <div class="option">
+                                            <input type="hidden" name="questions[<?= $questionIndex ?>][choices][<?= $choiceIndex ?>][id]" value="<?= $choice['id'] ?>">
+                                            <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][choices][<?= $choiceIndex ?>][text]"
+                                                value="<?= htmlspecialchars($choice['option_text']) ?>" placeholder="Option Text" required>
+                                            <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                                        </div>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
                             </div>
 
-                            <button type="button" class="add-option" onclick="addOption(this)">Add Option</button>
+                            <button type="button" class="add-option" onclick="addOption(this, <?= $questionIndex ?>)">Add Option</button>
 
                             <label>
                                 <input type="checkbox" name="questions[<?= $questionIndex ?>][delete]" value="1">
@@ -136,33 +141,41 @@ if (!$formData) {
                 const questionDiv = document.createElement('div');
                 questionDiv.classList.add('question');
                 questionDiv.innerHTML = `
-                    <input type="hidden" name="questions[${questionCount}][id]" value="">
-                    <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
-                    <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
-                        <option value="text">Text</option>
-                        <option value="multiple_choice">Multiple Choice</option>
-                        <option value="checkbox">Checkbox</option>
-                    </select>
-                    <label class="required-toggle">
-                        <input type="checkbox" name="questions[${questionCount}][required]"> Required
-                    </label>
-                    <div class="options"></div>
-                    <button type="button" class="add-option" onclick="addOption(this)">Add Option</button>
-                    <label>
-                        <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
-                    </label>
+                <input type="hidden" name="questions[${questionCount}][id]" value="">
+                <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
+                    <option value="text">Text</option>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+                <label class="required-toggle">
+                    <input type="checkbox" name="questions[${questionCount}][required]"> Required
+                </label>
+                <div class="options"></div>
+                <button type="button" class="add-option" onclick="addOption(this, ${questionCount})">Add Option</button>
+                <label>
+                    <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
+                </label>
                 `;
                 document.getElementById('questions').appendChild(questionDiv);
             }
 
-            function addOption(button) {
+
+            function addOption(button, questionIndex) {
                 const optionsDiv = button.previousElementSibling;
-                const optionInput = document.createElement('input');
-                optionInput.type = 'text';
-                optionInput.name = `questions[${questionCount}][options][]`;
-                optionInput.placeholder = 'Option Text';
-                optionInput.classList.add('option-input');
-                optionsDiv.appendChild(optionInput);
+                const optionDiv = document.createElement('div');
+                optionDiv.classList.add('option');
+                optionDiv.innerHTML = `
+                <input type="text" class="option-input" name="questions[${questionIndex}][choices][][text]" placeholder="Option Text" required>
+                <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                `;
+                optionsDiv.appendChild(optionDiv);
+            }
+
+
+            function removeOption(button) {
+                const optionDiv = button.parentElement;
+                optionDiv.remove();
             }
 
             function handleTypeChange(select, questionIndex) {
@@ -174,12 +187,13 @@ if (!$formData) {
                 if (select.value === 'multiple_choice' || select.value === 'checkbox') {
                     addOptionButton.disabled = false;
 
-                    const optionInput = document.createElement('input');
-                    optionInput.type = 'text';
-                    optionInput.name = `questions[${questionIndex}][options][]`;
-                    optionInput.placeholder = 'Option Text';
-                    optionInput.classList.add('option-input');
-                    optionsDiv.appendChild(optionInput);
+                    const optionDiv = document.createElement('div');
+                    optionDiv.classList.add('option');
+                    optionDiv.innerHTML = `
+                    <input type="text" class="option-input" name="questions[${questionIndex}][choices][][text]" placeholder="Option Text" required>
+                    <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                    `;
+                    optionsDiv.appendChild(optionDiv);
                 } else {
                     addOptionButton.disabled = true;
                 }

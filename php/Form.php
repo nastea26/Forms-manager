@@ -49,7 +49,6 @@ class Form
         // Fetch form metadata
         $sqlForm = "SELECT * FROM forms WHERE id = ?";
         $form = $this->db->searchQuery($sqlForm, [$formId])->fetch_assoc();
-
         // Fetch questions
         $sqlQuestions = "SELECT * FROM questions WHERE form_id = ?";
         $questions = $this->db->searchQuery($sqlQuestions, [$formId])->fetch_all(MYSQLI_ASSOC);
@@ -111,7 +110,7 @@ class Form
     //get all forms created by a user by id
     public function getUserForms($userId)
     {
-        $sql = "SELECT id, title, description, created_at, is_active FROM forms WHERE user_id = ?";
+        $sql = "SELECT id, title, description, created_at, is_active FROM forms WHERE user_id = ? ORDER BY created_at desc";
         $stmt = $this->db->searchQuery($sql, [$userId]);
         return $stmt->fetch_all(MYSQLI_ASSOC);
     }
@@ -173,7 +172,6 @@ class Form
 
         return $questions;
     }
-
     public function deleteQuestions(array $questionIds): bool
     {
         $placeholders = implode(',', array_fill(0, count($questionIds), '?'));
