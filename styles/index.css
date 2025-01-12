@@ -1,0 +1,183 @@
+@charset "UTF-8";
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+/* Top Section Styling */
+.top-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  /* Align items at the top */
+  padding: 20px;
+  background-color: #f7f7f7;
+  gap: 10px;
+  /* Consistent spacing between elements */
+}
+
+.top-section .create-form-container {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  /* Ensure the button doesn’t take up extra space */
+  margin-bottom: 0;
+  /* Remove unnecessary margin */
+}
+
+.top-section .create-form-container .create-form-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+  -webkit-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+
+.top-section .create-form-container .create-form-btn:hover {
+  background-color: #0062cc;
+}
+
+.top-section .templates-container {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  /* Ensure templates take up remaining space */
+  margin-top: 0;
+  /* Ensure there's no extra space above templates */
+}
+
+.top-section .templates-container h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.top-section .templates-container .templates-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.top-section .templates-container .templates-list .template-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 15px;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  cursor: pointer;
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.top-section .templates-container .templates-list .template-item:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+}
+
+/* Recent Forms Section Styling */
+.recent-forms-section {
+  margin: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.recent-forms-section h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #007bff;
+}
+
+.recent-forms-section .recent-forms-list {
+  list-style: none;
+  padding: 0;
+}
+
+.recent-forms-section .recent-forms-list .recent-form-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 15px;
+  -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.recent-forms-section .recent-forms-list .recent-form-item:hover {
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+}
+
+.recent-forms-section .recent-forms-list .recent-form-item .recent-form-link {
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+.recent-forms-section .recent-forms-list .recent-form-item .recent-form-link .recent-form-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.recent-forms-section .recent-forms-list .recent-form-item .recent-form-link .recent-form-description {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #777;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .top-section {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .top-section .create-form-container {
+    margin-bottom: 10px;
+    /* Matches the template gap */
+  }
+  .top-section .templates-container .templates-list {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+}
+/*# sourceMappingURL=index.css.map */

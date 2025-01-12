@@ -66,7 +66,7 @@ class Form
 
     public function getActiveForms()
     {
-        $sql = "SELECT * FROM forms WHERE is_active = 1";
+        $sql = "SELECT * FROM forms WHERE is_active = 1 order by created_at desc";
         return $this->db->searchQuery($sql)->fetch_all(MYSQLI_ASSOC);
     }
 

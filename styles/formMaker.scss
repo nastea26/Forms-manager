@@ -35,7 +35,7 @@ body {
     margin-bottom: 20px;
     line-height: 1.5;
     padding: 10px;
-    margin: 0;
+    margin: 20px 0;
     font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -59,9 +59,7 @@ body {
       border-radius: $border-radius;
 
       .question-text {
-        display: block;
-        width: 100%;
-        margin-bottom: 10px;
+        flex: 1;
         padding: 10px;
         font-size: 1rem;
         border: 1px solid #ccc;
@@ -69,25 +67,74 @@ body {
         box-sizing: border-box;
       }
 
+      .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    
+        .remove-question {
+          margin-left: 10px;
+        }
+      }
+      .question-type {
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+
+      .required-toggle {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+      }
+
       .question-type,
       .required-toggle {
         margin-right: 10px;
       }
 
-      .options {
-        margin-top: 10px;
-
-        .option-input {
-          display: block;
-          width: 90%;
-          margin-bottom: 10px;
-          padding: 10px;
-          font-size: 0.9rem;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          box-sizing: border-box;
+      .remove-option,
+      .remove-question{
+        background: none; // No background
+        border: none; // Remove border
+        color: #ff0000; 
+        font-size: 1.2rem;
+        cursor: pointer;
+      
+        &:hover {
+          color: darken(#ff0000, 10%); // Even brighter red on hover
+        }
+      
+        i {
+          pointer-events: none; // Prevent focus on the icon itself
         }
       }
+
+      .options {
+        margin-top: 10px;
+      
+        .option {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+      
+          .option-input {
+            flex: 1; // Take up the remaining space
+            margin-right: 10px; // Add space between input and trash icon
+            padding: 10px;
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+          }
+          
+        }
+      }
+      
 
       .add-option {
         margin-top: 10px;

@@ -1,0 +1,118 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 20px auto;
+  color: #007bff;
+  max-width: 800px;
+  /* Match the width of the form list */
+  padding: 10px 0;
+  /* Optional: Adds padding if needed for more space */
+}
+
+/* List of Forms */
+ul {
+  list-style-type: none;
+}
+
+/* List Item Styles */
+.list-form-item {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  max-width: 800px;
+  /* Limit width of each form item */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+}
+
+/* Hover Effect */
+.list-form-item:hover {
+  -webkit-transform: translateY(-5px);
+          transform: translateY(-5px);
+}
+
+/* Links */
+.list-form-link {
+  display: block;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Title */
+.list-form-title {
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Description */
+.list-form-description {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+/* Created At */
+.list-form-created-at {
+  font-size: 15px;
+  color: #777;
+}
+
+/* Accent Colors */
+.list-form-title {
+  color: #007bff;
+}
+
+.list-form-description strong,
+.list-form-created-at strong {
+  color: #007bff;
+}
+
+/* Hover Effects */
+.list-form-item:hover .list-form-title {
+  color: #007bff;
+}
+
+.list-form-link:active {
+  color: #007bff;
+}
+
+/* Form Popup Styling (for form views) */
+.form-popup {
+  max-width: 800px;
+  /* Limit the width of the form */
+  width: 100%;
+  /* Allow it to scale down */
+  margin: 20px auto;
+  /* Center the form horizontally */
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/*# sourceMappingURL=listForms.css.map */

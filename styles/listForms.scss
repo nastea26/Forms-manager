@@ -1,0 +1,108 @@
+@import 'variables';
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    margin: 0;
+    padding: 0;
+}
+
+
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 20px auto;
+    color: $primary-color;
+    max-width: 800px; /* Match the width of the form list */
+    padding:10px 0; /* Optional: Adds padding if needed for more space */
+}
+
+
+
+/* List of Forms */
+ul {
+    list-style-type: none;
+}
+
+/* List Item Styles */
+.list-form-item {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: $border-radius;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    max-width: 800px; /* Limit width of each form item */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+}
+
+/* Hover Effect */
+.list-form-item:hover {
+    transform: translateY(-5px);
+}
+
+/* Links */
+.list-form-link {
+    display: block;
+    text-decoration: none;
+    color: $text-color;
+}
+
+/* Title */
+.list-form-title {
+    font-size: 21px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Description */
+.list-form-description {
+    font-size: 17px;
+    margin-bottom: 10px;
+}
+
+/* Created At */
+.list-form-created-at {
+    font-size: 15px;
+    color: #777;
+}
+
+/* Accent Colors */
+.list-form-title {
+    color: $primary-color;
+}
+
+.list-form-description strong,
+.list-form-created-at strong {
+    color: $primary-color;
+}
+
+/* Hover Effects */
+.list-form-item:hover .list-form-title {
+    color: $primary-color;
+}
+
+.list-form-link:active {
+    color: $primary-color;
+}
+
+/* Form Popup Styling (for form views) */
+.form-popup {
+    max-width: 800px; /* Limit the width of the form */
+    width: 100%; /* Allow it to scale down */
+    margin: 20px auto; /* Center the form horizontally */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

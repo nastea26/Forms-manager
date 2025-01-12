@@ -1,11 +1,11 @@
 <?php
 require 'Form.php';
 require 'db.php';
-session_start();
+if (!isset($_SESSION)) session_start();
 
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit();
 }
 
@@ -53,6 +53,8 @@ if (!$formData) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Form</title>
     <link rel="stylesheet" href="../styles/formMaker.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 </head>
 
 <?php include '../assets/header.php'; ?>
@@ -77,11 +79,11 @@ if (!$formData) {
                 <div id="questions" class="questions-container">
                     <?php foreach ($formData['questions'] as $questionIndex => $question): ?>
                         <div class="question">
-                            <input type="hidden" name="questions[<?= $questionIndex ?>][id]" value="<?= $question['id'] ?>">
-
-                            <input type="text" class="question-text" name="questions[<?= $questionIndex ?>][text]"
-                                value="<?= htmlspecialchars($question['question_text']) ?>" required>
-
+                            <div class="question-header">
+                                <input type="hidden" name="questions[<?= $questionIndex ?>][id]" value="<?= $question['id'] ?>">
+                                <input type="text" class="question-text" name="questions[<?= $questionIndex ?>][text]"
+                                    value="<?= htmlspecialchars($question['question_text']) ?>" required>
+                            </div>
                             <select class="question-type" name="questions[<?= $questionIndex ?>][type]"
                                 onchange="handleTypeChange(this, <?= $questionIndex ?>)">
                                 <option value="text" <?= $question['answer_type'] === 'text' ? 'selected' : '' ?>>Text</option>
@@ -98,10 +100,11 @@ if (!$formData) {
                                 <?php if (isset($question['choices']) && is_array($question['choices'])): ?>
                                     <?php foreach ($question['choices'] as $choiceIndex => $choice): ?>
                                         <div class="option">
-                                            <input type="hidden" name="questions[<?= $questionIndex ?>][choices][<?= $choiceIndex ?>][id]" value="<?= $choice['id'] ?>">
                                             <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][choices][<?= $choiceIndex ?>][text]"
                                                 value="<?= htmlspecialchars($choice['option_text']) ?>" placeholder="Option Text" required>
-                                            <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                                            <button type="button" class="remove-option" onclick="removeOption(this)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </div>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
@@ -142,7 +145,9 @@ if (!$formData) {
                 questionDiv.classList.add('question');
                 questionDiv.innerHTML = `
                 <input type="hidden" name="questions[${questionCount}][id]" value="">
-                <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                <div class="question-header">
+                    <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                </div>
                 <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
                     <option value="text">Text</option>
                     <option value="multiple_choice">Multiple Choice</option>
@@ -167,7 +172,9 @@ if (!$formData) {
                 optionDiv.classList.add('option');
                 optionDiv.innerHTML = `
                 <input type="text" class="option-input" name="questions[${questionIndex}][choices][][text]" placeholder="Option Text" required>
-                <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                <button type="button" class="remove-option" onclick="removeOption(this)">
+                    <i class="fa fa-trash"></i>
+                </button>
                 `;
                 optionsDiv.appendChild(optionDiv);
             }
@@ -191,7 +198,9 @@ if (!$formData) {
                     optionDiv.classList.add('option');
                     optionDiv.innerHTML = `
                     <input type="text" class="option-input" name="questions[${questionIndex}][choices][][text]" placeholder="Option Text" required>
-                    <button type="button" class="remove-option" onclick="removeOption(this)">×</button>
+                    <button type="button" class="remove-option" onclick="removeOption(this)">
+                        <i class="fa fa-trash"></i>
+                    </button>
                     `;
                     optionsDiv.appendChild(optionDiv);
                 } else {

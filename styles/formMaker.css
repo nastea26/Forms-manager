@@ -31,7 +31,7 @@ body {
   margin-bottom: 20px;
   line-height: 1.5;
   padding: 10px;
-  margin: 0;
+  margin: 20px 0;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -60,9 +60,9 @@ body {
 }
 
 #form-builder .questions-container .question .question-text {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
   padding: 10px;
   font-size: 1rem;
   border: 1px solid #ccc;
@@ -71,19 +71,86 @@ body {
           box-sizing: border-box;
 }
 
+#form-builder .questions-container .question .question-header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-bottom: 10px;
+}
+
+#form-builder .questions-container .question .question-header .remove-question {
+  margin-left: 10px;
+}
+
+#form-builder .questions-container .question .question-type {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+#form-builder .questions-container .question .required-toggle {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 10px;
+}
+
 #form-builder .questions-container .question .question-type,
 #form-builder .questions-container .question .required-toggle {
   margin-right: 10px;
+}
+
+#form-builder .questions-container .question .remove-option,
+#form-builder .questions-container .question .remove-question {
+  background: none;
+  border: none;
+  color: #ff0000;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+#form-builder .questions-container .question .remove-option:hover,
+#form-builder .questions-container .question .remove-question:hover {
+  color: #cc0000;
+}
+
+#form-builder .questions-container .question .remove-option i,
+#form-builder .questions-container .question .remove-question i {
+  pointer-events: none;
 }
 
 #form-builder .questions-container .question .options {
   margin-top: 10px;
 }
 
-#form-builder .questions-container .question .options .option-input {
-  display: block;
-  width: 90%;
+#form-builder .questions-container .question .options .option {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   margin-bottom: 10px;
+}
+
+#form-builder .questions-container .question .options .option .option-input {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin-right: 10px;
   padding: 10px;
   font-size: 0.9rem;
   border: 1px solid #ccc;

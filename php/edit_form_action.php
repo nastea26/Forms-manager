@@ -1,11 +1,11 @@
 <?php
 require 'db.php';
 require 'Form.php';
-session_start();
+if (!isset($_SESSION)) session_start();
 
 // Ensure the user is logged in
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: ../login.php');
     exit();
 }
 
