@@ -186,4 +186,10 @@ class Form
         $deleteQuestionsQuery = "DELETE FROM questions WHERE id IN ($placeholders)";
         return $this->db->searchQuery($deleteQuestionsQuery, $questionIds) ? true : false;
     }
+    public function getRespondentIds($formId): array
+    {
+        $sql = "SELECT DISTINCT respondednt_id FROM responses WHERE form_id = ?";
+        $stmt = $this->db->searchQuery($sql, [$formId]);
+        return array_column($stmt->fetch_all(MYSQLI_ASSOC), 'respondednt_id');
+    }
 }

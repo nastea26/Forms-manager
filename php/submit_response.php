@@ -38,7 +38,7 @@ foreach ($formDetails['questions'] as $question) {
 
 // Process the response
 if ($formHandler->submitResponse($formId, $respondentId, $answers)) {
-    header('Location: ../thank_you.html');
+    header('Location: ../thank_you.php');
 } else {
     header('Location: error.php');
 }
