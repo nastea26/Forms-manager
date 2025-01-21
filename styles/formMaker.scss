@@ -5,6 +5,7 @@ $text-color: #333;
 $form-width: 600px;
 $border-radius: 10px;
 
+@use 'sass:color';
 body {
   margin: 0;
   padding: 0;
@@ -47,6 +48,51 @@ body {
       box-shadow: 0 0 5px rgba($primary-color, 0.3);
     }
   }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 34px;
+    height: 20px;
+  }
+
+  .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+  }
+
+  .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 20px;
+  }
+
+  .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+  }
+
+  input:checked + .slider {
+      background-color: #4caf50;
+  }
+
+  input:checked + .slider:before {
+      transform: translateX(14px);
+  }
+
 
   .questions-container {
     margin-bottom: 20px;
@@ -106,7 +152,7 @@ body {
         cursor: pointer;
       
         &:hover {
-          color: darken(#ff0000, 10%); // Even brighter red on hover
+          color: color.adjust(#ff0000, $lightness: -10%); // Even brighter red on hover
         }
       
         i {
@@ -167,7 +213,7 @@ body {
     cursor: pointer;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: color.adjust($primary-color, $lightness: -10%);
     }
   }
 
@@ -183,7 +229,7 @@ body {
     cursor: pointer;
 
     &:hover {
-      background-color: darken($primary-color, 10%);
+      background-color: color.adjust($primary-color, $lightness:-10%);
     }
   }
 }

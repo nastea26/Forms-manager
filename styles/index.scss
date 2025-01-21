@@ -1,5 +1,5 @@
-@import 'variables';
-
+@use './variables' as *;
+@use 'sass:color';
 /* General Reset */
 * {
     margin: 0;
@@ -16,7 +16,6 @@ body {
     padding: 0;
 }
 
-
 /* Top Section Styling */
 .top-section {
     display: flex;
@@ -29,20 +28,20 @@ body {
     .create-form-container {
         flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
         margin-bottom: 0; /* Remove unnecessary margin */
-
+        align-self: flex-end;
         .create-form-btn {
             background-color: $primary-color;
             color: $header-text-color;
             border: none;
             border-radius: $border-radius;
-            padding: 10px 20px;
+            padding: 15px 20px;
             font-size: 16px;
             cursor: pointer;
             margin-right: 10px;
             transition: background-color 0.3s ease;
 
             &:hover {
-                background-color: darken($primary-color, 10%);
+                background-color: color.adjust($primary-color, $lightness: -10%);
             }
         }
     }

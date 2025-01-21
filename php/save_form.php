@@ -10,17 +10,41 @@ if (!isset($_SESSION['user_id'])) {
 
 $form = new Form($database);
 $userId = $_SESSION['user_id'];
-$formId = $form->createForm($userId, $_POST['title'], $_POST['description']);
 
-foreach ($_POST['questions'] as $question) {
+// Get whether the form should be published
+$publish = isset($_POST['publish']) ? 1 : 0;
 
-    $questionId = $form->addQuestion($formId, $question['text'], $question['type'], isset($question['required']));
+// Create the form and get the form ID
+$formId = $form->createForm($userId, $_POST['title'], $_POST['description'], $publish);
 
-    if (isset($question['options'])) {
-        foreach ($question['options'] as $option) {
-            $form->addOption($questionId, $option);
+if (!$formId) {
+    die('Error creating form.');
+}
+
+// Loop through questions
+foreach ($_POST['questions'] as $index => $question) {
+    $isRequired = isset($question['required']) ? 1 : 0;
+
+    // Add question
+    $questionId = $form->addQuestion($formId, $question['text'], $question['type'], $isRequired);
+
+    if (!$questionId) {
+        include '../assets/header.php';
+        echo "<main>";
+        error_log("Failed to add question #{$index}");
+        echo "</main>";
+        continue;
+    }
+
+    // Add options if they exist
+    if (!empty($question['options'])) {
+        foreach ($question['options'] as $optionIndex => $optionText) {
+            $result = $form->addOption($questionId, $optionText);
+            if (!$result) {
+                error_log("Failed to add option #{$optionIndex} for question #{$index}");
+            }
         }
     }
 }
 
-header('Location:../');
+header('Location: ../');

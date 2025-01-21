@@ -8,15 +8,16 @@ class Form
         $this->db = $db;
     }
 
-    public function createForm($userId, $title, $description)
+    public function createForm($userId, $title, $description, $publish)
     {
         $table = "forms";
         $columns = ["user_id", "title", "description", "is_active", "created_at"];
-        $values = [$userId, $title, $description, 1, date('Y-m-d H:i:s')];
-        return $this->db->insertInto($table, $columns, $values, True);
+        $values = [$userId, $title, $description, $publish ? 1 : 0, date('Y-m-d H:i:s')];
+        return $this->db->insertInto($table, $columns, $values, true);
     }
 
-    public function addQuestion($formId, $text, $type, $required)
+
+    public function addQuestion($formId, $text, $type, $required): int|string
     {
         $table = "questions";
         $columns = ["form_id", "question_text", "answer_type", "is_required", "created_at"];

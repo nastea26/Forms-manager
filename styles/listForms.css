@@ -2,8 +2,7 @@
 * {
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /* Body Styling */
@@ -20,10 +19,8 @@ h1 {
   font-weight: bold;
   margin: 20px auto;
   color: #007bff;
-  max-width: 800px;
-  /* Match the width of the form list */
-  padding: 10px 0;
-  /* Optional: Adds padding if needed for more space */
+  max-width: 800px; /* Match the width of the form list */
+  padding: 10px 0; /* Optional: Adds padding if needed for more space */
 }
 
 /* List of Forms */
@@ -37,14 +34,9 @@ ul {
   border: 1px solid #ccc;
   border-radius: 10px;
   margin-bottom: 15px;
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: -webkit-transform 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
-  transition: transform 0.3s ease, -webkit-transform 0.3s ease;
-  max-width: 800px;
-  /* Limit width of each form item */
+  max-width: 800px; /* Limit width of each form item */
   margin-left: auto;
   margin-right: auto;
   padding: 15px;
@@ -52,8 +44,7 @@ ul {
 
 /* Hover Effect */
 .list-form-item:hover {
-  -webkit-transform: translateY(-5px);
-          transform: translateY(-5px);
+  transform: translateY(-5px);
 }
 
 /* Links */
@@ -103,16 +94,11 @@ ul {
 
 /* Form Popup Styling (for form views) */
 .form-popup {
-  max-width: 800px;
-  /* Limit the width of the form */
-  width: 100%;
-  /* Allow it to scale down */
-  margin: 20px auto;
-  /* Center the form horizontally */
+  max-width: 800px; /* Limit the width of the form */
+  width: 100%; /* Allow it to scale down */
+  margin: 20px auto; /* Center the form horizontally */
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  -webkit-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-/*# sourceMappingURL=listForms.css.map */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}/*# sourceMappingURL=listForms.css.map */

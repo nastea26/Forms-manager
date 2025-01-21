@@ -15,10 +15,13 @@ $respondentId = $_SESSION['user_id'] ?? null;
 
 // Retrieve form details
 $formDetails = $formHandler->getFormDetails($formId);
-
+$respondentIDs = $formHandler->getRespondentIds($formId);
 // Check if the respondent is the creator of the form
 if ($formDetails['user_id'] == $respondentId) {
     die('Error: You cannot submit responses to your own form.');
+}
+if (in_array($respondentId, $respondentIDs)) {
+    die('Error: You have already submitted responses to this form.');
 }
 
 // Validate required fields

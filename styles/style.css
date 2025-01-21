@@ -23,14 +23,12 @@ form {
   background: #ffffff;
   padding: 20px;
   border-radius: 10px;
-  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
   /* Required field styling */
   /* Error message styling */
 }
-
-form input[type="text"],
+form input[type=text],
 form textarea {
   width: 100%;
   padding: 10px;
@@ -38,41 +36,30 @@ form textarea {
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-form input[type="text"]:focus,
+form input[type=text]:focus,
 form textarea:focus {
   border-color: #007bff;
   outline: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
 }
-
 form textarea {
   resize: none;
   height: 100px;
 }
-
 form label {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
   margin-bottom: 15px;
   cursor: pointer;
 }
-
-form label input[type="checkbox"],
-form label input[type="radio"] {
+form label input[type=checkbox],
+form label input[type=radio] {
   margin-right: 10px;
   accent-color: #007bff;
 }
-
-form button[type="submit"] {
+form button[type=submit] {
   display: block;
   width: 100%;
   padding: 10px;
@@ -82,43 +69,31 @@ form button[type="submit"] {
   font-size: 18px;
   border-radius: 5px;
   cursor: pointer;
-  -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
-
-form button[type="submit"]:hover {
+form button[type=submit]:hover {
   background-color: #0062cc;
 }
-
-form button[type="submit"]:disabled {
+form button[type=submit]:disabled {
   background-color: #3395ff;
   color: #333;
   cursor: not-allowed;
   opacity: 0.8;
 }
-
 form p span {
   color: #d9534f;
   font-weight: bold;
 }
-
 form .error {
-  display: none;
-  color: #d9534f;
-  font-size: 14px;
+  font-size: 0.9em;
+  color: red;
   margin-top: 5px;
-  padding: 5px;
-  background-color: rgba(217, 83, 79, 0.1);
-  border: 1px solid #d9534f;
-  border-radius: 5px;
-  margin-bottom: 20px;
 }
 
 .edit-form-btn-wrapper {
   max-width: 640px;
   margin: 0 auto;
 }
-
 .edit-form-btn-wrapper .edit-form-button {
   display: inline-block;
   margin-top: 20px;
@@ -128,11 +103,8 @@ form .error {
   font-size: 16px;
   text-decoration: none;
   border-radius: 5px;
-  -webkit-transition: background-color 0.3s;
   transition: background-color 0.3s;
 }
-
 .edit-form-btn-wrapper .edit-form-button:hover {
   background-color: #0062cc;
-}
-/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=style.css.map */

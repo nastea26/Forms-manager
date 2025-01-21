@@ -1,115 +1,113 @@
-/* Variables */
-/* Global Styles */
 body {
   margin: 0;
-  padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
-  color: #333;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: center;
+  align-items: center;
   height: 100vh;
+  background-color: #f3f4f6;
 }
 
-#welcome-title {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: #007bff;
-}
-
-.form-container {
-  background: #ffffff;
-  width: 400px;
-  padding: 20px;
-  border-radius: 10px;
-  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: -webkit-box;
-  display: -ms-flexbox;
+.page-container, #login-page, #register-page {
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  width: 70%;
+  max-width: 1000px;
+  height: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
 }
-
-.form-container .form-label {
-  font-size: 1rem;
-  font-weight: bold;
-  margin-bottom: 8px;
-  text-align: left;
-  /* Aligns text to the left */
-  display: block;
-  /* Ensures label width matches its content */
+.page-container .welcome-section, #login-page .welcome-section, #register-page .welcome-section {
+  background: linear-gradient(135deg, #007bff, #2575fc);
+  color: white;
+  padding: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
 }
-
-.form-container .text-input {
-  width: 100%;
-  /* Matches input width to the container */
-  padding: 10px;
+.page-container .welcome-section h1, #login-page .welcome-section h1, #register-page .welcome-section h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+.page-container .welcome-section p, #login-page .welcome-section p, #register-page .welcome-section p {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+.page-container .form-section, #login-page .form-section, #register-page .form-section {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.page-container .form-section h2, #login-page .form-section h2, #register-page .form-section h2 {
+  margin: 0 0 20px;
+  font-size: 2rem;
+  color: #333;
+}
+.page-container .form-section p, #login-page .form-section p, #register-page .form-section p {
   margin-bottom: 20px;
   font-size: 1rem;
+  color: #666;
+}
+.page-container .form-section .form-container, #login-page .form-section .form-container, #register-page .form-section .form-container {
+  display: flex;
+  flex-direction: column;
+}
+.page-container .form-section .form-container .form-label, #login-page .form-section .form-container .form-label, #register-page .form-section .form-container .form-label {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+.page-container .form-section .form-container .text-input, #login-page .form-section .form-container .text-input, #register-page .form-section .form-container .text-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  font-size: 1rem;
 }
-
-.form-container .text-input:focus {
-  border-color: #007bff;
-  outline: none;
-  -webkit-box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
-}
-
-.form-container .form-button {
-  background-color: #007bff;
-  color: #fff;
+.page-container .form-section .form-container .form-button, #login-page .form-section .form-container .form-button, #register-page .form-section .form-container .form-button {
+  background-color: #2575fc;
+  color: white;
+  padding: 12px;
   border: none;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 5px;
   font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
-
-.form-container .form-button:hover {
-  background-color: #0062cc;
+.page-container .form-section .form-container .form-button:hover, #login-page .form-section .form-container .form-button:hover, #register-page .form-section .form-container .form-button:hover {
+  background-color: #1e63d1;
 }
-
-.form-container .error-message {
-  color: #e74c3c;
-  font-size: 0.875rem;
-  margin-top: 5px;
-  margin-bottom: 20px;
-  display: block;
+.page-container .form-section .form-container .error-message, #login-page .form-section .form-container .error-message, #register-page .form-section .form-container .error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
 }
-
-/* Login and Register Specific */
-#login-page,
-#register-page {
+.page-container .form-section .form-footer, #login-page .form-section .form-footer, #register-page .form-section .form-footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
   text-align: center;
 }
-
-#login-page h2,
-#register-page h2 {
-  color: #007bff;
-  margin-bottom: 20px;
+.page-container .form-section .form-footer a, #login-page .form-section .form-footer a, #register-page .form-section .form-footer a {
+  color: #2575fc;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+.page-container .form-section .form-footer a:hover, #login-page .form-section .form-footer a:hover, #register-page .form-section .form-footer a:hover {
+  color: #1e63d1;
 }
 
-#login-page .login-form .login-button,
-#login-page .register-form .register-button,
-#register-page .login-form .login-button,
-#register-page .register-form .register-button {
-  width: 100%;
-  font-size: 1rem;
-  padding: 10px;
+#register-page {
+  height: 600px;
 }
-/*# sourceMappingURL=regLog.css.map */
+
+#login-page {
+  height: 600px;
+}/*# sourceMappingURL=regLog.css.map */

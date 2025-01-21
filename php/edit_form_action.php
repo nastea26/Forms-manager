@@ -27,6 +27,7 @@ if (empty($title) || empty($description)) {
     exit();
 }
 
+// Handle is_active (publish form slider)
 $isActive = isset($_POST['is_active']) ? 1 : 0;
 
 // Update form title, description, and active status

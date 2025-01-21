@@ -1,91 +1,92 @@
-@import 'variables';
+@use 'variables' as *;
+@use 'sass:color';
+$contrast_color: #fff;
 
-$contrast_color : #fff;
 body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: $background-color;
-  color: $text-color;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 20px;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
 }
 
 .dashboard-form-container {
-  width: 100%;
-  max-width: 800px;
-  background: $contrast_color;
-  padding: 20px;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    background: $contrast_color;
+    padding: 20px;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 
-  .title {
-    text-align: center;
-    font-size: 2rem;
-    color: $primary-color;
-    margin-bottom: 20px;
-  }
+    .title {
+        text-align: center;
+        font-size: 2rem;
+        color: $primary-color;
+        margin-bottom: 20px;
+    }
 }
 
 .button {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 1rem;
-  color: $contrast_color;
-  background-color: $primary-color;
-  border: none;
-  border-radius: $border-radius;
-  text-decoration: none;
-  text-align: center;
-
-  &:hover {
-    background-color: darken($primary-color, 10%);
-  }
-
-  &:disabled {
-    background-color: lighten($primary-color, 10%);
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
     color: $contrast_color;
-    cursor: not-allowed;
-    opacity: 0.6; // Gives a "grayed-out" appearance
-  }
+    background-color: $primary-color;
+    border: none;
+    border-radius: $border-radius;
+    text-decoration: none;
+    text-align: center;
+
+    &:hover {
+        background-color: color.adjust($primary-color, $lightness: -10%);
+    }
+
+    &:disabled {
+        background-color: color.adjust($primary-color, $lightness: 10%);
+        color: $contrast_color;
+        cursor: not-allowed;
+        opacity: 0.6; // Gives a "grayed-out" appearance
+    }
 }
 
 .create-form-button {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .dashboard-container {
-  @extend .dashboard-form-container;
+    @extend .dashboard-form-container;
 
-  .forms-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+    .forms-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
 
-    .form-item {
-      margin-bottom: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: $border-radius;
+        .form-item {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: $border-radius;
 
-      .form-title {
-        font-size: 1.5rem;
-        color: $text-color;
-        margin-bottom: 10px;
-      }
+            .form-title {
+                font-size: 1.5rem;
+                color: $text-color;
+                margin-bottom: 10px;
+            }
 
-      .form-description {
-        font-size: 1rem;
-        margin-bottom: 10px;
-      }
+            .form-description {
+                font-size: 1rem;
+                margin-bottom: 10px;
+            }
 
-      .form-actions {
-        display: flex;
-        gap: 10px;
-      }
+            .form-actions {
+                display: flex;
+                gap: 10px;
+            }
+        }
     }
-  }
 }

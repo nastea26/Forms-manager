@@ -54,7 +54,6 @@ if (!$formData) {
     <title>Edit Form</title>
     <link rel="stylesheet" href="../styles/formMaker.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
 </head>
 
 <?php include '../assets/header.php'; ?>
@@ -74,6 +73,16 @@ if (!$formData) {
 
                 <label for="description">Description:</label>
                 <textarea name="description" id="description" class="form-description" required><?= htmlspecialchars(trim($formData['description'])) ?></textarea>
+
+                <div>
+                    <label for="publish-slider" class="slider-label">
+                        <span>Publish Form:</span>
+                        <label class="switch">
+                            <input type="checkbox" name="is_active" id="publish-slider" value="1" <?= $formIsActive ? 'checked' : '' ?>>
+                            <span class="slider round"></span>
+                        </label>
+                    </label>
+                </div>
 
                 <h2>Questions</h2>
                 <div id="questions" class="questions-container">
@@ -121,17 +130,6 @@ if (!$formData) {
                 </div>
 
                 <button type="button" id="add-question" onclick="addQuestion()">+</button>
-
-                <hr>
-
-                <!-- Checkbox for setting form as active -->
-                <div>
-                    <label for="is_active">
-                        <input type="checkbox" name="is_active" id="is_active" value="1" <?= $formIsActive ? 'checked' : '' ?>>
-                        Set this form as active
-                    </label>
-                </div>
-
                 <button type="submit" class="save-form">Save Changes</button>
             </form>
         </div>

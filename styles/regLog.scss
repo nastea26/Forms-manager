@@ -1,101 +1,146 @@
-/* Variables */
-$primary-color: #007bff;
-$error-color: #e74c3c;
-$background-color: #f7f7f7;
+// Variables
+$primary-color: #2575fc;
+$primary-color-hover: #1e63d1;
+$background-color: #f3f4f6;
 $text-color: #333;
-$form-width: 400px;
-$border-radius: 10px;
+$error-color: red; 
 
-/* Global Styles */
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: $background-color;
-  color: $text-color;
+// Mixins
+@mixin flex-center {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+// Global Styles
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  @include flex-center;
   height: 100vh;
+  background-color: $background-color;
 }
 
-#welcome-title {
-  text-align: center;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
-  color: $primary-color;
-}
-
-.form-container {
-  background: #ffffff;
-  width: $form-width;
-  padding: 20px;
-  border-radius: $border-radius;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+// Shared Container Styles
+.page-container {
   display: flex;
-  flex-direction: column;
+  width: 70%;
+  max-width: 1000px;
+  height: 600px; // Default height for register page
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
 
-  .form-label {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-    text-align: left; /* Aligns text to the left */
-    display: block;   /* Ensures label width matches its content */
-  }
+  // Ensure sections are balanced
+  .welcome-section {
+    background: linear-gradient(135deg, #007bff, $primary-color);
+    color: white;
+    padding: 40px;
+    flex: 1; // Adjusted to balance the layout
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 
-  .text-input {
-    width: 100%; /* Matches input width to the container */
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
 
-    &:focus {
-      border-color: $primary-color;
-      outline: none;
-      box-shadow: 0 0 5px rgba($primary-color, 0.3);
+    p {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
     }
   }
 
-  .form-button {
-    background-color: $primary-color;
-    color: #fff;
-    border: none;
-    border-radius: $border-radius;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
+  .form-section {
+    flex: 1; // Adjusted to balance the layout
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 
-    &:hover {
-      background-color: darken($primary-color, 10%);
+    h2 {
+      margin: 0 0 20px;
+      font-size: 2rem;
+      color: $text-color;
     }
-  }
 
-  .error-message {
-    color: $error-color;
-    font-size: 0.875rem;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    display: block;
+    p {
+      margin-bottom: 20px;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+
+      .form-label {
+        margin-bottom: 8px;
+        font-size: 1rem;
+        color: $text-color;
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .form-button {
+        background-color: $primary-color;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: $primary-color-hover;
+        }
+      }
+
+      .error-message {
+        color: $error-color;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+      }
+    }
+
+    .form-footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $primary-color-hover;
+        }
+      }
+    }
   }
 }
 
-/* Login and Register Specific */
-#login-page,
+// Page-Specific Styles
 #register-page {
-  text-align: center;
+  @extend .page-container;
+  height: 600px; // Specific height for register page
+}
 
-  h2 {
-    color: $primary-color;
-    margin-bottom: 20px;
-  }
-
-  .login-form .login-button,
-  .register-form .register-button {
-    width: 100%;
-    font-size: 1rem;
-    padding: 10px;
-  }
+#login-page {
+  @extend .page-container;
+  height: 600px; // Specific height for login page
 }

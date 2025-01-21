@@ -8,85 +8,58 @@ header {
   color: #fff;
   z-index: 1000;
 }
-
 header .header-container {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  justify-content: space-between;
+  align-items: center;
   height: 100%;
   padding: 0 20px;
 }
-
 header .logo {
   font-size: 1.5rem;
   font-weight: bold;
   color: #fff;
   text-decoration: none;
 }
-
 header .hamburger-menu {
   display: none;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  flex-direction: column;
+  justify-content: space-between;
   width: 30px;
   height: 20px;
   background: none;
   border: none;
   cursor: pointer;
 }
-
 header .hamburger-menu .bar {
   width: 100%;
   height: 3px;
   background-color: #fff;
   border-radius: 2px;
-  -webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-
 header .menu ul {
   list-style: none;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   gap: 20px;
   margin: 0;
   padding: 0;
 }
-
 header .menu ul li a {
   text-decoration: none;
   color: #fff;
   font-size: 1rem;
 }
-
 header .menu ul li a:hover {
   text-decoration: underline;
 }
-
 @media (max-width: 768px) {
   header .hamburger-menu {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
   }
   header .menu {
     display: none;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     position: absolute;
     top: 60px;
     right: 0;
@@ -95,15 +68,10 @@ header .menu ul li a:hover {
     padding: 10px 20px;
   }
   header .menu ul {
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+    flex-direction: column;
     gap: 10px;
   }
   header .menu.menu-open {
-    display: -webkit-box;
-    display: -ms-flexbox;
     display: flex;
   }
 }
@@ -111,5 +79,4 @@ header .menu ul li a:hover {
 main {
   margin-top: 60px;
   padding-top: 20px;
-}
-/*# sourceMappingURL=header.css.map */
+}/*# sourceMappingURL=header.css.map */

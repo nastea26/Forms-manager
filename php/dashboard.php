@@ -30,7 +30,7 @@ $forms = $formHandler->getUserForms($_SESSION['user_id']);
     <main>
         <div class="dashboard-container">
             <h1 class="dashboard-title">My Forms</h1>
-            <a href="../create_form.html" class="button create-form-button">Create New Form</a>
+            <a href="../create_form.php" class="button create-form-button">Create New Form</a>
             <ul class="forms-list">
                 <?php foreach ($forms as $form): ?>
                     <li class="form-item">

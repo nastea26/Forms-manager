@@ -25,6 +25,16 @@ if (!isset($_SESSION['user_id'])) {
             <form id="form" method="POST" action="php/save_form.php">
                 <input type="text" class="form-title" name="title" placeholder="Form Title" required>
                 <textarea class="form-description" name="description" placeholder="Form Description"></textarea>
+
+                <!-- New Publish Slider -->
+                <div class="publish-toggle">
+                    <label for="publish-form">Publish Form:</label>
+                    <label class="switch">
+                        <input type="checkbox" id="publish-form" name="publish" value="1">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
                 <div id="questions" class="questions-container"></div>
                 <button type="button" id="add-question" onclick="addQuestion()">+</button>
                 <button type="submit" class="save-form">Save Form</button>
@@ -38,39 +48,37 @@ if (!isset($_SESSION['user_id'])) {
             questionCount++;
             const questionDiv = document.createElement('div');
             questionDiv.classList.add('question');
+            questionDiv.dataset.index = questionCount;
             questionDiv.innerHTML = `
-            <div class="question-header">
-                <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
-                <button type="button" class="remove-question" onclick="removeQuestion(this)">
-                    <i class="fa fa-trash"></i>
-                </button>
-            </div>
-            <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
-                <option value="text">Text</option>
-                <option value="multiple_choice">Multiple Choice</option>
-                <option value="checkbox">Checkbox</option>
-            </select>
-            <label class="required-toggle">
-                <input type="checkbox" name="questions[${questionCount}][required]"> Required
-            </label>
-            <div class="options"></div>
-            <button type="button" class="add-option" onclick="addOption(this)" disabled>Add Option</button>
+                <div class="question-header">
+                    <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+                    <button type="button" class="remove-question" onclick="removeQuestion(this)">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </div>
+                <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
+                    <option value="text">Text</option>
+                    <option value="multiple_choice">Multiple Choice</option>
+                    <option value="checkbox">Checkbox</option>
+                </select>
+                <label class="required-toggle">
+                    <input type="checkbox" name="questions[${questionCount}][required]"> Required
+                </label>
+                <div class="options"></div>
+                <button type="button" class="add-option" onclick="addOption(this)" disabled>Add Option</button>
             `;
             document.getElementById('questions').appendChild(questionDiv);
-
-            const typeSelect = questionDiv.querySelector('.question-type');
-            handleTypeChange(typeSelect, questionCount);
         }
-
 
         function removeQuestion(button) {
             const questionDiv = button.closest('.question');
             questionDiv.remove();
         }
 
-
-        function addOption(button, questionIndex) {
-            const optionsDiv = button.previousElementSibling;
+        function addOption(button) {
+            const questionDiv = button.closest('.question');
+            const questionIndex = questionDiv.dataset.index;
+            const optionsDiv = questionDiv.querySelector('.options');
             const optionDiv = document.createElement('div');
             optionDiv.classList.add('option');
             optionDiv.innerHTML = `
@@ -87,22 +95,20 @@ if (!isset($_SESSION['user_id'])) {
         }
 
         function handleTypeChange(select, questionIndex) {
-            const questionDiv = select.parentElement;
+            const questionDiv = select.closest('.question');
             const optionsDiv = questionDiv.querySelector('.options');
             const addOptionButton = questionDiv.querySelector('.add-option');
 
-            // Clear existing options
-            optionsDiv.innerHTML = '';
+            optionsDiv.innerHTML = ''; // Clear existing options
 
             if (select.value === 'multiple_choice' || select.value === 'checkbox') {
                 addOptionButton.disabled = false;
-
-                // Automatically add one option
-                addOption(addOptionButton, questionIndex);
+                addOption(addOptionButton); // Automatically add one option
             } else {
                 addOptionButton.disabled = true;
             }
         }
+
         document.addEventListener('DOMContentLoaded', () => {
             addQuestion();
         });

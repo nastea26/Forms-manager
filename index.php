@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,36 +16,52 @@ session_start();
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            // Fetch recent forms if user is logged in
-            <?php if (isset($_SESSION['user_id'])): ?>
+            // Function to load forms
+            function loadForms(query = '') {
+                $('#loading-spinner').show(); // Show the loading spinner
                 $.ajax({
-                    url: 'php/userFormsAPI.php?action=fetchRecentForms',
+                    url: `php/userFormsAPI.php?action=fetchRecentForms&query=${encodeURIComponent(query)}`,
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
+                        $('#loading-spinner').hide(); // Hide the loading spinner
                         if (data.error) {
                             $('.recent-forms-section').html('<p>' + data.error + '</p>');
-                        } else if (data.length > 0) {
+                        } else if (data.forms.length > 0) {
                             let formsHTML = '';
-                            data.forEach(function(form) {
+                            data.forms.forEach(function(form) {
                                 formsHTML += `
-                                <li class="recent-form-item">
-                                    <a href="php/view_form.php?id=${form.id}" class="recent-form-link">
-                                        <div class="recent-form-title">${form.title}</div>
-                                        <div class="recent-form-description">${form.description}</div>
-                                    </a>
-                                </li>`;
+                                    <li class="recent-form-item">
+                                        <a href="php/view_form.php?id=${form.id}" class="recent-form-link">
+                                            <div class="recent-form-title">${form.title}</div>
+                                            <div class="recent-form-description">${form.description}</div>
+                                        </a>
+                                    </li>`;
                             });
                             $('.recent-forms-list').html(formsHTML);
                         } else {
-                            $('.recent-forms-section').html('<p>No recent forms found.</p>');
+                            $('.recent-forms-list').html('<p>No forms found.</p>');
                         }
                     },
                     error: function() {
-                        $('.recent-forms-section').html('<p>Failed to load recent forms.</p>');
+                        $('#loading-spinner').hide();
+                        alert('Failed to load forms.');
                     }
                 });
-            <?php endif; ?>
+            }
+
+            // Initial load of forms
+            loadForms();
+
+            // Search functionality
+            $('#search-btn').click(function() {
+                const query = $('#form-search').val();
+                if (query.trim() !== '') {
+                    loadForms(query);
+                } else {
+                    alert('Please enter a search query.');
+                }
+            });
         });
     </script>
 </head>
@@ -51,7 +71,9 @@ session_start();
     <main>
         <section class="top-section">
             <div class="create-form-container">
-                <button class="create-form-btn">+ Blank Form</button>
+                <a href="./create_form.php">
+                    <button class="create-form-btn">+ Blank Form</button>
+                </a>
             </div>
             <div class="templates-container">
                 <h2>Templates</h2>
@@ -62,15 +84,25 @@ session_start();
                 </div>
             </div>
         </section>
+        <section class="recent-forms-section">
+            <h2>Recent Forms</h2>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
-            <section class="recent-forms-section">
-                <h2>Recent Forms</h2>
-                <ul class="recent-forms-list">
-                    <!-- Recent forms will be loaded here via AJAX -->
-                </ul>
-            </section>
-        <?php endif; ?>
+            <!-- Search bar -->
+            <div class="search-container">
+                <input type="text" id="form-search" placeholder="Search your forms..." />
+                <button id="search-btn">Search</button>
+            </div>
+
+            <!-- Loading spinner -->
+            <div id="loading-spinner" style="display: none;">
+                <i class="fa fa-spinner fa-spin"></i> Loading...
+            </div>
+
+            <!-- Forms list -->
+            <ul class="recent-forms-list">
+                <!-- Recent forms will be loaded here via AJAX -->
+            </ul>
+        </section>
     </main>
 </body>
 

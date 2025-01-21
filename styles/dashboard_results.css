@@ -4,15 +4,9 @@ body {
   font-family: Arial, sans-serif;
   background-color: #f7f7f7;
   color: #333;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
+  justify-content: center;
+  align-items: flex-start;
   min-height: 100vh;
   padding: 20px;
 }
@@ -23,10 +17,8 @@ body {
   background: #fff;
   padding: 20px;
   border-radius: 10px;
-  -webkit-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 .dashboard-form-container .title, .dashboard-container .title {
   text-align: center;
   font-size: 2rem;
@@ -45,11 +37,9 @@ body {
   text-decoration: none;
   text-align: center;
 }
-
 .button:hover {
   background-color: #0062cc;
 }
-
 .button:disabled {
   background-color: #3395ff;
   color: #fff;
@@ -66,29 +56,22 @@ body {
   margin: 0;
   padding: 0;
 }
-
 .dashboard-container .forms-list .form-item {
   margin-bottom: 20px;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
 }
-
 .dashboard-container .forms-list .form-item .form-title {
   font-size: 1.5rem;
   color: #333;
   margin-bottom: 10px;
 }
-
 .dashboard-container .forms-list .form-item .form-description {
   font-size: 1rem;
   margin-bottom: 10px;
 }
-
 .dashboard-container .forms-list .form-item .form-actions {
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
   gap: 10px;
-}
-/*# sourceMappingURL=dashboard_results.css.map */
+}/*# sourceMappingURL=dashboard_results.css.map */

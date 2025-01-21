@@ -8,6 +8,7 @@ function getRecentForms($userId)
     global $database; // Assuming $database is your DB connection
     $formHandler = new Form($database);
 
+    // Assuming getUserForms returns an array of form objects or associative arrays
     return $formHandler->getUserForms($userId);
 }
 
@@ -23,7 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $userId = $_SESSION['user_id'];
     try {
         $recentForms = getRecentForms($userId);
-        echo json_encode($recentForms);
+
+        // Check if forms exist and return as expected format
+        if (!empty($recentForms)) {
+            echo json_encode(['forms' => $recentForms]);  // Wrap the result in a 'forms' key
+        } else {
+            echo json_encode(['forms' => []]);  // Return an empty array if no forms are found
+        }
     } catch (Exception $e) {
         echo json_encode(['error' => 'Failed to fetch forms']);
     }

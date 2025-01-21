@@ -21,6 +21,12 @@ if (!$form['is_active']) {
 
 // Check if the current user is the creator
 $isCreator = $form['user_id'] == $_SESSION['user_id'];
+
+$respondentIDs = $formHandler->getRespondentIds($form['id']);
+if (in_array($_SESSION['user_id'], $respondentIDs) && !$isCreator) {
+    echo "You've already subbmited a response for this form";
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,15 +35,93 @@ $isCreator = $form['user_id'] == $_SESSION['user_id'];
 <head>
     <title><?= htmlspecialchars($form['title']) ?></title>
     <link rel="stylesheet" href="../styles/style.css">
-    <!--<script>
+    <script>
         function validateForm(event) {
             const isCreator = <?= json_encode($isCreator) ?>;
             if (isCreator) {
                 event.preventDefault();
                 alert('As the creator of this form, you cannot submit a response.');
+                return false;
+            }
+
+            let isValid = true;
+            let firstInvalidField = null;
+
+            // Select all elements with the `data-required` attribute set to "1"
+            const requiredFields = document.querySelectorAll('[data-required="1"]');
+
+            requiredFields.forEach(field => {
+                const errorSpan = document.getElementById(`error-${field.getAttribute('data-question-id')}`);
+
+                // For checkboxes or radio buttons, check if any are checked
+                if (
+                    (field.type === 'radio' || field.type === 'checkbox') &&
+                    !document.querySelector(`input[name="answers[${field.getAttribute('data-question-id')}][]"]:checked`)
+                ) {
+                    isValid = false;
+                    if (!firstInvalidField) firstInvalidField = field;
+
+                    if (errorSpan) {
+                        errorSpan.textContent = 'This field is required.';
+                        errorSpan.style.color = 'red';
+                    }
+                } else if (field.value.trim() === '') {
+                    // For text inputs or textareas
+                    isValid = false;
+                    if (!firstInvalidField) firstInvalidField = field;
+
+                    if (errorSpan) {
+                        errorSpan.textContent = 'This field is required.';
+                        errorSpan.style.color = 'red';
+                    }
+                } else {
+                    // Clear the error if the field is valid
+                    if (errorSpan) errorSpan.textContent = '';
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+
+                // Scroll to the first invalid field
+                if (firstInvalidField) {
+                    firstInvalidField.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                    firstInvalidField.focus();
+                }
             }
         }
-    </script> -->
+
+        // Add event listeners to dynamically hide errors when fields are interacted with
+        document.addEventListener('DOMContentLoaded', () => {
+            const requiredFields = document.querySelectorAll('[data-required="1"]');
+
+            requiredFields.forEach(field => {
+                // Clear error on input for text fields and textareas
+                if (field.type === 'text' || field.tagName === 'TEXTAREA') {
+                    field.addEventListener('input', () => {
+                        const errorSpan = document.getElementById(`error-${field.getAttribute('data-question-id')}`);
+                        if (errorSpan) errorSpan.textContent = '';
+                    });
+                }
+
+                // Clear error on change for radio buttons and checkboxes
+                if (field.type === 'radio' || field.type === 'checkbox') {
+                    const questionId = field.getAttribute('data-question-id');
+                    const relatedFields = document.querySelectorAll(`input[name="answers[${questionId}][]"]`);
+
+                    relatedFields.forEach(option => {
+                        option.addEventListener('change', () => {
+                            const errorSpan = document.getElementById(`error-${questionId}`);
+                            if (errorSpan) errorSpan.textContent = '';
+                        });
+                    });
+                }
+            });
+        });
+    </script>
 </head>
 
 <?php include '../assets/header.php'; ?>
