@@ -9,8 +9,13 @@ CREATE TABLE forms(
 	user_id int unsigned NOT NULL,
 	title varchar(255) NOT NULL,
 	description varchar(255) NOT NULL,
+	created_at Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	is_active boolean NOT NULL,
-	created_at Timestamp NOT NULL,
+	available_for_non_users boolean NOT NULL,
+	pin varchar(12),  
+	link varchar(36) UNIQUE NOT NULL,
+	submission_count int NOT NULL unsigned DEFAULT 0,
+	last_updated_at Timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	foreign key (user_id) references users (id)
 );
 

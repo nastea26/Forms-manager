@@ -49,7 +49,7 @@
 </html>";
     }
 
-    function formIsActive($db, $formId): void
+    function formIsActive($db, $link): void
     {
 
         // Display the message and buttons
@@ -72,9 +72,9 @@
 
             if ($action === 'yes') {
                 // Set the form to inactive
-                $updateQuery = "UPDATE forms SET is_active = 0 WHERE id = ?";
-                $db->searchQuery($updateQuery, [$formId]);
-                header('Location:edit_form.php?form_id=' . $formId);
+                $updateQuery = "UPDATE forms SET is_active = 0 WHERE link = ?";
+                $db->searchQuery($updateQuery, [$link]);
+                header('Location:edit_form.php?q=' . $link);
                 exit();
             } elseif ($action === 'no') {
                 // Redirect to dashboard

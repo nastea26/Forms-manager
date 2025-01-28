@@ -9,24 +9,25 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $formHandler = new Form($database);
-$formId = $_GET['form_id'] ?? null;
+$link = $_GET['q'] ?? null;
+$form = $formHandler->getFormDetails($link);
 
 // add something for when the parameter from_id isnt specified
 
 include 'checkUserFormAccess.php';
-if (checkAccessToFrom($formHandler, $formId, "Form Results")) exit();
+if (checkAccessToFrom($formHandler, $form["id"], "Form Results")) exit();
 
-if (!$formId) {
+if (!$link) {
     header('Location: dashboard.php');
     exit();
 }
 
 
 // Get all form questions and their options
-$questionsWithOptions = $formHandler->getQuestionsWithOptions($formId);
+$questionsWithOptions = $formHandler->getQuestionsWithOptions($form["id"]);
 
 // Get all form responses
-$responses = $formHandler->getFormResponses($formId);
+$responses = $formHandler->getFormResponses($form["id"]);
 
 // Prepare data structure combining options with response counts
 $answers_array = [];
@@ -69,8 +70,11 @@ include '../assets/header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Results</title>
     <link rel="stylesheet" href="../styles/dashboard_results.css">
+    <link rel="stylesheet" href="../styles/modal.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="../js/results.js" defer data-questions="<?php echo htmlspecialchars(json_encode($answers_array), ENT_QUOTES, 'UTF-8'); ?>"></script>
+    <script type="module" src="../js/shareModal.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .question-slide,
         .chart-slide {
@@ -123,6 +127,25 @@ include '../assets/header.php';
             visibility: visible;
             opacity: 1;
         }
+
+        .share-form-btn-wrapper {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .share-form-button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .share-form-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <?php include '../assets/header.php'; ?>
@@ -131,8 +154,10 @@ include '../assets/header.php';
     <main>
         <div class="slider-container">
             <h1 class="results-title">Form Results</h1>
-            <a href="dashboard.php" class="button back-button">Back to My Forms</a>
-
+            <div class="redirect-wrapper">
+                <a href="dashboard.php" class="button back-button">My Forms</a>
+                <button id="shareButton" class="share-form-button">Share form</button>
+            </div>
             <div id="slider">
                 <!-- Questions will be dynamically inserted here -->
             </div>
@@ -141,8 +166,26 @@ include '../assets/header.php';
                 <button id="prevButton" class="button" disabled>Previous</button>
                 <button id="nextButton" class="button">Next</button>
             </div>
+
+            <!-- Share Button -->
         </div>
     </main>
+
+    <script type="module">
+        import Modal from '../js/shareModal.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const shareButton = document.getElementById('shareButton');
+            const formLink = <?= json_encode($form['link']) ?>; // Assuming the form link is available in the `$form` array
+
+            shareButton.addEventListener('click', () => {
+                const fullFormLink = `${window.location.origin}/view_form.php?q=${formLink}`;
+                const modal = new Modal();
+                modal.initModal();
+                modal.showModal(fullFormLink); // Show the modal with the share link
+            });
+        });
+    </script>
 </body>
 
 </html>

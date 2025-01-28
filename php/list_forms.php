@@ -22,7 +22,7 @@ $forms = $formHandler->getActiveForms();
         <ul>
             <?php foreach ($forms as $form): ?>
                 <li class="list-form-item">
-                    <a href="view_form.php?id=<?= $form['id'] ?>" class="list-form-link">
+                    <a href="view_form.php?q=<?= $form['link'] ?>" class="list-form-link">
                         <div class="list-form-title"><?= htmlspecialchars($form['title']) ?></div>
                         <div class="list-form-description"><strong>Description:</strong> <?= htmlspecialchars($form['description']) ?></div>
                         <div class="list-form-created-at"><strong>Created At:</strong>

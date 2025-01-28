@@ -77,6 +77,7 @@ body {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Forms Query Section Styling */
 }
 .recent-forms-section h2 {
   font-size: 20px;
@@ -114,6 +115,65 @@ body {
   margin-bottom: 5px;
   color: #777;
 }
+.recent-forms-section .forms-query-section {
+  display: flex;
+  align-items: center; /* Vertically center the items */
+  gap: 10px; /* Space between the dropdown and search bar */
+  margin-bottom: 20px;
+}
+.recent-forms-section .forms-query-section .order-by-container select {
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+.recent-forms-section .forms-query-section .order-by-container select:hover {
+  border-color: #007bff;
+}
+.recent-forms-section .forms-query-section .order-by-container select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.recent-forms-section .forms-query-section .search-container {
+  display: flex;
+  align-items: center;
+  flex: 1; /* Make the search container expand to fill available space */
+}
+.recent-forms-section .forms-query-section .search-container input {
+  max-width: 200px;
+  font-size: 14px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px 0 0 10px; /* Rounded only on the left side */
+  border-right: none; /* Remove right border to merge with button */
+  transition: border-color 0.3s ease;
+}
+.recent-forms-section .forms-query-section .search-container input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.recent-forms-section .forms-query-section .search-container button {
+  padding: 8px 15px;
+  font-size: 14px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 0 10px 10px 0; /* Rounded only on the right side */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.recent-forms-section .forms-query-section .search-container button:hover {
+  background-color: #0062cc;
+}
+.recent-forms-section .forms-query-section .search-container button:focus {
+  outline: none;
+}
 
 /* Media Queries */
 @media (max-width: 768px) {
@@ -121,9 +181,25 @@ body {
     flex-direction: column;
   }
   .top-section .create-form-container {
-    margin-bottom: 10px; /* Matches the template gap */
+    margin-bottom: 10px solid #ccc; /* Matches the template gap */
   }
   .top-section .templates-container .templates-list {
     flex-direction: column;
+  }
+  .forms-query-section {
+    flex-direction: column; /* Stack the dropdown and search bar vertically */
+    align-items: stretch; /* Full-width for both elements */
+  }
+  .forms-query-section .search-container {
+    flex-direction: column;
+  }
+  .forms-query-section .search-container input,
+  .forms-query-section .search-container button {
+    border-radius: 10px; /* Full rounding when stacked */
+    margin-bottom: 10px; /* Add spacing between input and button */
+    border-right: 1px;
+  }
+  .forms-query-section .search-container button {
+    border-radius: 10px; /* Match the input for consistency */
   }
 }/*# sourceMappingURL=index.css.map */

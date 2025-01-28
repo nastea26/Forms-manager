@@ -106,12 +106,13 @@ form {
     font-size: 0.9em;
     color: red;
     margin-top: 5px;
+  }
 }
 
-}
-.edit-form-btn-wrapper{
+.edit-form-btn-wrapper {
   max-width: 640px;
   margin: 0 auto;
+
   .edit-form-button {
     display: inline-block;
     margin-top: 20px;
@@ -122,10 +123,44 @@ form {
     text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
-  
+
     &:hover {
       background-color: color.adjust($primary-color, $lightness: -10%);
     }
   }
 }
 
+/* New styles for the form buttons layout */
+.form-buttons {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  margin-bottom: 20px; /* Space below the buttons */
+  max-width: $form-width; /* Match the form width */
+  margin: 20px auto; /* Center the buttons */
+}
+
+.share-form-btn-wrapper {
+  flex: 1; /* Allow the share button to take available space */
+  text-align: right; /* Align share button to the right */
+  
+  .share-form-button {
+    display: inline-block;
+    padding: 10px 20px; /* Ensure padding is consistent */
+    background-color: $primary-color;
+    color: #fff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: -10%);
+    }
+  }
+}
+
+.edit-form-btn-wrapper {
+  flex: 1; /* Allow the edit button to take available space */
+  text-align: left; /* Align edit button to the left */
+}

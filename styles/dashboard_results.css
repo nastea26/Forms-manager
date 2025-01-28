@@ -74,4 +74,21 @@ body {
 .dashboard-container .forms-list .form-item .form-actions {
   display: flex;
   gap: 10px;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.results-header .back-button {
+  margin: 0;
+}
+.results-header .share-form-btn-wrapper {
+  margin: 0;
+}
+.results-header .share-form-btn-wrapper .share-form-button {
+  margin: 0;
 }/*# sourceMappingURL=dashboard_results.css.map */

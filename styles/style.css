@@ -107,4 +107,37 @@ form .error {
 }
 .edit-form-btn-wrapper .edit-form-button:hover {
   background-color: #0062cc;
+}
+
+/* New styles for the form buttons layout */
+.form-buttons {
+  display: flex;
+  justify-content: space-between; /* Space between buttons */
+  margin-bottom: 20px; /* Space below the buttons */
+  max-width: 600px; /* Match the form width */
+  margin: 20px auto; /* Center the buttons */
+}
+
+.share-form-btn-wrapper {
+  flex: 1; /* Allow the share button to take available space */
+  text-align: right; /* Align share button to the right */
+}
+.share-form-btn-wrapper .share-form-button {
+  display: inline-block;
+  padding: 10px 20px; /* Ensure padding is consistent */
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.share-form-btn-wrapper .share-form-button:hover {
+  background-color: #0062cc;
+}
+
+.edit-form-btn-wrapper {
+  flex: 1; /* Allow the edit button to take available space */
+  text-align: left; /* Align edit button to the left */
 }/*# sourceMappingURL=style.css.map */

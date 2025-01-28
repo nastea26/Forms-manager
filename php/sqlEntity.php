@@ -61,7 +61,7 @@ class SqlEntity extends Connect
         // If $count is true, return the number of rows
         if ($count) {
             $row = mysqli_fetch_row($result);
-            return [$row[0] > 0, $row[0]];
+            return ["is_empty" => $row[0] == 0, "num_rows" => $row[0]];
         }
 
         return $result ?: true;

@@ -90,3 +90,24 @@ body {
         }
     }
 }
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    .back-button {
+        margin: 0;
+    }
+
+    .share-form-btn-wrapper {
+        margin: 0;
+
+        .share-form-button {
+            margin: 0;
+        }
+    }
+}
+

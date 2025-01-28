@@ -8,14 +8,55 @@ class Form
         $this->db = $db;
     }
 
-    public function createForm($userId, $title, $description, $publish)
+    public function createForm($userId, $title, $description, $publish, $availableForNonUsers = false, $pin = null)
     {
         $table = "forms";
-        $columns = ["user_id", "title", "description", "is_active", "created_at"];
-        $values = [$userId, $title, $description, $publish ? 1 : 0, date('Y-m-d H:i:s')];
-        return $this->db->insertInto($table, $columns, $values, true);
+        $columns = ["user_id", "title", "description", "is_active", "available_for_non_users", "pin", "link"];
+
+        // Generate a unique random UUID for the link
+        $link = $this->generateUniqueLink();
+        $values = [$userId, $title, $description, $publish ? 1 : 0, $availableForNonUsers ? 1 : 0, $pin, $link];
+        $this->db->insertInto($table, $columns, $values, true);
+        return $link;
     }
 
+    // Helper method to generate a secure random UUID
+    private function generateUniqueLink()
+    {
+        $link = $this->generateUUID();
+
+        $res = $this->isLinkUnique($link);
+        // Check for uniqueness
+        while (!$this->isLinkUnique($link)) {
+            $link = $this->generateUUID();
+        }
+
+        return $link;
+    }
+
+    // Helper method to check if the link is unique in the database
+    private function isLinkUnique($link)
+    {
+        $query = "SELECT COUNT(*) FROM forms WHERE link = ?";
+        $result = $this->db->searchQuery($query, [$link], count: True);
+        return $result['is_empty'];
+    }
+
+    // Helper method to generate a random UUID
+    private function generateUUID()
+    {
+        return sprintf(
+            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0x0fff) | 0x4000,
+            mt_rand(0, 0x3fff) | 0x8000,
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff),
+            mt_rand(0, 0xffff)
+        );
+    }
 
     public function addQuestion($formId, $text, $type, $required): int|string
     {
@@ -38,6 +79,11 @@ class Form
         $sql = "SELECT * FROM forms WHERE id = ?";
         return $this->db->searchQuery($sql, [$formId])->fetch_assoc();
     }
+    public function getFormByLink($link)
+    {
+        $sql = "SELECT * FROM forms WHERE link = ?";
+        return $this->db->searchQuery($sql, [$link])->fetch_assoc();
+    }
 
     public function getQuestions($formId)
     {
@@ -45,14 +91,14 @@ class Form
         return $this->db->searchQuery($sql, [$formId])->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getFormDetails($formId): array
+    public function getFormDetails($link): array
     {
         // Fetch form metadata
-        $sqlForm = "SELECT * FROM forms WHERE id = ?";
-        $form = $this->db->searchQuery($sqlForm, [$formId])->fetch_assoc();
+        $sqlForm = "SELECT * FROM forms WHERE link = ?";
+        $form = $this->db->searchQuery($sqlForm, [$link])->fetch_assoc();
         // Fetch questions
         $sqlQuestions = "SELECT * FROM questions WHERE form_id = ?";
-        $questions = $this->db->searchQuery($sqlQuestions, [$formId])->fetch_all(MYSQLI_ASSOC);
+        $questions = $this->db->searchQuery($sqlQuestions, [$form["id"]])->fetch_all(MYSQLI_ASSOC);
         // Fetch choices for each question
         foreach ($questions as &$question) {
             if (in_array($question['answer_type'], ['multiple_choice', 'checkbox'])) {
@@ -104,14 +150,13 @@ class Form
                 }
             }
         }
-
         return true;
     }
 
     //get all forms created by a user by id
     public function getUserForms($userId)
     {
-        $sql = "SELECT id, title, description, created_at, is_active FROM forms WHERE user_id = ? ORDER BY created_at desc";
+        $sql = "SELECT id, title, description, created_at, is_active, link FROM forms WHERE user_id = ? ORDER BY created_at desc";
         $stmt = $this->db->searchQuery($sql, [$userId]);
         return $stmt->fetch_all(MYSQLI_ASSOC);
     }
@@ -192,5 +237,11 @@ class Form
         $sql = "SELECT DISTINCT respondednt_id FROM responses WHERE form_id = ?";
         $stmt = $this->db->searchQuery($sql, [$formId]);
         return array_column($stmt->fetch_all(MYSQLI_ASSOC), 'respondednt_id');
+    }
+
+    public function increment_submission_count($formLink): bool
+    {
+        $sql = "UPDATE forms SET submission_count = submission_count + 1 WHERE link =?";
+        return $this->db->searchQuery($sql, [$formLink]) ? true : false;
     }
 }
