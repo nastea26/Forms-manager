@@ -1,0 +1,282 @@
+// // Variables
+// $primary-color: #2575fc;
+// $primary-color-hover: #1e63d1;
+// $background-color: #f3f4f6;
+// $text-color: #333;
+// $error-color: red;
+// $light-blue: #a0c4ff; // Lighter blue for wavy effect
+
+// // Mixins
+// @mixin flex-center {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// }
+
+// Global Styles
+// Variables
+$primary-color: #2575fc;
+$primary-color-hover: #1e63d1;
+$background-color: #f3f4f6;
+$text-color: #333;
+$error-color: red;
+$wave-color-1: #003f8a; // Darkest blue
+$wave-color-2: #005fba; // Medium-dark blue
+$wave-color-3: #007bff; // Medium blue
+$wave-color-4: #a0c4ff; // Light blue
+
+$form-border-radius: 0 .75rem .75rem 0 ;
+$welcome-border-radius: .75rem 0 0 .75rem; 
+$container-border-radius:.75rem;
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Global Styles
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white; // Light blue background
+  position: relative;
+  overflow: hidden;
+}
+
+// Wave Container (Ensuring it has height)
+.wave-container {
+  position: absolute;
+  bottom: 0; // Move the waves to the bottom
+  left: 0;
+  width: 100%;
+  height: 40vh; // Adjust height to fit the waves
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0; // Align each wave to the bottom
+  width: 100%;
+  height: auto;
+}
+
+.wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wave-1 {
+  z-index: 4;
+  opacity: 1;
+}
+
+.wave-2 {
+  z-index: 3;
+  opacity: 0.9;
+}
+
+.wave-3 {
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.wave-4 {
+  z-index: 1;
+  opacity: 0.7;
+}
+
+
+// Container Styles
+#auth-container {   
+  position: relative;
+  width: 70%;
+  max-width: 1000px;
+  height: 600px;
+  perspective: 1500px; // Enables 3D effect
+  margin: auto;
+  z-index: 999;
+}
+
+.auth-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; // Hides the back side during rotation
+  transition: transform 0.8s ease-in-out;
+  display: flex; // Use flexbox for side-by-side layout
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  border-radius: $container-border-radius;
+
+  // Welcome Section Styles
+  .welcome-section {
+    position: relative; // Position relative for the wave
+    background: linear-gradient(135deg, #007bff, $primary-color);
+    color: white;
+    padding: 40px;
+    flex: 1; // Take up equal space
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-radius: $welcome-border-radius;
+    // SVG Wave Background
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px; // Adjust height as needed
+      background-size: cover;
+      z-index: 0; // Send it to the back
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+      z-index: 1; // Bring text above the wave
+    }
+
+    p {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      z-index: 1; // Bring text above the wave
+    }
+  }
+
+  // Form Section Styles
+  .form-section {
+    flex: 1; // Take up equal space
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: white;
+    border-radius: $form-border-radius;
+    h2 {
+      margin: 0 0 20px;
+      font-size: 2rem;
+      color: $text-color;
+    }
+
+    .form-container {
+      display: flex;
+      flex-direction: column;
+
+      .form-label {
+        margin-bottom: 8px;
+        font-size: 1rem;
+        color: $text-color;
+      }
+
+      .text-input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      .form-button {
+        background-color: $primary-color;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: $primary-color-hover;
+        }
+      }
+
+      .error-message {
+        color: $error-color;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
+      }
+    }
+
+    .form-footer {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      text-align: center;
+
+      a {
+        color: $primary-color;
+        text-decoration: none;
+        margin: 0 10px;
+        transition: color 0.3s;
+
+        &:hover {
+          color: $primary-color-hover;
+        }
+      }
+    }
+  }
+}
+
+// Animation States
+.login-page {
+  transform: rotateY(0deg); // Default state
+}
+
+.register-page {
+  transform: rotateY(180deg); // Flipped state
+}
+
+// Flipping the Container
+#auth-container.flipped {
+  .login-page {
+    transform: rotateY(-180deg);
+  }
+
+  .register-page {
+    transform: rotateY(0deg);
+  }
+  .form-section{
+    border-radius: $welcome-border-radius;
+  }
+  .welcome-section{
+    border-radius: $form-border-radius;
+  }
+}
+
+#auth-container.instant-flip {
+  .form-section{
+    border-radius: $welcome-border-radius;
+  }
+  .welcome-section{
+    border-radius: $form-border-radius;
+  }
+  .login-page {
+    transform: rotateY(-180deg) !important;
+  }
+  
+  .register-page {
+    transform: rotateY(0deg) !important;
+  }
+  
+  .auth-page {
+    transition: none !important; // Disable animation on load
+  }
+}
+
+
+// Specific Styles for Register Page
+.register-page {
+  display: flex; // Ensure flex layout for register page
+  flex-direction: row-reverse; // Reverse the order to have form on the left and welcome on the right
+}

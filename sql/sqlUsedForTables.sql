@@ -14,7 +14,7 @@ CREATE TABLE forms(
 	available_for_non_users boolean NOT NULL,
 	pin varchar(12),  
 	link varchar(36) UNIQUE NOT NULL,
-	submission_count int NOT NULL unsigned DEFAULT 0,
+	submission_count int unsigned NOT NULL DEFAULT 0,
 	last_updated_at Timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	foreign key (user_id) references users (id)
 );
@@ -40,7 +40,7 @@ CREATE TABLE choices(
 CREATE TABLE responses(
     id int unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,
     form_id int unsigned NOT NULL,
-    respondednt_id int unsigned NOT NULL,
+    respondednt_id int unsigned,
 	created_at Timestamp NOT NULL,
     foreign key (form_id) references forms (id),
     foreign key (respondednt_id) references users (id)

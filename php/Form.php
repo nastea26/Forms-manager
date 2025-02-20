@@ -160,6 +160,29 @@ class Form
         $stmt = $this->db->searchQuery($sql, [$userId]);
         return $stmt->fetch_all(MYSQLI_ASSOC);
     }
+    public function getAnsweredForms($userId)
+    {
+        // Get distinct form IDs the user has responded to
+        $sql = "SELECT DISTINCT form_id FROM responses WHERE respondednt_id = ?";
+        $stmt = $this->db->searchQuery($sql, [$userId]);
+        $formIds = $stmt->fetch_all(MYSQLI_ASSOC);
+
+        if (!$formIds) {
+            return []; // Return an empty array if no forms were answered
+        }
+
+        // Extract form IDs into an array
+        $formIdsArray = array_column($formIds, 'form_id');
+
+        // Prepare placeholders for SQL query
+        $placeholders = implode(',', array_fill(0, count($formIdsArray), '?'));
+
+        // Get details of the answered forms
+        $sql = "SELECT id, title, description, created_at, is_active, link FROM forms WHERE id IN ($placeholders) ORDER BY created_at DESC";
+        $stmt = $this->db->searchQuery($sql, $formIdsArray);
+
+        return $stmt->fetch_all(MYSQLI_ASSOC);
+    }
 
     // Fetch all responses and answers for a specific form
     public function getFormResponses($formId)

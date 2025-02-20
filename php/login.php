@@ -1,7 +1,7 @@
 <?php
 if (!isset($_SESSION)) session_start();
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-    header('Location: ../login.php?error=BadReq');
+    header('Location: ../login.php');
     exit;
 }
 
@@ -16,12 +16,12 @@ if (!isset($email) || !isset($password)) {
 if (strlen($email) < 8 || strlen($email) > 100 || strlen($password) < 5 || strlen($password) > 35) {
     if (strlen($email) < 8 || strlen($email) > 100) $error = "Email-Length";
     if (strlen($password) < 5 || strlen($password) > 35) $error = "Password-Length";
-    header('Location: ../login.php?error=BadValues' . $error);
+    header('Location: ../login.php');
     exit();
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: ../login.php?error=BadEmail');
+    header('Location: ../login.php');
     exit();
 }
 

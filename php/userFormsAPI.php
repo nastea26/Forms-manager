@@ -2,14 +2,27 @@
 require_once 'db.php';
 include 'Form.php';
 
-// Function to get recent forms for a specific user
+// Function to get both user-created and answered forms
 function getRecentForms($userId)
 {
-    global $database; // Assuming $database is your DB connection
+    global $database;
     $formHandler = new Form($database);
 
-    // Assuming getUserForms returns an array of form objects or associative arrays
-    return $formHandler->getUserForms($userId);
+    // Fetch user-created forms
+    $userForms = $formHandler->getUserForms($userId);
+
+    // Fetch answered forms
+    $answeredForms = $formHandler->getAnsweredForms($userId);
+
+    // Merge the two arrays
+    $recentForms = array_merge($userForms, $answeredForms);
+
+    // Sort by 'created_at' in descending order
+    usort($recentForms, function ($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
+    });
+
+    return $recentForms;
 }
 
 // API handler
@@ -25,12 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     try {
         $recentForms = getRecentForms($userId);
 
-        // Check if forms exist and return as expected format
-        if (!empty($recentForms)) {
-            echo json_encode(['forms' => $recentForms]);  // Wrap the result in a 'forms' key
-        } else {
-            echo json_encode(['forms' => []]);  // Return an empty array if no forms are found
-        }
+        // Return the combined list of forms
+        echo json_encode(['forms' => $recentForms]);
     } catch (Exception $e) {
         echo json_encode(['error' => 'Failed to fetch forms']);
     }

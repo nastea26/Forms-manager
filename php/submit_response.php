@@ -4,23 +4,25 @@ require 'db.php';
 
 if (!isset($_SESSION)) session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: ../login.php');
-    exit();
-}
 
 $formHandler = new Form($database);
 $formLink = $_POST['form_link'];
 $respondentId = $_SESSION['user_id'] ?? null;
+$formDetails = $formHandler->getFormDetails($formLink);
+$isCreator = $formDetails['user_id'] == $_SESSION['user_id'];
+
+if (!isset($_SESSION['user_id']) && !$formDetails['available_for_non_users']) {
+    header('Location: ../login.php');
+    exit();
+}
 
 // Retrieve form details
-$formDetails = $formHandler->getFormDetails($formLink);
 $respondentIDs = $formHandler->getRespondentIds($formDetails['id']);
 // Check if the respondent is the creator of the form
 if ($formDetails['user_id'] == $respondentId) {
     die('Error: You cannot submit responses to your own form.');
 }
-if (in_array($respondentId, $respondentIDs)) {
+if (in_array($respondentId, $respondentIDs) && !$isCreator && isset($_SESSION['user_id'])) {
     die('Error: You have already submitted responses to this form.');
 }
 

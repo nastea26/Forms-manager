@@ -1,0 +1,214 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.wave-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40vh;
+  overflow: hidden;
+}
+
+.wave {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+}
+
+.wave svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.wave-1 {
+  z-index: 4;
+  opacity: 1;
+}
+
+.wave-2 {
+  z-index: 3;
+  opacity: 0.9;
+}
+
+.wave-3 {
+  z-index: 2;
+  opacity: 0.8;
+}
+
+.wave-4 {
+  z-index: 1;
+  opacity: 0.7;
+}
+
+#auth-container {
+  position: relative;
+  width: 70%;
+  max-width: 1000px;
+  height: 600px;
+  perspective: 1500px;
+  margin: auto;
+  z-index: 999;
+}
+
+.auth-page {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  transition: transform 0.8s ease-in-out;
+  display: flex;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  border-radius: 0.75rem;
+}
+.auth-page .welcome-section {
+  position: relative;
+  background: linear-gradient(135deg, #007bff, #2575fc);
+  color: white;
+  padding: 40px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+.auth-page .welcome-section::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background-size: cover;
+  z-index: 0;
+}
+.auth-page .welcome-section h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  z-index: 1;
+}
+.auth-page .welcome-section p {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  z-index: 1;
+}
+.auth-page .form-section {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+.auth-page .form-section h2 {
+  margin: 0 0 20px;
+  font-size: 2rem;
+  color: #333;
+}
+.auth-page .form-section .form-container {
+  display: flex;
+  flex-direction: column;
+}
+.auth-page .form-section .form-container .form-label {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #333;
+}
+.auth-page .form-section .form-container .text-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+.auth-page .form-section .form-container .form-button {
+  background-color: #2575fc;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.auth-page .form-section .form-container .form-button:hover {
+  background-color: #1e63d1;
+}
+.auth-page .form-section .form-container .error-message {
+  color: red;
+  font-size: 0.8rem;
+  margin-bottom: 10px;
+}
+.auth-page .form-section .form-footer {
+  margin-top: 20px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+.auth-page .form-section .form-footer a {
+  color: #2575fc;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+.auth-page .form-section .form-footer a:hover {
+  color: #1e63d1;
+}
+
+.login-page {
+  transform: rotateY(0deg);
+}
+
+.register-page {
+  transform: rotateY(180deg);
+}
+
+#auth-container.flipped .login-page {
+  transform: rotateY(-180deg);
+}
+#auth-container.flipped .register-page {
+  transform: rotateY(0deg);
+}
+#auth-container.flipped .form-section {
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+#auth-container.flipped .welcome-section {
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+
+#auth-container.instant-flip .form-section {
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+#auth-container.instant-flip .welcome-section {
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+#auth-container.instant-flip .login-page {
+  transform: rotateY(-180deg) !important;
+}
+#auth-container.instant-flip .register-page {
+  transform: rotateY(0deg) !important;
+}
+#auth-container.instant-flip .auth-page {
+  transition: none !important;
+}
+
+.register-page {
+  display: flex;
+  flex-direction: row-reverse;
+}/*# sourceMappingURL=login.css.map */

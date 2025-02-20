@@ -63,6 +63,47 @@ function calculateStandardDeviation(responses) {
     }
     return "Unavailable for the current question";
 }
+function calculateMin(responses) {
+    const values = Object.keys(responses).map(Number);
+    const min = Math.min(...values);
+    return isFinite(min) ? min : "Unavailable for the current question";
+}
+
+function calculateMax(responses) {
+    const values = Object.keys(responses).map(Number);
+    const max = Math.max(...values);
+    return isFinite(max) ? max : "Unavailable for the current question";
+}
+
+function calculateSkewness(responses) {
+    const values = Object.entries(responses);
+    const count = values.reduce((sum, [_, value]) => sum + value, 0);
+    const mean = calculateMean(responses);
+    const stdDev = calculateStandardDeviation(responses);
+
+    if (count > 0 && !isNaN(stdDev) && stdDev > 0) {
+        const skewness = values.reduce((sum, [key, value]) => {
+            return sum + value * Math.pow((key - mean), 3);
+        }, 0) / (count * Math.pow(stdDev, 3));
+        return isNaN(skewness) ? "Unavailable for the current question" : skewness.toFixed(2);
+    }
+    return "Unavailable for the current question";
+}
+
+function calculateKurtosis(responses) {
+    const values = Object.entries(responses);
+    const count = values.reduce((sum, [_, value]) => sum + value, 0);
+    const mean = calculateMean(responses);
+    const stdDev = calculateStandardDeviation(responses);
+
+    if (count > 0 && !isNaN(stdDev) && stdDev > 0) {
+        const kurtosis = values.reduce((sum, [key, value]) => {
+            return sum + value * Math.pow((key - mean), 4);
+        }, 0) / (count * Math.pow(stdDev, 4)) - 3; // Excess Kurtosis
+        return isNaN(kurtosis) ? "Unavailable for the current question" : kurtosis.toFixed(2);
+    }
+    return "Unavailable for the current question";
+}
 
 
 function createTooltip(content) {
@@ -97,24 +138,33 @@ function renderSlide() {
             const mode = calculateMode(responses);
             const range = calculateRange(responses);
             const median = calculateMedian(responses);
-            const standardDeviation = calculateStandardDeviation(responses);
+            const stdDev = calculateStandardDeviation(responses);
+            const min = calculateMin(responses);
+            const max = calculateMax(responses);
+            const skewness = calculateSkewness(responses);
+            const kurtosis = calculateKurtosis(responses);
+
 
             const optionsHtml = Object.entries(responses)
                 .map(([option, count]) => `<li>${option}: ${count} response(s)</li>`)
                 .join("");
 
-            slide.innerHTML = `
+                slide.innerHTML = `
                 <h2>${question}</h2>
                 <div class="chart-container">
                     <canvas id="barChart-${currentSlide}" style="max-width: 600px; margin: 10px auto;"></canvas>
                     <canvas id="pieChart-${currentSlide}" style="max-width: 600px; margin: 10px auto;"></canvas>
                 </div>
                 <ul>${optionsHtml}</ul>
-                <p><strong>Median:</strong> ${median} ${createTooltip("The median is the middle value when responses are ordered.")}</p>
-                <p><strong>Mean:</strong> ${mean} ${createTooltip("The mean is the average value of the responses.")}</p>
-                <p><strong>Mode:</strong> ${mode} ${createTooltip("The mode is the most frequently occurring response.")}</p>
-                <p><strong>Range:</strong> ${range} ${createTooltip("The range is the difference between the maximum and minimum values.")}</p>
-                <p><strong>Standard Deviation:</strong> ${standardDeviation} ${createTooltip("The standard deviation measures the spread of responses around the mean.")}</p>
+                <p><strong>Min:</strong> ${min} ${createTooltip("The smallest response value recorded.")}</p>
+                <p><strong>Max:</strong> ${max} ${createTooltip("The largest response value recorded.")}</p>
+                <p><strong>Median:</strong> ${median} ${createTooltip("The middle value when responses are ordered.")}</p>
+                <p><strong>Mean:</strong> ${mean} ${createTooltip("The average value of the responses.")}</p>
+                <p><strong>Mode:</strong> ${mode} ${createTooltip("The most frequently occurring response.")}</p>
+                <p><strong>Range:</strong> ${range} ${createTooltip("The difference between the maximum and minimum values.")}</p>
+                <p><strong>Standard Deviation:</strong> ${stdDev} ${createTooltip("The spread of responses around the mean.")}</p>
+                <p><strong>Skewness:</strong> ${skewness} ${createTooltip("The asymmetry of the response distribution.")}</p>
+                <p><strong>Kurtosis:</strong> ${kurtosis} ${createTooltip("The sharpness of the peak of the response distribution.")}</p>
             `;
         }
 

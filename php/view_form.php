@@ -27,7 +27,7 @@ if (!$form['available_for_non_users'] && !isset($_SESSION['user_id'])) {
 $isCreator = $form['user_id'] == $_SESSION['user_id'];
 
 $respondentIDs = $formHandler->getRespondentIds($form['id']);
-if (in_array($_SESSION['user_id'], $respondentIDs) && !$isCreator) {
+if (in_array($_SESSION['user_id'], $respondentIDs) && !$isCreator && isset($_SESSION['user_id'])) {
     echo "You've already subbmited a response for this form";
     exit();
 }
