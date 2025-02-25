@@ -15,9 +15,10 @@ CREATE TABLE forms(
 	pin varchar(12),  
 	link varchar(36) UNIQUE NOT NULL,
 	submission_count int unsigned NOT NULL DEFAULT 0,
-	last_updated_at Timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	last_updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	foreign key (user_id) references users (id)
 );
+
 
 CREATE TABLE questions(
 	id int unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -35,6 +36,33 @@ CREATE TABLE choices(
 	option_text varchar(255) NOT NULL,
 	created_at Timestamp NOT NULL,
 	foreign key (question_id) references questions (id)
+);
+CREATE TABLE templates (
+    id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id int UNSIGNED NOT NULL,
+    title varchar(255) NOT NULL,
+    description varchar(255) NOT NULL,
+    created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    link varchar(36) UNIQUE NOT NULL,
+    foreign key (user_id) references users(id)
+);
+
+CREATE TABLE templates_questions(
+	id int unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    template_id int unsigned NOT NULL,
+	question_text varchar(255) NOT NULL,
+	answer_type enum('text', 'big_text', 'multiple_choice', 'checkbox', 'linear-scale') NOT NULL,
+	is_required boolean NOT NULL,
+    created_at Timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    foreign key (template_id) references templates (id)
+);
+
+CREATE TABLE templete_choices(
+    id int unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    template_question_id int unsigned NOT NULL,
+	option_text varchar(255) NOT NULL,
+	created_at Timestamp NOT NULL,
+	foreign key (template_question_id) references templates_questions (id)
 );
 
 CREATE TABLE responses(

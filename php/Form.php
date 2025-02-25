@@ -267,4 +267,91 @@ class Form
         $sql = "UPDATE forms SET submission_count = submission_count + 1 WHERE link =?";
         return $this->db->searchQuery($sql, [$formLink]) ? true : false;
     }
+    // ===================================================
+    // Template Methods: Create a new template and fetch templates
+    // ===================================================
+
+    // Create a new template
+    public function createTemplate($userId, $title, $description)
+    {
+        $table = "templates";
+        $columns = ["user_id", "title", "description", "link"];
+
+        // Generate a unique random UUID for the link
+        $link = $this->generateTemplateLink();
+        $values = [$userId, $title, $description, $link];
+        $this->db->insertInto($table, $columns, $values, true);
+        return $link;
+    }
+
+    // Helper method to generate a secure random UUID
+    private function generateTemplateLink()
+    {
+        $link = $this->generateUUID();
+
+        $res = $this->isTemplateLinkUnique($link);
+        // Check for uniqueness
+        while (!$this->isTemplateLinkUnique($link)) {
+            $link = $this->generateUUID();
+        }
+
+        return $link;
+    }
+
+    // Helper method to check if the link is unique in the database
+    private function isTemplateLinkUnique($link)
+    {
+        $query = "SELECT COUNT(*) FROM templates WHERE link = ?";
+        $result = $this->db->searchQuery($query, [$link], count: True);
+        return $result['is_empty'];
+    }
+
+
+    public function addTemplateQuestion($templateId, $text, $type, $required): int|string
+    {
+        $table = "templates_questions";
+        $columns = ["template_id", "question_text", "answer_type", "is_required", "created_at"];
+        $values = [$templateId, $text, $type, $required, date('Y-m-d H:i:s')];
+        return $this->db->insertInto($table, $columns, $values, True);
+    }
+
+    public function addTemplateChoice($template_question_id, $text): string
+    {
+        $table = "templete_choices";
+        $columns = ["template_question_id", "option_text", "created_at"];
+        $values = [$template_question_id, $text, date('Y-m-d H:i:s')];
+        return $this->db->insertInto($table, $columns, $values, True);
+    }
+
+    public function getTemplateByLink($link)
+    {
+        $sql = "SELECT * FROM templates WHERE link = ?";
+        return $this->db->searchQuery($sql, [$link])->fetch_assoc();
+    }
+    public function getTemplates()
+    {
+        $sql = "SELECT * FROM templates";
+        return $this->db->searchQuery($sql)->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getTemplateQuestionsAndOptions($templateId)
+    {
+        // Fetch all questions for the given form
+        $questionsQuery = "SELECT * FROM templates_questions WHERE template_id = ?";
+        $questionsStmt = $this->db->searchQuery($questionsQuery, [$templateId]);
+        $questions = $questionsStmt->fetch_all(MYSQLI_ASSOC);
+
+        // Fetch choices for each question, if applicable
+        foreach ($questions as &$question) {
+            if (in_array($question['answer_type'], ['multiple_choice', 'checkbox'])) {
+                $choicesQuery = "SELECT option_text FROM templete_choices WHERE template_question_id = ?";
+                $choicesStmt = $this->db->searchQuery($choicesQuery, [$question['id']]);
+                $question['options'] = array_column($choicesStmt->fetch_all(MYSQLI_ASSOC), 'option_text'); // Extract only option_text
+            } else {
+                $question['options'] = []; // For text-based or other question types
+            }
+        }
+
+        return $questions;
+    }
 }

@@ -5,9 +5,6 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: login.php');
     exit();
 }
-$template = $_GET['template'];
-
-if (isset($_GET['template'])) $template = $_GET['template'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,59 +21,16 @@ if (isset($_GET['template'])) $template = $_GET['template'];
 <body>
     <main>
         <div id="form-builder">
-            <?php if (isset($template)) {
-                echo "<h1>Create a New Template</h1>";
-                echo "<form id='form' method='POST' action='php/test_action.php'>";
-            } else {
-                echo "<h1>Create a New Form</h1>";
-                echo "<form id='form' method='POST' action='php/save_form.php'>";
-            }
-            ?>
-            <input type="text" class="form-title" name="title" placeholder="Form Title" required>
-            <textarea class="form-description" name="description" placeholder="Form Description"></textarea>
+            <h1>Create a New Form</h1>
+            <form id="form" method="POST" action="test_action.php">
+                <input type="text" class="form-title" name="title" placeholder="Form Title" required>
+                <textarea class="form-description" name="description" placeholder="Form Description"></textarea>
 
-            <!-- ONLY IF THIS IS NOT A TEMPLATE CREATION -->
-            <!-- Publish Slider -->
-            <?php if (!isset($template)): ?>
+                <!-- Questions Section -->
+                <div id="questions" class="questions-container"></div>
+                <button type="button" id="add-question" onclick="addQuestion()">+</button>
 
-                <div class="form-option">
-                    <label for="publish-form">Publish Form:</label>
-                    <label class="switch">
-                        <input type="checkbox" id="publish-form" name="is_active" value="1">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- Allow Non-Users Slider -->
-                <div class="form-option">
-                    <label for="non-user-access">Allow users without accounts to respond:</label>
-                    <label class="switch">
-                        <input type="checkbox" id="non-user-access" name="available_for_non_users" value="1">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- Secure with PIN Slider -->
-                <div class="form-option">
-                    <label for="secure-with-pin">Secure form with PIN:</label>
-                    <label class="switch">
-                        <input type="checkbox" id="secure-with-pin" onchange="togglePinInput(this)">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-
-                <!-- PIN Input (Hidden by Default) -->
-                <div id="pin-input-container" style="display: none;">
-                    <label for="form-pin">Enter PIN:</label>
-                    <input type="text" id="form-pin" name="pin_enabled" maxlength="12" placeholder="Enter a 4-12 digit PIN">
-                </div>
-            <?php endif ?>
-
-            <!-- Questions Section -->
-            <div id="questions" class="questions-container"></div>
-            <button type="button" id="add-question" onclick="addQuestion()">+</button>
-
-            <button type="submit" class="save-form">Save Form</button>
+                <button type="submit" class="save-form">Save Form</button>
             </form>
         </div>
     </main>

@@ -24,7 +24,12 @@ function getRecentForms($userId)
 
     return $recentForms;
 }
-
+function fetchTemplates()
+{
+    global $database;
+    $formHandler = new Form($database);
+    return $formHandler->getTemplates();
+}
 // API handler
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'fetchRecentForms') {
     session_start();
@@ -37,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
     $userId = $_SESSION['user_id'];
     try {
         $recentForms = getRecentForms($userId);
-
+        $templates = fetchTemplates();
         // Return the combined list of forms
-        echo json_encode(['forms' => $recentForms]);
+        echo json_encode(['forms' => $recentForms, 'templates' => $templates]);
     } catch (Exception $e) {
         echo json_encode(['error' => 'Failed to fetch forms']);
     }

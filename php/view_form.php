@@ -59,11 +59,11 @@ $formLink = $protocol . $host . $path . '/view_form.php?q=' . urlencode($form['l
     <script>
         function validateForm(event) {
             const isCreator = <?= json_encode($isCreator) ?>;
-            if (isCreator) {
-                event.preventDefault();
-                alert('As the creator of this form, you cannot submit a response.');
-                return false;
-            }
+            // if (isCreator) {
+            //     event.preventDefault();
+            //     alert('As the creator of this form, you cannot submit a response.');
+            //     return false;
+            // }
 
             let isValid = true;
             let firstInvalidField = null;

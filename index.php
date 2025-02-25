@@ -40,6 +40,28 @@ if (!isset($_SESSION['user_id'])) {
                 }
             }
 
+            function displayTemplates(templates) {
+                if (templates.length > 0) {
+                    let templatesHTML = '';
+                    const templatesContainerElement = document.querySelector('.templates-list');
+                    templatesContainerElement.textContent = '';
+                    templates.forEach(function(template) {
+                        templateInnerText = template.title;
+                        linkElement = document.createElement('a');
+                        link = 'php/edit_form.php?template=true&q=' + template.link;
+                        linkElement.href = link;
+                        linkElement.innerText = templateInnerText;
+                        divElement = document.createElement('div');
+                        divElement.setAttribute('class', 'template-item');
+                        divElement.appendChild(linkElement);
+                        templatesContainerElement.appendChild(divElement);
+                    });
+                    $('.template-list').html(templatesHTML);
+                } else {
+                    $('.template-list').html('<p>No templates found.</p>');
+                }
+            }
+
             // Function to filter forms based on search query
             function filterForms(query) {
                 return allForms.filter(form =>
@@ -96,6 +118,8 @@ if (!isset($_SESSION['user_id'])) {
                             $('.recent-forms-section').html('<p>' + data.error + '</p>');
                         } else {
                             allForms = data.forms; // Save all forms in memory
+                            templates = data.templates; // Save all templates in memory
+                            displayTemplates(templates)
                             updateFormsDisplay(); // Display sorted and filtered forms
                         }
                     },
@@ -145,8 +169,6 @@ if (!isset($_SESSION['user_id'])) {
                 <h2>Templates</h2>
                 <div class="templates-list">
                     <div class="template-item">Template 1</div>
-                    <div class="template-item">Template 2</div>
-                    <div class="template-item">Template 3</div>
                 </div>
             </div>
         </section>

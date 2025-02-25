@@ -18,32 +18,43 @@ if (!$link) {
     echo "Form link is required.";
     exit();
 }
-$formData = $formHandler->getFormByLink($link);
-$formIsActive = $formData["is_active"];
+if (isset($_GET['template'])) {
+    $template = $_GET['template'];
+}
 
-include 'checkUserFormAccess.php';
-if (checkAccessToFrom($formHandler, $formData["id"], "Edit Form")) exit();
+if (!$template) {
+    $formData = $formHandler->getFormByLink($link);
+    $formIsActive = $formData["is_active"];
 
-// Fetch the form and its questions
-if ($formData["submission_count"] > 0) {
-    include '../assets/editForbiden.php';
-    formHasAnswers();
-    exit();
+    include 'checkUserFormAccess.php';
+    if (checkAccessToFrom($formHandler, $formData["id"], "Edit Form")) exit();
+
+    // Fetch the form and its questions
+    if ($formData["submission_count"] > 0) {
+        include '../assets/editForbiden.php';
+        formHasAnswers();
+        exit();
+    }
+    if ($formIsActive) {
+        include '../assets/editForbiden.php';
+        formIsActive($database, $link);
+        exit();
+    }
+
+    if (!$formData) {
+        echo "Form not found.";
+        exit();
+    }
+    $questions = $formHandler->getQuestionsWithOptions($formData["id"]);
+}
+if ($template) {
+    $formData = $formHandler->getTemplateByLink($link);
+    $templateID = $formData["id"];
+    $questions = $formHandler->getTemplateQuestionsAndOptions($templateID);
 }
 
 
-if ($formIsActive) {
-    include '../assets/editForbiden.php';
-    formIsActive($database, $link);
-    exit();
-}
 
-if (!$formData) {
-    echo "Form not found.";
-    exit();
-}
-
-$questions = $formHandler->getQuestionsWithOptions($formData["id"]);
 ?>
 
 <!DOCTYPE html>
@@ -63,104 +74,110 @@ $questions = $formHandler->getQuestionsWithOptions($formData["id"]);
     <main>
         <div id="form-builder">
             <h1>Edit Form</h1>
+            <?php if (!$template): ?>
+                <form method="POST" action="edit_form_action.php" class="form">
+                <?php else: ?>
+                    <form method="POST" action="save_form.php" class="form">
+                    <?php endif; ?>
+                    <!-- Hidden form link -->
+                    <input type="hidden" name="form_link" value="<?= htmlspecialchars($link) ?>">
 
-            <form method="POST" action="edit_form_action.php" class="form">
-                <!-- Hidden form link -->
-                <input type="hidden" name="form_link" value="<?= htmlspecialchars($link) ?>">
+                    <label for="title">Form Title:</label>
+                    <input type="text" name="title" id="title" class="form-title"
+                        value="<?= htmlspecialchars($formData['title']) ?>" required>
 
-                <label for="title">Form Title:</label>
-                <input type="text" name="title" id="title" class="form-title"
-                    value="<?= htmlspecialchars($formData['title']) ?>" required>
-
-                <label for="description">Description:</label>
-                <textarea name="description" id="description" class="form-description" required><?= htmlspecialchars(trim($formData['description'])) ?></textarea>
-
-                <div>
-                    <!-- Publish Form Slider -->
-                    <label for="publish-slider" class="slider-label">
-                        <span>Publish Form:</span>
-                        <label class="switch">
-                            <input type="checkbox" name="is_active" id="publish-slider" value="1" <?= $formIsActive ? 'checked' : '' ?>>
-                            <span class="slider round"></span>
-                        </label>
-                    </label>
-                </div>
-
-                <div>
-                    <!-- Allow Non-Users Slider -->
-                    <label for="non-user-access" class="slider-label">
-                        <span>Allow users without accounts to respond:</span>
-                        <label class="switch">
-                            <input type="checkbox" id="non-user-access" name="available_for_non_users" value="1" <?= $formData['available_for_non_users'] ? 'checked' : '' ?>>
-                            <span class="slider round"></span>
-                        </label>
-                    </label>
-                </div>
-
-                <div>
-                    <!-- Secure with PIN Slider -->
-                    <label for="secure-with-pin" class="slider-label">
-                        <span>Secure form with PIN:</span>
-                        <label class="switch">
-                            <input type="checkbox" id="secure-with-pin" name="pin_enabled" value="1" <?= $formData['pin'] ? 'checked' : '' ?> onchange="togglePinInput(this)">
-                            <span class="slider round"></span>
-                        </label>
-                    </label>
-                </div>
-
-                <div id="pin-input-container" style="display: <?= $formData['pin'] ? 'block' : 'none' ?>;">
-                    <label for="form-pin">Enter PIN:</label>
-                    <input type="text" id="form-pin" name="pin" maxlength="12" placeholder="Enter a 4-12 digit PIN" value="<?= htmlspecialchars($formData['pin']) ?>">
-                </div>
-
-                <h2>Questions</h2>
-                <div id="questions" class="questions-container">
-                    <?php foreach ($questions as $questionIndex => $question): ?>
-                        <div class="question">
-                            <div class="question-header">
-                                <input type="hidden" name="questions[<?= $questionIndex ?>][id]" value="<?= $question['id'] ?>">
-                                <input type="text" class="question-text" name="questions[<?= $questionIndex ?>][text]"
-                                    value="<?= htmlspecialchars($question['question_text']) ?>" required>
-                            </div>
-                            <select class="question-type" name="questions[<?= $questionIndex ?>][type]"
-                                onchange="handleTypeChange(this, <?= $questionIndex ?>)">
-                                <option value="text" <?= $question['answer_type'] === 'text' ? 'selected' : '' ?>>Text</option>
-                                <option value="multiple_choice" <?= $question['answer_type'] === 'multiple_choice' ? 'selected' : '' ?>>Multiple Choice</option>
-                                <option value="checkbox" <?= $question['answer_type'] === 'checkbox' ? 'selected' : '' ?>>Checkbox</option>
-                            </select>
-
-                            <label class="required-toggle">
-                                <input type="checkbox" name="questions[<?= $questionIndex ?>][required]"
-                                    <?= $question['is_required'] ? 'checked' : '' ?>> Required
+                    <label for="description">Description:</label>
+                    <textarea name="description" id="description" class="form-description" required><?= htmlspecialchars(trim($formData['description'])) ?></textarea>
+                    <div>
+                        <!-- Publish Form Slider -->
+                        <label for="publish-slider" class="slider-label">
+                            <span>Publish Form:</span>
+                            <label class="switch">
+                                <input type="checkbox" name="is_active" id="publish-slider" value="1" <?= $formIsActive ? 'checked' : '' ?>>
+                                <span class="slider round"></span>
                             </label>
+                        </label>
+                    </div>
 
-                            <div class="options">
-                                <?php if (!empty($question['options']) && is_array($question['options'])): ?>
-                                    <?php foreach ($question['options'] as $choiceIndex => $choice): ?>
-                                        <div class="option">
-                                            <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][options][<?= $choiceIndex ?>]"
-                                                value="<?= htmlspecialchars($choice) ?>" placeholder="Option Text" required>
-                                            <button type="button" class="remove-option" onclick="removeOption(this)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                            </div>
-
-                            <button type="button" class="add-option" onclick="addOption(this, <?= $questionIndex ?>)">Add Option</button>
-
-                            <label>
-                                <input type="checkbox" name="questions[<?= $questionIndex ?>][delete]" value="1">
-                                Delete this question
+                    <div>
+                        <!-- Allow Non-Users Slider -->
+                        <label for="non-user-access" class="slider-label">
+                            <span>Allow users without accounts to respond:</span>
+                            <label class="switch">
+                                <input type="checkbox" id="non-user-access" name="available_for_non_users" value="1" <?= $formData['available_for_non_users'] ? 'checked' : '' ?>>
+                                <span class="slider round"></span>
                             </label>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
+                        </label>
+                    </div>
 
-                <button type="button" id="add-question" onclick="addQuestion()">+</button>
-                <button type="submit" class="save-form">Save Changes</button>
-            </form>
+                    <div>
+                        <!-- Secure with PIN Slider -->
+                        <label for="secure-with-pin" class="slider-label">
+                            <span>Secure form with PIN:</span>
+                            <label class="switch">
+                                <input type="checkbox" id="secure-with-pin" name="pin_enabled" value="1" <?= $formData['pin'] ? 'checked' : '' ?> onchange="togglePinInput(this)">
+                                <span class="slider round"></span>
+                            </label>
+                        </label>
+                    </div>
+
+                    <div id="pin-input-container" style="display: <?= $formData['pin'] ? 'block' : 'none' ?>;">
+                        <label for="form-pin">Enter PIN:</label>
+                        <input type="text" id="form-pin" name="pin" maxlength="12" placeholder="Enter a 4-12 digit PIN" value="<?= htmlspecialchars($formData['pin']) ?>">
+                    </div>
+
+                    <h2>Questions</h2>
+                    <div id="questions" class="questions-container">
+                        <?php foreach ($questions as $questionIndex => $question): ?>
+                            <div class="question">
+                                <div class="question-header">
+                                    <input type="hidden" name="questions[<?= $questionIndex ?>][id]" value="<?= $question['id'] ?>">
+                                    <input type="text" class="question-text" name="questions[<?= $questionIndex ?>][text]"
+                                        value="<?= htmlspecialchars($question['question_text']) ?>" required>
+                                </div>
+                                <select class="question-type" name="questions[<?= $questionIndex ?>][type]"
+                                    onchange="handleTypeChange(this, <?= $questionIndex ?>)">
+                                    <option value="text" <?= $question['answer_type'] === 'text' ? 'selected' : '' ?>>Text</option>
+                                    <option value="multiple_choice" <?= $question['answer_type'] === 'multiple_choice' ? 'selected' : '' ?>>Multiple Choice</option>
+                                    <option value="checkbox" <?= $question['answer_type'] === 'checkbox' ? 'selected' : '' ?>>Checkbox</option>
+                                </select>
+
+                                <label class="required-toggle">
+                                    <input type="checkbox" name="questions[<?= $questionIndex ?>][required]"
+                                        <?= $question['is_required'] ? 'checked' : '' ?>> Required
+                                </label>
+
+                                <div class="options">
+                                    <?php if (!empty($question['options']) && is_array($question['options'])): ?>
+                                        <?php foreach ($question['options'] as $choiceIndex => $choice): ?>
+                                            <div class="option">
+                                                <input type="text" class="option-input" name="questions[<?= $questionIndex ?>][options][<?= $choiceIndex ?>]"
+                                                    value="<?= htmlspecialchars($choice) ?>" placeholder="Option Text" required>
+                                                <button type="button" class="remove-option" onclick="removeOption(this)">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </div>
+
+                                <button type="button" class="add-option" onclick="addOption(this, <?= $questionIndex ?>)">Add Option</button>
+
+                                <label>
+                                    <input type="checkbox" name="questions[<?= $questionIndex ?>][delete]" value="1">
+                                    Delete this question
+                                </label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <button type="button" id="add-question" onclick="addQuestion()">+</button>
+                    <?php if (!$template): ?>
+                        <button type="submit" class="save-form">Save Changes</button>
+                    <?php else: ?>
+                        <button type="submit" class="save-form">Create Form</button>
+                    <?php endif; ?>
+                    </form>
         </div>
 
         <script>

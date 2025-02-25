@@ -19,7 +19,7 @@ body {
 .top-section {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-start; /* Align items at the top */
+  align-items: flex-end;
   padding: 20px;
   background-color: #f7f7f7;
   gap: 10px; /* Consistent spacing between elements */
