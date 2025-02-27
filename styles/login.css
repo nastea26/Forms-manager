@@ -71,7 +71,6 @@ body {
   display: flex;
   border: 1px solid rgba(0, 0, 0, 0.18);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
   border-radius: 0.75rem;
 }
 .auth-page .welcome-section {
@@ -211,4 +210,90 @@ body {
 .register-page {
   display: flex;
   flex-direction: row-reverse;
+}
+
+@media (max-width: 840px) and (min-width: 551px) {
+  body {
+    height: 100vh;
+    overflow: hidden;
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  #auth-container {
+    width: 75%;
+    height: 750px;
+    margin: 0 auto;
+    padding: 10px 0;
+  }
+  .auth-page {
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
+  .welcome-section,
+  .form-section {
+    padding: 10px;
+  }
+  .welcome-section h1 {
+    font-size: 1.6rem;
+  }
+  .welcome-section p {
+    font-size: 0.85rem;
+  }
+  .form-section h2 {
+    font-size: 1.4rem;
+  }
+  .text-input {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+  .form-button {
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+  .wave-container {
+    height: 100vh;
+  }
+}
+@media (max-width: 550px) {
+  body {
+    height: 100vh;
+    overflow-y: auto;
+    align-items: flex-start;
+    padding-top: 10px;
+  }
+  #auth-container {
+    width: 95%;
+    height: auto;
+    margin: 10px auto;
+    padding: 10px 0;
+  }
+  .auth-page {
+    flex-direction: column;
+    height: auto;
+  }
+  .welcome-section,
+  .form-section {
+    padding: 10px;
+  }
+  .welcome-section h1 {
+    font-size: 1.2rem;
+  }
+  .welcome-section p {
+    font-size: 0.65rem;
+  }
+  .form-section h2 {
+    font-size: 1rem;
+  }
+  .text-input {
+    padding: 4px;
+    font-size: 0.75rem;
+  }
+  .form-button {
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+  .wave-container {
+    height: 100vh;
+  }
 }/*# sourceMappingURL=login.css.map */

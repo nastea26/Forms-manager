@@ -68,6 +68,13 @@ body {
 }
 .top-section .templates-container .templates-list .template-item:hover {
   transform: scale(1.05);
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.top-section .templates-container .templates-list .template-item a {
+  color: #333;
+  text-decoration: none;
 }
 
 /* Recent Forms Section Styling */
@@ -100,6 +107,9 @@ body {
 }
 .recent-forms-section .recent-forms-list .recent-form-item:hover {
   transform: translateY(-5px);
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 .recent-forms-section .recent-forms-list .recent-form-item .recent-form-link {
   display: block;

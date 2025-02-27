@@ -170,6 +170,9 @@ body {
   background-color: #ddd;
   cursor: not-allowed;
 }
+#form-builder .questions-container .question .delete-question-checkbox {
+  display: block;
+}
 #form-builder #add-question {
   display: block;
   margin: 10px auto;

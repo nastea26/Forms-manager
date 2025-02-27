@@ -160,9 +160,9 @@ if ($template) {
                                         <?php endforeach; ?>
                                     <?php endif; ?>
                                 </div>
-
-                                <button type="button" class="add-option" onclick="addOption(this, <?= $questionIndex ?>)">Add Option</button>
-
+                                <?php if ($question["answer_type"] !== 'text'): ?>
+                                    <button type="button" class="add-option" onclick="addOption(this, <?= $questionIndex ?>)">Add Option</button>
+                                <?php endif; ?>
                                 <label>
                                     <input type="checkbox" name="questions[<?= $questionIndex ?>][delete]" value="1">
                                     Delete this question
@@ -188,26 +188,76 @@ if ($template) {
                 const questionDiv = document.createElement('div');
                 questionDiv.classList.add('question');
                 questionDiv.innerHTML = `
-                    <input type="hidden" name="questions[${questionCount}][id]" value="">
-                    <div class="question-header">
-                        <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
-                    </div>
-                    <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
-                        <option value="text">Text</option>
-                        <option value="multiple_choice">Multiple Choice</option>
-                        <option value="checkbox">Checkbox</option>
-                    </select>
-                    <label class="required-toggle">
-                        <input type="checkbox" name="questions[${questionCount}][required]"> Required
-                    </label>
-                    <div class="options"></div>
-                    <button type="button" class="add-option" onclick="addOption(this, ${questionCount})">Add Option</button>
-                    <label>
-                        <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
-                    </label>
-                `;
+        <input type="hidden" name="questions[${questionCount}][id]" value="">
+        <div class="question-header">
+            <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+        </div>
+        <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
+            <option value="text">Text</option>
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="checkbox">Checkbox</option>
+        </select>
+        <label class="required-toggle">
+            <input type="checkbox" name="questions[${questionCount}][required]"> Required
+        </label>
+        <div class="options"></div>
+        <button type="button" class="add-option" onclick="addOption(this, ${questionCount})" style="display: none;">Add Option</button>
+        <label>
+            <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
+        </label>
+    `;
                 document.getElementById('questions').appendChild(questionDiv);
             }
+
+            function handleTypeChange(select, questionIndex) {
+                // Find the question container using closest()
+                const questionDiv = select.closest('.question');
+                const optionsDiv = questionDiv.querySelector('.options');
+                let addOptionButton = questionDiv.querySelector('.add-option');
+
+                // Clear existing options in the options container
+                optionsDiv.innerHTML = '';
+
+                if (select.value === 'multiple_choice' || select.value === 'checkbox') {
+                    // If the add option button doesn't exist, create it
+                    if (!addOptionButton) {
+                        addOptionButton = document.createElement('button');
+                        addOptionButton.type = "button";
+                        addOptionButton.className = "add-option";
+                        addOptionButton.textContent = "Add Option";
+                        addOptionButton.onclick = function() {
+                            addOption(addOptionButton, questionIndex);
+                        };
+                        // Insert the add option button before the delete-question label
+                        // Assume the delete checkbox is in the last label element
+                        const deleteLabel = questionDiv.querySelector('label:last-of-type');
+                        questionDiv.insertBefore(addOptionButton, deleteLabel);
+                    } else {
+                        // If it exists, ensure it is visible
+                        addOptionButton.style.display = 'inline-block';
+                    }
+                    // Add an initial option
+                    const optionDiv = document.createElement('div');
+                    optionDiv.classList.add('option');
+                    optionDiv.innerHTML = `
+            <input type="text" class="option-input" name="questions[${questionIndex}][options][]" placeholder="Option Text" required>
+            <button type="button" class="remove-option" onclick="removeOption(this)">
+                <i class="fa fa-trash"></i>
+            </button>
+        `;
+                    optionsDiv.appendChild(optionDiv);
+                } else {
+                    // Hide the add option button if the selected type isn't choice-based
+                    if (addOptionButton) {
+                        addOptionButton.style.display = 'none';
+                    }
+                }
+            }
+
+
+
+
+
 
 
             function addOption(button, questionIndex) {
@@ -229,28 +279,33 @@ if ($template) {
                 optionDiv.remove();
             }
 
-            function handleTypeChange(select, questionIndex) {
-                const questionDiv = select.parentElement;
-                const optionsDiv = questionDiv.querySelector('.options');
-                const addOptionButton = questionDiv.querySelector('.add-option');
-
-                optionsDiv.innerHTML = '';
-                if (select.value === 'multiple_choice' || select.value === 'checkbox') {
-                    addOptionButton.disabled = false;
-
-                    const optionDiv = document.createElement('div');
-                    optionDiv.classList.add('option');
-                    optionDiv.innerHTML = `
-                        <input type="text" class="option-input" name="questions[${questionIndex}][options][]" placeholder="Option Text" required>
-                        <button type="button" class="remove-option" onclick="removeOption(this)">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    `;
-                    optionsDiv.appendChild(optionDiv);
-                } else {
-                    addOptionButton.disabled = true;
-                }
+            function addQuestion() {
+                questionCount++;
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `
+        <input type="hidden" name="questions[${questionCount}][id]" value="">
+        <div class="question-header">
+            <input type="text" class="question-text" name="questions[${questionCount}][text]" placeholder="Question Text" required>
+        </div>
+        <select class="question-type" name="questions[${questionCount}][type]" onchange="handleTypeChange(this, ${questionCount})">
+            <option value="text">Text</option>
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="checkbox">Checkbox</option>
+        </select>
+        <label class="required-toggle">
+            <input type="checkbox" name="questions[${questionCount}][required]"> Required
+        </label>
+        <div class="options"></div>
+        <button type="button" class="add-option" onclick="addOption(this, ${questionCount})" style="display: none;">Add Option</button>
+        <label>
+            <input type="checkbox" name="questions[${questionCount}][delete]" value="1"> Delete this question
+        </label>
+    `;
+                document.getElementById('questions').appendChild(questionDiv);
             }
+
+
 
             function togglePinInput(checkbox) {
                 const pinInputContainer = document.getElementById('pin-input-container');

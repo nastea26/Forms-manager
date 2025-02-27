@@ -140,4 +140,63 @@ form .error {
 .edit-form-btn-wrapper {
   flex: 1; /* Allow the edit button to take available space */
   text-align: left; /* Align edit button to the left */
+}
+
+#pin-protection {
+  text-align: center;
+  margin: 20px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+}
+
+#pin-inputs {
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.pin-input {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+  text-align: center;
+  font-size: 1.2em;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  outline: none;
+  transition: box-shadow 0.3s, border 0.3s;
+}
+
+.pin-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+@keyframes shake {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-5px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+.pin-input.invalid {
+  border: 1px solid #d9534f;
+  box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+  animation: shake 0.5s;
 }/*# sourceMappingURL=style.css.map */
