@@ -1,4 +1,3 @@
-@charset "UTF-8";
 /* General Reset */
 * {
   margin: 0;
@@ -22,11 +21,10 @@ body {
   align-items: flex-end;
   padding: 20px;
   background-color: #f7f7f7;
-  gap: 10px; /* Consistent spacing between elements */
+  gap: 10px;
 }
 .top-section .create-form-container {
-  flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
-  margin-bottom: 0; /* Remove unnecessary margin */
+  flex: 0 0 auto;
   align-self: flex-end;
 }
 .top-section .create-form-container .create-form-btn {
@@ -44,30 +42,57 @@ body {
   background-color: #0062cc;
 }
 .top-section .templates-container {
-  flex: 1; /* Ensure templates take up remaining space */
-  margin-top: 0; /* Ensure there's no extra space above templates */
+  flex: 1;
+  /* Carousel Styles */
 }
 .top-section .templates-container h2 {
   font-size: 20px;
   margin-bottom: 10px;
 }
-.top-section .templates-container .templates-list {
-  display: flex;
-  gap: 20px;
+.top-section .templates-container .carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: auto;
 }
-.top-section .templates-container .templates-list .template-item {
+.top-section .templates-container .carousel-container .carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+.top-section .templates-container .carousel-container .carousel-slide {
+  flex: 0 0 33.3333333333%;
+  box-sizing: border-box;
+  padding: 10px;
+}
+.top-section .templates-container .carousel-container .carousel-slide .template-item {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  flex: 1;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
-.top-section .templates-container .templates-list .template-item:hover {
+.top-section .templates-container .carousel-container .carousel-slide .template-item:hover {
   transform: scale(1.05);
+}
+.top-section .templates-container .carousel-container .carousel-arrow {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+.top-section .templates-container .carousel-container .carousel-arrow--prev {
+  left: 10px;
+}
+.top-section .templates-container .carousel-container .carousel-arrow--next {
+  right: 10px;
 }
 
 /* Recent Forms Section Styling */
@@ -77,7 +102,6 @@ body {
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  /* Forms Query Section Styling */
 }
 .recent-forms-section h2 {
   font-size: 20px;
@@ -117,8 +141,8 @@ body {
 }
 .recent-forms-section .forms-query-section {
   display: flex;
-  align-items: center; /* Vertically center the items */
-  gap: 10px; /* Space between the dropdown and search bar */
+  align-items: center;
+  gap: 10px;
   margin-bottom: 20px;
 }
 .recent-forms-section .forms-query-section .order-by-container select {
@@ -142,15 +166,15 @@ body {
 .recent-forms-section .forms-query-section .search-container {
   display: flex;
   align-items: center;
-  flex: 1; /* Make the search container expand to fill available space */
+  flex: 1;
 }
 .recent-forms-section .forms-query-section .search-container input {
   max-width: 200px;
   font-size: 14px;
   padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 10px 0 0 10px; /* Rounded only on the left side */
-  border-right: none; /* Remove right border to merge with button */
+  border-radius: 10px 0 0 10px;
+  border-right: none;
   transition: border-color 0.3s ease;
 }
 .recent-forms-section .forms-query-section .search-container input:focus {
@@ -164,7 +188,7 @@ body {
   background-color: #007bff;
   color: #fff;
   border: none;
-  border-radius: 0 10px 10px 0; /* Rounded only on the right side */
+  border-radius: 0 10px 10px 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
@@ -181,25 +205,26 @@ body {
     flex-direction: column;
   }
   .top-section .create-form-container {
-    margin-bottom: 10px solid #ccc; /* Matches the template gap */
+    margin-bottom: 10px;
   }
-  .top-section .templates-container .templates-list {
-    flex-direction: column;
+  .top-section .templates-container .carousel-container .carousel-slide {
+    flex: 0 0 50%;
   }
   .forms-query-section {
-    flex-direction: column; /* Stack the dropdown and search bar vertically */
-    align-items: stretch; /* Full-width for both elements */
+    flex-direction: column;
+    align-items: stretch;
   }
   .forms-query-section .search-container {
     flex-direction: column;
   }
   .forms-query-section .search-container input,
   .forms-query-section .search-container button {
-    border-radius: 10px; /* Full rounding when stacked */
-    margin-bottom: 10px; /* Add spacing between input and button */
-    border-right: 1px;
+    border-radius: 10px;
+    margin-bottom: 10px;
   }
-  .forms-query-section .search-container button {
-    border-radius: 10px; /* Match the input for consistency */
+}
+@media (max-width: 480px) {
+  .templates-container .carousel-container .carousel-slide {
+    flex: 0 0 100%;
   }
 }/*# sourceMappingURL=index.css.map */

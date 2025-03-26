@@ -55,7 +55,6 @@ $path = dirname($_SERVER['SCRIPT_NAME']);
 
 $formLink = $protocol . $host . $path . '/view_form.php?q=' . urlencode($formLink);
 
-$_SESSION['sharePopup'] = true;
-$_SESSION['shareLink'] = $formLink;
+$_SESSION['sharePopup'] = false;
 header('Location: ../');
 exit();

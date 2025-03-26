@@ -30,7 +30,8 @@ body {
 
     .create-form-container {
         flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
-        align-self: flex-end; /* Align the button to the top */
+        align-self: center; 
+        margin-top: 25px;
         .create-form-btn {
             background-color: $primary-color;
             color: $header-text-color;
@@ -56,9 +57,31 @@ body {
             margin-bottom: 10px;
         }
 
-        .templates-list {
+        /* Carousel Styles for Templates */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            margin: auto;
+            padding: 0 20px; // Provides horizontal padding so edge slides are visible
+        }
+
+
+        .carousel-track {
             display: flex;
-            gap: 20px;
+            align-items: stretch; // Ensure slides stretch to the track's height
+            transition: transform 0.5s ease;
+            margin: 0 -10px; // Counterbalance individual slide margins
+        }
+
+        .carousel-track.templates-list{
+            padding: 10px 0px;
+        }
+
+        .carousel-slide {
+            flex: 0 0 calc((100% - 60px) / 3); // (100% minus container horizontal padding) divided by 3 (per view)
+            margin: 0 10px;
+            box-sizing: border-box;
 
             .template-item {
                 background-color: #fff;
@@ -67,9 +90,9 @@ body {
                 padding: 15px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 text-align: center;
-                flex: 1;
                 cursor: pointer;
                 transition: transform 0.3s ease;
+                height: 100%; // Allow the item to fill the slide’s height
 
                 &:hover {
                     transform: scale(1.05);
@@ -80,9 +103,53 @@ body {
                 a {
                     color: $text-color;
                     text-decoration: none;
+                    display: block;
                 }
             }
         }
+
+        .carousel-arrow {
+            position: absolute;
+            top: 60%; //offsetnute lebo 1.5 scale
+            transform: translateY(-50%);
+            //background: rgba(0, 0, 0, 0.6); // Semi-transparent dark background
+            background: none;
+            font-weight: bold;
+            scale: 1.5;
+            color: #000000;
+            border: none;
+            padding: 8px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease; //background 0.3s ease,
+            z-index: 2;
+          
+            &:hover {
+              //background: rgba(0, 0, 0, 0.8);
+              transform: translateY(-50%) scale(1.65);
+            }
+          
+            &.disabled {
+              display: none; // optional either to not dispaly it or to use the styles but idk which one i want just yet
+              opacity: 0.5;
+              cursor: not-allowed;
+              pointer-events: none;
+            }
+          
+            &--prev {
+              left: 10px;
+            }
+          
+            &--next {
+              right: 10px;
+            }
+          }
+          
+          
+          
     }
 }
 
@@ -224,8 +291,10 @@ body {
         }
 
         .templates-container {
-            .templates-list {
-                flex-direction: column;
+            .carousel-container {
+                .carousel-slide {
+                    flex: 0 0 calc((100% - 40px) / 2);
+                }
             }
         }
     }
@@ -241,6 +310,16 @@ body {
             button {
                 border-radius: $border-radius; /* Full rounding when stacked */
                 margin-bottom: 10px; /* Add spacing between input and button */
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .templates-container {
+        .carousel-container {
+            .carousel-slide {
+                flex: 0 0 100%;
             }
         }
     }

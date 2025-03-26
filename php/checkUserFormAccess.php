@@ -35,7 +35,6 @@ function checkAccessToFrom(object $formHandler, $formId, string $pageTitle): boo
 
         </html>
 <?php
-        //ONCE I GO AROUND CHANING HOW THE STYLES FOR HEADER ARE LINKED I HOPE I DONT FORGET THIS
         include '../assets/header.php';
     }
     return !$res;

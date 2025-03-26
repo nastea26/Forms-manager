@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'sass:color';
 
 header {
   position: fixed;
@@ -9,6 +10,7 @@ header {
   background-color: $primary-color;
   color: $header-text-color;
   z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); // subtle drop shadow
 
   .header-container {
     display: flex;
@@ -23,6 +25,13 @@ header {
     font-weight: bold;
     color: $header-text-color;
     text-decoration: none;
+    display: flex;
+    align-items: center;
+
+    i {
+      margin-right: 8px;
+      font-size: 1.3rem;
+    }
   }
 
   .hamburger-menu {
@@ -54,16 +63,29 @@ header {
 
       li {
         a {
+          display: flex;
+          align-items: center;
           text-decoration: none;
           color: $header-text-color;
           font-size: 1rem;
+          transition: color 0.3s ease, scale 0.3s ease;
 
-          &:hover {
-            text-decoration: underline;
+          i {
+            margin-right: 8px;
+            font-size: 1.1rem;
+          }
+
+          &:hover {  
+            color: color.adjust($header-text-color, $lightness: -10%);
+            scale:1.2;
+
           }
         }
       }
     }
+    // .logout:hover{
+    //   color:rgb(255, 0, 0)
+    // }
   }
 
   @media (max-width: 768px) {
@@ -84,11 +106,19 @@ header {
       ul {
         flex-direction: column;
         gap: 10px;
+        li{
+          width:100%;
+          margin:5px 0px;
+          padding:3px 0px;
+
+        }
       }
     }
 
     .menu.menu-open {
       display: flex;
+      gap:10px;
+      box-sizing: border-box;
     }
   }
 }

@@ -71,6 +71,7 @@ include '../assets/header.php';
     <title>Form Results</title>
     <link rel="stylesheet" href="../styles/dashboard_results.css">
     <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/header.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="../js/results.js" defer data-questions="<?php echo htmlspecialchars(json_encode($answers_array), ENT_QUOTES, 'UTF-8'); ?>"></script>
     <script type="module" src="../js/shareModal.js" defer></script>
@@ -148,9 +149,11 @@ include '../assets/header.php';
         }
     </style>
 </head>
-<?php include '../assets/header.php'; ?>
 
 <body>
+    <?php include_once  '../assets/header.php';
+    createHeader("../");
+    ?>
     <main>
         <div class="slider-container">
             <h1 class="results-title">Form Results</h1>
@@ -179,7 +182,7 @@ include '../assets/header.php';
             const formLink = <?= json_encode($form['link']) ?>; // Assuming the form link is available in the `$form` array
 
             shareButton.addEventListener('click', () => {
-                const fullFormLink = `${window.location.origin}/view_form.php?q=${formLink}`;
+                const fullFormLink = `${window.location.origin}/php/view_form.php?q=${formLink}`;
                 const modal = new Modal();
                 modal.initModal();
                 modal.showModal(fullFormLink); // Show the modal with the share link

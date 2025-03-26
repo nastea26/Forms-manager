@@ -3,51 +3,99 @@ if ($_SERVER['REQUEST_METHOD'] != 'POST') {
     header('Location: ../login.php?action=register');
     exit;
 }
+
 if (!isset($_SESSION)) session_start();
 
-if (!(isset($_POST['csrf_token']) && hash_equals($_SESSION['CSRF_Token'], $_POST['csrf_token']))) die("Invalid CSRF token");
-
-
-$email = $_POST['email'];
-$password = $_POST['password'];
-$repeat_Password = $_POST['passwordRepeat'];
-
-if (!isset($email) || !isset($password) || !isset($repeat_Password)) {
-    header('Location: ../login.php?action=register');
-    exit();
+// CSRF token validation
+if (!(isset($_POST['csrf_token']) && hash_equals($_SESSION['CSRF_Token'], $_POST['csrf_token']))) {
+    die("Invalid CSRF token");
 }
 
-if (strlen($email) < 8 || strlen($email) > 100 || strlen($password) < 5 || strlen($password) > 35) {
-    if (strlen($email) < 8 || strlen($email) > 100) $error = "Email-Length";
-    if (strlen($password) < 5 || strlen($password) > 35) $error = "Password-Length";
-    header('Location: ../login.php?action=register');
-    exit();
+$email = $_POST['email'] ?? '';
+$password = $_POST['password'] ?? '';
+$repeat_Password = $_POST['passwordRepeat'] ?? '';
+
+// Initialize error messages
+$emailError = "";
+$passwordError = "";
+$repeatPasswordError = "";
+$generalError = "";
+
+// Validate input fields
+if (empty($email) || empty($password) || empty($repeat_Password)) {
+    $generalError = "All fields are required.";
+}
+
+if (strlen($email) < 8 || strlen($email) > 100) {
+    $emailError = "Email length must be between 8 and 100 characters.";
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    header('Location: ../login.php?action=register');
-    exit();
+    $emailError = "Invalid email address format.";
+}
+
+if (strlen($password) < 5 || strlen($password) > 35) {
+    $passwordError = "Password length must be between 5 and 35 characters.";
 }
 
 if ($password !== $repeat_Password) {
+    $repeatPasswordError = "Passwords do not match.";
+}
+
+// If there are any errors, store them in the session and redirect back
+if (!empty($emailError) || !empty($passwordError) || !empty($repeatPasswordError) || !empty($generalError)) {
+    $_SESSION["registerEmailError"] = $emailError;
+    $_SESSION["registerPasswordError"] = $passwordError;
+    $_SESSION["registerRepeatPasswordError"] = $repeatPasswordError;
+    $_SESSION["registerGeneralError"] = $generalError;
     header('Location: ../login.php?action=register');
     exit();
 }
-$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+// Include database connection
+require_once 'db.php';
+$database = new SqlEntity();
 
-include 'db.php';
+// Sanitize email
 $safeEmail = $database->mysqliSanitizeString($email);
 
-$emailInUse = $database->searchQuery("SELECT COUNT(*) FROM users WHERE email='$safeEmail'", count: true);
-if ($emailInUse[0] == true || $emailInUse[1] == "err") {
-    header('Location:../login.php?action=register');
+// Check if email is already in use
+$emailCheckQuery = "SELECT COUNT(*) as count FROM users WHERE email = ?";
+
+$emailCheckResult = $database->searchQuery($emailCheckQuery, [$safeEmail]);
+
+// Check if the query was successful
+if ($emailCheckResult) {
+    // Fetch the result as an associative array
+    $emailCount = $emailCheckResult->fetch_assoc();
+
+    // Verify if the count is greater than 0
+    if ($emailCount['count'] > 0) {
+        $_SESSION["registerEmailError"] = "Email is already in use.";
+        header('Location: ../login.php?action=register');
+        exit();
+    }
+} else {
+    // Handle query failure
+    $_SESSION["registerGeneralError"] = "An error occurred while checking the email. Please try again later.";
+    header('Location: ../login.php?action=register');
     exit();
 }
-$res  = $database->insertInto('users', ['email', 'pass'], [$safeEmail, $hashedPassword]);
-if ($res) {
+
+
+// Hash the password
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+// Insert new user into the database
+$insertResult = $database->insertInto('users', ['email', 'pass'], [$safeEmail, $hashedPassword]);
+
+if ($insertResult) {
+    // Registration successful, redirect to homepage or login page
     header('Location: ../');
     exit();
+} else {
+    // Database insertion error
+    $_SESSION["registerGeneralError"] = "Registration failed due to a server error. Please try again later.";
+    header('Location: ../login.php?action=register');
+    exit();
 }
-header('Location:../login.php?action=register');
-exit();

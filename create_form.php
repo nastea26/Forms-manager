@@ -18,15 +18,17 @@ if (isset($_GET['template'])) $template = $_GET['template'];
     <title>Create New Form</title>
     <link rel="stylesheet" href="styles/formMaker.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/header.css">
 </head>
-<?php include 'assets/header.php'; ?>
+<?php include 'assets/header.php';
+createHeader("/"); ?>
 
 <body>
     <main>
         <div id="form-builder">
             <?php if (isset($template)) {
                 echo "<h1>Create a New Template</h1>";
-                echo "<form id='form' method='POST' action='php/test_action.php'>";
+                echo "<form id='form' method='POST' action='php/save_template_action.php'>";
             } else {
                 echo "<h1>Create a New Form</h1>";
                 echo "<form id='form' method='POST' action='php/save_form.php'>";

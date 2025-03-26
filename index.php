@@ -13,26 +13,71 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/test.css">
     <link rel="stylesheet" href="styles/modal.css">
+    <link rel="stylesheet" href="styles/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Forms</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="./js/shareModal.js" defer></script>
     <script>
+        // Global carousel variables and function
+        let currentIndex = 0;
+        const slidesToShow = 3; //expected slides to be displayed at once, the rest will be scrolabble 
+
+        function updateArrows() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (!slides.length) return;
+            const totalSlides = slides.length;
+            const prevArrow = document.querySelector('.carousel-arrow--prev');
+            const nextArrow = document.querySelector('.carousel-arrow--next');
+
+            // Disable previous arrow if at the beginning
+            if (currentIndex === 0) {
+                prevArrow.classList.add('disabled');
+            } else {
+                prevArrow.classList.remove('disabled');
+            }
+            // Disable next arrow if at the end
+            if (currentIndex >= totalSlides - slidesToShow) {
+                nextArrow.classList.add('disabled');
+            } else {
+                nextArrow.classList.remove('disabled');
+            }
+        }
+
+        function moveCarousel(direction) {
+            const track = document.querySelector('.carousel-track');
+            const slides = document.querySelectorAll('.carousel-slide');
+            if (!slides.length) return;
+            const totalSlides = slides.length;
+            const slideWidth = slides[0].getBoundingClientRect().width;
+
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = 0;
+            } else if (currentIndex > totalSlides - slidesToShow) {
+                currentIndex = totalSlides - slidesToShow;
+            }
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+            updateArrows();
+        }
+
+
+
         $(document).ready(function() {
             let allForms = []; // Store all forms in memory
 
-            // Function to display filtered and sorted forms
+            // Display forms remains unchanged...
             function displayForms(forms) {
                 if (forms.length > 0) {
                     let formsHTML = '';
                     forms.forEach(function(form) {
                         formsHTML += `
-                <li class="recent-form-item">
-                    <a href="php/view_form.php?q=${form.link}" class="recent-form-link">
-                        <div class="recent-form-title">${form.title}</div>
-                        <div class="recent-form-description">${form.description}</div>
-                    </a>
-                </li>`;
+              <li class="recent-form-item">
+                <a href="php/view_form.php?q=${form.link}" class="recent-form-link">
+                  <div class="recent-form-title">${form.title}</div>
+                  <div class="recent-form-description">${form.description}</div>
+                </a>
+              </li>`;
                     });
                     $('.recent-forms-list').html(formsHTML);
                 } else {
@@ -40,29 +85,33 @@ if (!isset($_SESSION['user_id'])) {
                 }
             }
 
+            // Updated displayTemplates function:
             function displayTemplates(templates) {
                 if (templates.length > 0) {
-                    let templatesHTML = '';
-                    const templatesContainerElement = document.querySelector('.templates-list');
-                    templatesContainerElement.textContent = '';
+                    // Sort templates descending by created_at (if available)
+                    templates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                    const track = document.querySelector('.carousel-track');
+                    track.textContent = ''; // Clear previous slides
                     templates.forEach(function(template) {
-                        templateInnerText = template.title;
-                        linkElement = document.createElement('a');
-                        link = 'php/edit_form.php?template=true&q=' + template.link;
-                        linkElement.href = link;
-                        linkElement.innerText = templateInnerText;
-                        divElement = document.createElement('div');
-                        divElement.setAttribute('class', 'template-item');
-                        divElement.appendChild(linkElement);
-                        templatesContainerElement.appendChild(divElement);
+                        const slide = document.createElement('div');
+                        slide.classList.add('carousel-slide');
+                        const templateItem = document.createElement('div');
+                        templateItem.classList.add('template-item');
+                        const linkElement = document.createElement('a');
+                        linkElement.href = 'php/edit_form.php?template=true&q=' + template.link;
+                        linkElement.innerText = template.title;
+                        templateItem.appendChild(linkElement);
+                        slide.appendChild(templateItem);
+                        track.appendChild(slide);
                     });
-                    $('.template-list').html(templatesHTML);
+                    currentIndex = 0; // Reset index when new templates are loaded
+                    updateArrows();
                 } else {
-                    $('.template-list').html('<p>No templates found.</p>');
+                    document.querySelector('.carousel-track').innerHTML = '<p>No templates found.</p>';
                 }
             }
 
-            // Function to filter forms based on search query
+            // Filtering, sorting, and displaying forms remain unchanged...
             function filterForms(query) {
                 return allForms.filter(form =>
                     form.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -70,7 +119,6 @@ if (!isset($_SESSION['user_id'])) {
                 );
             }
 
-            // Function to sort forms based on selected criteria
             function sortForms(forms, criteria) {
                 if (criteria === 'date-desc') {
                     return forms.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -84,43 +132,37 @@ if (!isset($_SESSION['user_id'])) {
                 return forms;
             }
 
-            // Function to update the displayed forms based on search and order
             function updateFormsDisplay() {
                 const query = $('#form-search').val();
                 const orderBy = $('#order-by').val();
-
                 let filteredForms = filterForms(query);
                 let sortedForms = sortForms(filteredForms, orderBy);
-
                 displayForms(sortedForms);
             }
 
-            // Clear search input field on clear button click
             $('#clear-btn').on('click', function() {
-                $('#form-search').val(''); // Clear input field
-                updateFormsDisplay(); // Reset displayed forms
+                $('#form-search').val('');
+                updateFormsDisplay();
             });
 
-            // Trigger search and sort on input or dropdown change
             $('#form-search').on('input', updateFormsDisplay);
             $('#order-by').on('change', updateFormsDisplay);
 
-            // Load all forms initially
             function loadForms() {
-                $('#loading-spinner').show(); // Show the loading spinner
+                $('#loading-spinner').show();
                 $.ajax({
                     url: 'php/userFormsAPI.php?action=fetchRecentForms',
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
-                        $('#loading-spinner').hide(); // Hide the loading spinner
+                        $('#loading-spinner').hide();
                         if (data.error) {
                             $('.recent-forms-section').html('<p>' + data.error + '</p>');
                         } else {
-                            allForms = data.forms; // Save all forms in memory
-                            templates = data.templates; // Save all templates in memory
-                            displayTemplates(templates)
-                            updateFormsDisplay(); // Display sorted and filtered forms
+                            allForms = data.forms;
+                            const templates = data.templates;
+                            displayTemplates(templates);
+                            updateFormsDisplay();
                         }
                     },
                     error: function() {
@@ -129,27 +171,22 @@ if (!isset($_SESSION['user_id'])) {
                     }
                 });
             }
-
-            // Initial load of forms
             loadForms();
         });
     </script>
-
 </head>
-<?php include 'assets/header.php'; ?>
+<?php
+include 'assets/header.php';
+createHeader("/");
+?>
 
 <body>
     <main>
-        <!-- Display modal if the user created a form -->
         <?php if ($_SESSION['sharePopup']): ?>
             <script type="module">
                 import Modal from './js/shareModal.js';
-
-                // Initialize the modal
                 const modal = new Modal();
                 modal.initModal();
-
-                // Example: Open the modal with a link
                 document.addEventListener('DOMContentLoaded', () => {
                     modal.showModal(<?php echo json_encode($_SESSION['shareLink']); ?>);
                 });
@@ -167,15 +204,18 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <div class="templates-container">
                 <h2>Templates</h2>
-                <div class="templates-list">
-                    <div class="template-item">Template 1</div>
+                <!-- Carousel container for templates -->
+                <div class="carousel-container">
+                    <button class="carousel-arrow carousel-arrow--prev" onclick="moveCarousel(-1)">&#8249;</button>
+                    <div class="carousel-track templates-list">
+                        <!-- Carousel slides will be populated dynamically -->
+                    </div>
+                    <button class="carousel-arrow carousel-arrow--next" onclick="moveCarousel(1)">&#8250;</button>
                 </div>
             </div>
         </section>
         <section class="recent-forms-section">
             <h2>Recent Forms</h2>
-
-            <!-- Search bar -->
             <div class="forms-query-section">
                 <div class="order-by-container">
                     <select id="order-by" class="order-by-dropdown">
@@ -192,15 +232,11 @@ if (!isset($_SESSION['user_id'])) {
                     </button>
                 </div>
             </div>
-
-            <!-- Loading spinner -->
             <div id="loading-spinner" style="display: none;">
                 <i class="fa fa-spinner fa-spin"></i> Loading...
             </div>
-
-            <!-- Forms list -->
             <ul class="recent-forms-list">
-                <!-- Recent forms will be loaded here via AJAX -->
+                <!-- Recent forms loaded via AJAX -->
             </ul>
         </section>
     </main>

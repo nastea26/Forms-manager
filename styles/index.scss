@@ -1,238 +1,246 @@
 @use './variables' as *;
 @use 'sass:color';
+
 /* General Reset */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 /* Body Styling */
 body {
-    font-family: Arial, sans-serif;
-    background-color: $background-color;
-    color: $text-color;
-    margin: 0;
-    padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  color: $text-color;
+  margin: 0;
+  padding: 0;
 }
 
 /* Top Section Styling */
 .top-section {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    padding: 20px;
-    background-color: $background-color;
-    gap: 10px; /* Consistent spacing between elements */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  padding: 20px;
+  background-color: $background-color;
+  gap: 10px;
 
-    .create-form-container {
-        flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
-        margin-bottom: 0; /* Remove unnecessary margin */
-        align-self: flex-end;
-        .create-form-btn {
-            background-color: $primary-color;
-            color: $header-text-color;
-            border: none;
-            border-radius: $border-radius;
-            padding: 15px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
-
-            &:hover {
-                background-color: color.adjust($primary-color, $lightness: -10%);
-            }
-        }
+  .create-form-container {
+    flex: 0 0 auto;
+    align-self: flex-end;
+    .create-form-btn {
+      background-color: $primary-color;
+      color: $header-text-color;
+      border: none;
+      border-radius: $border-radius;
+      padding: 15px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-right: 10px;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: color.adjust($primary-color, $lightness: -10%);
+      }
     }
+  }
 
-    .templates-container {
-        flex: 1; /* Ensure templates take up remaining space */
-        margin-top: 0; /* Ensure there's no extra space above templates */
-
-        h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .templates-list {
-            display: flex;
-            gap: 20px;
-
-            .template-item {
-                background-color: #fff;
-                border: 1px solid #ccc;
-                border-radius: $border-radius;
-                padding: 15px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                text-align: center;
-                flex: 1;
-                cursor: pointer;
-                transition: transform 0.3s ease;
-
-                &:hover {
-                    transform: scale(1.05);
-                }
-            }
-        }
+  .templates-container {
+    flex: 1;
+    h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
     }
+    /* Carousel Styles */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      margin: auto;
+      .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease;
+      }
+      .carousel-slide {
+        flex: 0 0 calc(100% / 3);
+        box-sizing: border-box;
+        padding: 10px;
+        .template-item {
+          background-color: #fff;
+          border: 1px solid #ccc;
+          border-radius: $border-radius;
+          padding: 15px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+          text-align: center;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+          &:hover {
+            transform: scale(1.05);
+          }
+        }
+      }
+      .carousel-arrow {
+        background-color: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        padding: 10px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 2;
+        &--prev {
+          left: 10px;
+        }
+        &--next {
+          right: 10px;
+        }
+      }
+    }
+  }
 }
 
 /* Recent Forms Section Styling */
 .recent-forms-section {
-    margin: 30px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: $border-radius;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
-    h2 {
-        font-size: 20px;
-        margin-bottom: 15px;
-        color: $primary-color;
-    }
-
-    .recent-forms-list {
-        list-style: none;
-        padding: 0;
-
-        .recent-form-item {
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: $border-radius;
-            margin-bottom: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-
-            &:hover {
-                transform: translateY(-5px);
-            }
-
-            .recent-form-link {
-                display: block;
-                text-decoration: none;
-                color: $text-color;
-
-                .recent-form-title {
-                    font-size: 18px;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-
-                .recent-form-description {
-                    font-size: 16px;
-                    margin-bottom: 5px;
-                    color: #777;
-                }
-            }
+  margin: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: $primary-color;
+  }
+  .recent-forms-list {
+    list-style: none;
+    padding: 0;
+    .recent-form-item {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: $border-radius;
+      margin-bottom: 15px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+      &:hover {
+        transform: translateY(-5px);
+      }
+      .recent-form-link {
+        display: block;
+        text-decoration: none;
+        color: $text-color;
+        .recent-form-title {
+          font-size: 18px;
+          font-weight: bold;
+          margin-bottom: 10px;
         }
-    }
-    /* Forms Query Section Styling */
-    .forms-query-section {
-        display: flex;
-        align-items: center; /* Vertically center the items */
-        gap: 10px; /* Space between the dropdown and search bar */
-        margin-bottom: 20px;
-
-        .order-by-container {
-            select {
-                font-size: 14px;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: $border-radius;
-                background-color: #fff;
-                color: $text-color;
-                cursor: pointer;
-                transition: border-color 0.3s ease;
-
-                &:hover {
-                    border-color: $primary-color;
-                }
-
-                &:focus {
-                    outline: none;
-                    border-color: $primary-color;
-                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                }
-            }
+        .recent-form-description {
+          font-size: 16px;
+          margin-bottom: 5px;
+          color: #777;
         }
-
-        .search-container {
-            display: flex;
-            align-items: center;
-            flex: 1; /* Make the search container expand to fill available space */
-
-            input {
-                max-width: 200px;
-                font-size: 14px;
-                padding: 8px;
-                border: 1px solid #ccc;
-                border-radius: $border-radius 0 0 $border-radius; /* Rounded only on the left side */
-                border-right: none; /* Remove right border to merge with button */
-                transition: border-color 0.3s ease;
-
-                &:focus {
-                    outline: none;
-                    border-color: $primary-color;
-                    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-                }
-            }
-
-            button {
-                padding: 8px 15px;
-                font-size: 14px;
-                background-color: $primary-color;
-                color: $header-text-color;
-                border: none;
-                border-radius: 0 $border-radius $border-radius 0; /* Rounded only on the right side */
-                cursor: pointer;
-                transition: background-color 0.3s ease;
-
-                &:hover {
-                    background-color: color.adjust($primary-color, $lightness: -10%);
-                }
-
-                &:focus {
-                    outline: none;
-                }
-            }
-        }
+      }
     }
+  }
+  .forms-query-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    .order-by-container {
+      select {
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: $border-radius;
+        background-color: #fff;
+        color: $text-color;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+        &:hover {
+          border-color: $primary-color;
+        }
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 5px rgba(0,123,255,0.5);
+        }
+      }
+    }
+    .search-container {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      input {
+        max-width: 200px;
+        font-size: 14px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: $border-radius 0 0 $border-radius;
+        border-right: none;
+        transition: border-color 0.3s ease;
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 5px rgba(0,123,255,0.5);
+        }
+      }
+      button {
+        padding: 8px 15px;
+        font-size: 14px;
+        background-color: $primary-color;
+        color: $header-text-color;
+        border: none;
+        border-radius: 0 $border-radius $border-radius 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        &:hover {
+          background-color: color.adjust($primary-color, $lightness: -10%);
+        }
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+  }
 }
 
 /* Media Queries */
 @media (max-width: 768px) {
-    .top-section {
-        flex-direction: column;
-
-        .create-form-container {
-            margin-bottom: 10px solid #ccc; /* Matches the template gap */
-        }
-
-        .templates-container {
-            .templates-list {
-                flex-direction: column;
-            }
-        }
+  .top-section {
+    flex-direction: column;
+    .create-form-container {
+      margin-bottom: 10px;
     }
-    .forms-query-section {
-        flex-direction: column; /* Stack the dropdown and search bar vertically */
-        align-items: stretch; /* Full-width for both elements */
-
-        .search-container {
-            flex-direction: column;
-
-            input,
-            button {
-                border-radius: $border-radius; /* Full rounding when stacked */
-                margin-bottom: 10px; /* Add spacing between input and button */
-                border-right:1px; 
-            }
-
-            button {
-                border-radius: $border-radius; /* Match the input for consistency */
-            }
+    .templates-container {
+      .carousel-container {
+        .carousel-slide {
+          flex: 0 0 calc(100% / 2);
         }
+      }
     }
+  }
+  .forms-query-section {
+    flex-direction: column;
+    align-items: stretch;
+    .search-container {
+      flex-direction: column;
+      input,
+      button {
+        border-radius: $border-radius;
+        margin-bottom: 10px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .templates-container {
+    .carousel-container {
+      .carousel-slide {
+        flex: 0 0 100%;
+      }
+    }
+  }
 }

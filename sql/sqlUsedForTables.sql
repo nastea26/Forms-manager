@@ -63,7 +63,7 @@ CREATE TABLE templete_choices(
 	option_text varchar(255) NOT NULL,
 	created_at Timestamp NOT NULL,
 	foreign key (template_question_id) references templates_questions (id)
-);
+);	
 
 CREATE TABLE responses(
     id int unsigned AUTO_INCREMENT NOT NULL PRIMARY KEY,

@@ -9,6 +9,19 @@ if (isset($_SESSION['user_id'])) {
 if (!isset($_SESSION['CSRF_Token'])) {
     $_SESSION['CSRF_Token'] = bin2hex(random_bytes(32));
 }
+
+// Retrieve and clear any login errors
+$loginEmailError = $_SESSION["loginEmailError"] ?? "";
+$loginPasswordError = $_SESSION["loginPasswordError"] ?? "";
+$loginGeneralError = $_SESSION["loginGeneralError"] ?? "";
+unset($_SESSION["loginEmailError"], $_SESSION["loginPasswordError"], $_SESSION["loginGeneralError"]);
+
+// Retrieve and clear any registration errors
+$registerEmailError = $_SESSION["registerEmailError"] ?? "";
+$registerPasswordError = $_SESSION["registerPasswordError"] ?? "";
+$registerRepeatPasswordError = $_SESSION["registerRepeatPasswordError"] ?? "";
+$registerGeneralError = $_SESSION["registerGeneralError"] ?? "";
+unset($_SESSION["registerEmailError"], $_SESSION["registerPasswordError"], $_SESSION["registerRepeatPasswordError"], $_SESSION["registerGeneralError"]);
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +30,8 @@ if (!isset($_SESSION['CSRF_Token'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Authentication</title>
+    <script src="js/regLog.js" defer></script>
     <link rel="stylesheet" href="styles/login.css">
 </head>
 
@@ -49,73 +63,80 @@ if (!isset($_SESSION['CSRF_Token'])) {
 
     </div>
 
-
-
-
     <!-- Authentication Container -->
     <div id="auth-container">
+        <!-- Login Page -->
         <div class="auth-page login-page">
             <div class="welcome-section">
-                <h1>Welcome to...</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                <h1>Welcome Back</h1>
+                <p>Please log in to continue.</p>
             </div>
             <div class="form-section">
                 <h2>Login</h2>
+                <!-- General error message -->
+                <?php if (!empty($loginGeneralError)) { ?>
+                    <div class="error-message general-error"><?php echo $loginGeneralError; ?></div>
+                <?php } ?>
                 <form action="php/login.php" method="POST" class="form-container login-form">
-                    <label for="email" class="form-label">User Name</label>
-                    <input id="email" name="email" type="email" class="text-input email-input" placeholder="Enter your email" required>
-                    <span class="error-message email-error"></span>
+                    <label for="login-email" class="form-label">Email</label>
+                    <input id="login-email" name="email" type="email" class="text-input email-input" placeholder="Enter your email" required>
+                    <span class="error-message email-error"><?php echo $loginEmailError; ?></span>
 
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" name="password" type="password" class="text-input password-input" placeholder="Enter your password" required>
-                    <span class="error-message password-error"></span>
+                    <label for="login-password" class="form-label">Password</label>
+                    <input id="login-password" name="password" type="password" class="text-input password-input" placeholder="Enter your password" required>
+                    <span class="error-message password-error"><?php echo $loginPasswordError; ?></span>
 
-                    <div style="margin-bottom: 15px;">
-                        <input type="checkbox" id="remember" name="remember" style="margin-right: 5px;">
-                        <label for="remember">Remember me</label>
-                    </div>
+                    <!--<div class="form-footer-remember-me">
+                        <input type="checkbox" id="remember" name="remember" class="remember-me">
+                        <label for="remember" class="remember-me">Remember me</label>
+                    </div> -->
 
                     <input type="submit" value="LOGIN" class="form-button login-button">
-                    <span class="error-message form-error"></span>
                 </form>
                 <div class="form-footer">
-                    <span>New User? <a href="#" id="switch-to-register">Signup</a></span>
-                    <span><a href="#">Forgot your password?</a></span>
+                    <span>New User? <a href="#" id="switch-to-register">Sign up</a></span>
+                    <!--<span><a href="#">Forgot your password?</a></span>-->
                 </div>
             </div>
         </div>
 
+        <!-- Registration Page -->
         <div class="auth-page register-page">
             <div class="welcome-section">
                 <h1>Join Us</h1>
-                <p>Create your account to enjoy exclusive benefits and stay connected.</p>
+                <p>Create an account to get started.</p>
             </div>
             <div class="form-section">
-                <h2>Create Your Account</h2>
-                <form action="php/register.php" method="POST" class="form-container">
-                    <label for="email" class="form-label">Email</label>
-                    <input id="email" type="email" name="email" class="text-input" placeholder="Enter your email" required>
-                    <span class="error-message"></span>
+                <h2>Register</h2>
+                <!-- General error message -->
+                <?php if (!empty($registerGeneralError)) { ?>
+                    <div class="error-message general-error"><?php echo $registerGeneralError; ?></div>
+                <?php } ?>
+                <form action="php/register.php" method="POST" class="form-container reg-form">
+                    <label for="register-email" class="form-label">Email</label>
+                    <input id="register-email" name="email" type="email" class="text-input email-reg" placeholder="Enter your email" required>
+                    <span class="error-message email-reg-err"><?php echo $registerEmailError; ?></span>
 
-                    <label for="password" class="form-label">Password</label>
-                    <input id="password" type="password" name="password" class="text-input" placeholder="Enter your password" required>
-                    <span class="error-message"></span>
+                    <label for="register-password" class="form-label">Password</label>
+                    <input id="register-password" name="password" type="password" class="text-input password-reg" placeholder="Enter your password" required>
+                    <span class="error-message password-reg-err"><?php echo $registerPasswordError; ?></span>
 
-                    <label for="passwordRepeat" class="form-label">Repeat Password</label>
-                    <input id="passwordRepeat" type="password" name="passwordRepeat" class="text-input" placeholder="Repeat your password" required>
-                    <span class="error-message"></span>
+                    <label for="register-password-repeat" class="form-label">Repeat Password</label>
+                    <input id="register-password-repeat" name="passwordRepeat" type="password" class="text-input repeat-reg" placeholder="Repeat your password" required>
+                    <span class="error-message repeat-reg-err"><?php echo $registerRepeatPasswordError; ?></span>
 
                     <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['CSRF_Token']; ?>">
                     <button type="submit" class="form-button">Register</button>
                 </form>
                 <div class="form-footer">
-                    <span>Already have an account? <a href="#" id="switch-to-login">Login</a></span>
+                    <span>Already have an account? <a href="#" id="switch-to-login">Log in</a></span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        // Page flip animation between login and register
         document.addEventListener("DOMContentLoaded", () => {
             const authContainer = document.getElementById("auth-container");
             const switchToRegister = document.getElementById("switch-to-register");
@@ -125,10 +146,7 @@ if (!isset($_SESSION['CSRF_Token'])) {
             const action = urlParams.get("action");
 
             if (action === "register") {
-                // Instantly apply the flipped state without animation
                 authContainer.classList.add("flipped", "instant-flip");
-
-                // Restore animation after a short delay
                 setTimeout(() => {
                     authContainer.classList.remove("instant-flip");
                 }, 50);

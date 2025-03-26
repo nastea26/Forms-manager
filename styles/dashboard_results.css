@@ -76,6 +76,10 @@ body {
   gap: 10px;
 }
 
+.result-responses {
+  padding: 15px;
+}
+
 .results-header {
   display: flex;
   justify-content: space-between;

@@ -9,7 +9,6 @@ const prevButton = document.getElementById("prevButton");
 const nextButton = document.getElementById("nextButton");
 
 // Statistical Functions
-// Statistical Functions
 function calculateMean(responses) {
     const total = Object.entries(responses).reduce((sum, [key, value]) => sum + key * value, 0);
     const count = Object.values(responses).reduce((a, b) => a + b, 0);
@@ -130,7 +129,7 @@ function renderSlide() {
             // Handle free-text responses
             slide.innerHTML = `
                 <h2>${question}</h2>
-                <ul>${responses.map(response => `<li>${response}</li>`).join("")}</ul>
+                <ul class="result-responses">${responses.map(response => `<li>${response}</li>`).join("")}</ul>
             `;
         } else {
             // Handle option-based responses
@@ -155,7 +154,7 @@ function renderSlide() {
                     <canvas id="barChart-${currentSlide}" style="max-width: 600px; margin: 10px auto;"></canvas>
                     <canvas id="pieChart-${currentSlide}" style="max-width: 600px; margin: 10px auto;"></canvas>
                 </div>
-                <ul>${optionsHtml}</ul>
+                <ul class="result-responses">${optionsHtml}</ul>
                 <p><strong>Min:</strong> ${min} ${createTooltip("The smallest response value recorded.")}</p>
                 <p><strong>Max:</strong> ${max} ${createTooltip("The largest response value recorded.")}</p>
                 <p><strong>Median:</strong> ${median} ${createTooltip("The middle value when responses are ordered.")}</p>

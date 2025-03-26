@@ -57,13 +57,12 @@ $pinLength = isset($form['pin']) ? strlen($form['pin']) : 0;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/modal.css">
+    <link rel="stylesheet" href="../styles/header.css">
+
     <script type="module" src="../js/shareModal.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         // Client-side form validation and share modal remain unchanged
-        function validateForm(event) {
-            // ... your validation logic ...
-        }
         document.addEventListener('DOMContentLoaded', () => {
             const shareButton = document.getElementById('shareButton');
             if (shareButton) {
@@ -77,7 +76,9 @@ $pinLength = isset($form['pin']) ? strlen($form['pin']) : 0;
         });
     </script>
 </head>
-<?php include '../assets/header.php'; ?>
+<?php include_once  '../assets/header.php';
+createHeader("../");
+?>
 
 <body>
     <main>

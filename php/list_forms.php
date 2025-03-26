@@ -1,6 +1,11 @@
 <?php
 require_once 'db.php';
 include 'Form.php';
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ../login.php');
+    exit();
+}
+
 $formHandler = new Form($database);
 $forms = $formHandler->getActiveForms();
 ?>
@@ -13,8 +18,12 @@ $forms = $formHandler->getActiveForms();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Active Forms</title>
     <link rel="stylesheet" href="../styles/listForms.css">
+    <link rel="stylesheet" href="../styles/header.css">
+
 </head>
-<?php include '../assets/header.php'; ?>
+<?php include '../assets/header.php';
+createHeader("../");
+?>
 
 <body>
     <main>

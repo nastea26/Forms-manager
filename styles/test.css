@@ -28,7 +28,8 @@ body {
 }
 .top-section .create-form-container {
   flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
-  align-self: flex-end; /* Align the button to the top */
+  align-self: center;
+  margin-top: 25px;
 }
 .top-section .create-form-container .create-form-btn {
   background-color: #007bff;
@@ -46,35 +47,87 @@ body {
 .top-section .templates-container {
   flex: 1; /* Ensure templates take up remaining space */
   margin-top: 0; /* Ensure there's no extra space above templates */
+  /* Carousel Styles for Templates */
 }
 .top-section .templates-container h2 {
   font-size: 20px;
   margin-bottom: 10px;
 }
-.top-section .templates-container .templates-list {
-  display: flex;
-  gap: 20px;
+.top-section .templates-container .carousel-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin: auto;
+  padding: 0 20px;
 }
-.top-section .templates-container .templates-list .template-item {
+.top-section .templates-container .carousel-track {
+  display: flex;
+  align-items: stretch;
+  transition: transform 0.5s ease;
+  margin: 0 -10px;
+}
+.top-section .templates-container .carousel-track.templates-list {
+  padding: 10px 0px;
+}
+.top-section .templates-container .carousel-slide {
+  flex: 0 0 calc((100% - 60px) / 3);
+  margin: 0 10px;
+  box-sizing: border-box;
+}
+.top-section .templates-container .carousel-slide .template-item {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 15px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  flex: 1;
   cursor: pointer;
   transition: transform 0.3s ease;
+  height: 100%;
 }
-.top-section .templates-container .templates-list .template-item:hover {
+.top-section .templates-container .carousel-slide .template-item:hover {
   transform: scale(1.05);
   outline: none;
   border-color: #007bff;
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
-.top-section .templates-container .templates-list .template-item a {
+.top-section .templates-container .carousel-slide .template-item a {
   color: #333;
   text-decoration: none;
+  display: block;
+}
+.top-section .templates-container .carousel-arrow {
+  position: absolute;
+  top: 60%;
+  transform: translateY(-50%);
+  background: none;
+  font-weight: bold;
+  scale: 1.5;
+  color: #000000;
+  border: none;
+  padding: 8px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 2;
+}
+.top-section .templates-container .carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.65);
+}
+.top-section .templates-container .carousel-arrow.disabled {
+  display: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.top-section .templates-container .carousel-arrow--prev {
+  left: 10px;
+}
+.top-section .templates-container .carousel-arrow--next {
+  right: 10px;
 }
 
 /* Recent Forms Section Styling */
@@ -194,8 +247,8 @@ body {
   .top-section .create-form-container {
     margin-bottom: 10px; /* Matches the template gap */
   }
-  .top-section .templates-container .templates-list {
-    flex-direction: column;
+  .top-section .templates-container .carousel-container .carousel-slide {
+    flex: 0 0 calc((100% - 40px) / 2);
   }
   .forms-query-section {
     flex-direction: column; /* Stack the dropdown and search bar vertically */
@@ -208,5 +261,10 @@ body {
   .forms-query-section .search-container button {
     border-radius: 10px; /* Full rounding when stacked */
     margin-bottom: 10px; /* Add spacing between input and button */
+  }
+}
+@media (max-width: 480px) {
+  .templates-container .carousel-container .carousel-slide {
+    flex: 0 0 100%;
   }
 }/*# sourceMappingURL=test.css.map */
