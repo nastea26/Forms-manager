@@ -12,7 +12,6 @@ body {
 }
 
 .dashboard-form-container, .dashboard-container {
-  width: 100%;
   max-width: 800px;
   background: #fff;
   padding: 20px;

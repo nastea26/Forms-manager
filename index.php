@@ -19,14 +19,37 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="module" src="./js/shareModal.js" defer></script>
     <script>
-        // Global carousel variables and function
         let currentIndex = 0;
-        const slidesToShow = 3; //expected slides to be displayed at once, the rest will be scrolabble 
+        let slidesToShow;
+
+        // Function to update slidesToShow based on window width
+        function updateSlidesToShow() {
+            const width = window.innerWidth;
+            if (width < 550) {
+                slidesToShow = 1;
+            } else if (width < 770) {
+                slidesToShow = 2;
+            } else {
+                slidesToShow = 3;
+            }
+        }
+
+        // Initialize slidesToShow on load
+        updateSlidesToShow();
 
         function updateArrows() {
             const slides = document.querySelectorAll('.carousel-slide');
-            if (!slides.length) return;
             const totalSlides = slides.length;
+
+            // If there are not enough slides to scroll, disable both arrows.
+            if (totalSlides <= slidesToShow) {
+                document.querySelector('.carousel-arrow--prev').classList.add('disabled');
+                document.querySelector('.carousel-arrow--next').classList.add('disabled');
+                return;
+            }
+
+            // Otherwise, calculate effectiveSlidesToShow
+            const effectiveSlidesToShow = Math.min(slidesToShow, totalSlides);
             const prevArrow = document.querySelector('.carousel-arrow--prev');
             const nextArrow = document.querySelector('.carousel-arrow--next');
 
@@ -36,8 +59,9 @@ if (!isset($_SESSION['user_id'])) {
             } else {
                 prevArrow.classList.remove('disabled');
             }
+
             // Disable next arrow if at the end
-            if (currentIndex >= totalSlides - slidesToShow) {
+            if (currentIndex >= totalSlides - effectiveSlidesToShow) {
                 nextArrow.classList.add('disabled');
             } else {
                 nextArrow.classList.remove('disabled');
@@ -47,26 +71,44 @@ if (!isset($_SESSION['user_id'])) {
         function moveCarousel(direction) {
             const track = document.querySelector('.carousel-track');
             const slides = document.querySelectorAll('.carousel-slide');
-            if (!slides.length) return;
             const totalSlides = slides.length;
+
+            // If there are fewer slides than slidesToShow, reset and return.
+            if (totalSlides <= slidesToShow) {
+                currentIndex = 0;
+                track.style.transform = `translateX(0)`;
+                updateArrows();
+                return;
+            }
+
+            const effectiveSlidesToShow = Math.min(slidesToShow, totalSlides);
             const slideWidth = slides[0].getBoundingClientRect().width;
 
             currentIndex += direction;
             if (currentIndex < 0) {
                 currentIndex = 0;
-            } else if (currentIndex > totalSlides - slidesToShow) {
-                currentIndex = totalSlides - slidesToShow;
+            } else if (currentIndex > totalSlides - effectiveSlidesToShow) {
+                currentIndex = totalSlides - effectiveSlidesToShow;
             }
             track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
             updateArrows();
         }
 
-
+        // Listen for window resize to adjust slidesToShow and reset the carousel
+        window.addEventListener('resize', () => {
+            const oldSlidesToShow = slidesToShow;
+            updateSlidesToShow();
+            // If the number of slides to show has changed, reset the carousel
+            if (slidesToShow !== oldSlidesToShow) {
+                currentIndex = 0;
+                document.querySelector('.carousel-track').style.transform = 'translateX(0)';
+                updateArrows();
+            }
+        });
 
         $(document).ready(function() {
-            let allForms = []; // Store all forms in memory
+            let allForms = [];
 
-            // Display forms remains unchanged...
             function displayForms(forms) {
                 if (forms.length > 0) {
                     let formsHTML = '';
@@ -85,13 +127,11 @@ if (!isset($_SESSION['user_id'])) {
                 }
             }
 
-            // Updated displayTemplates function:
             function displayTemplates(templates) {
                 if (templates.length > 0) {
-                    // Sort templates descending by created_at (if available)
                     templates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
                     const track = document.querySelector('.carousel-track');
-                    track.textContent = ''; // Clear previous slides
+                    track.textContent = '';
                     templates.forEach(function(template) {
                         const slide = document.createElement('div');
                         slide.classList.add('carousel-slide');
@@ -104,14 +144,13 @@ if (!isset($_SESSION['user_id'])) {
                         slide.appendChild(templateItem);
                         track.appendChild(slide);
                     });
-                    currentIndex = 0; // Reset index when new templates are loaded
+                    currentIndex = 0;
                     updateArrows();
                 } else {
                     document.querySelector('.carousel-track').innerHTML = '<p>No templates found.</p>';
                 }
             }
 
-            // Filtering, sorting, and displaying forms remain unchanged...
             function filterForms(query) {
                 return allForms.filter(form =>
                     form.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -158,12 +197,11 @@ if (!isset($_SESSION['user_id'])) {
                         $('#loading-spinner').hide();
                         if (data.error) {
                             $('.recent-forms-section').html('<p>' + data.error + '</p>');
-                        } else {
-                            allForms = data.forms;
-                            const templates = data.templates;
-                            displayTemplates(templates);
-                            updateFormsDisplay();
                         }
+                        allForms = data.forms;
+                        const templates = data.templates;
+                        displayTemplates(templates);
+                        updateFormsDisplay();
                     },
                     error: function() {
                         $('#loading-spinner').hide();
@@ -175,12 +213,12 @@ if (!isset($_SESSION['user_id'])) {
         });
     </script>
 </head>
-<?php
-include 'assets/header.php';
-createHeader("/");
-?>
 
 <body>
+    <?php
+    include 'assets/header.php';
+    createHeader("/");
+    ?>
     <main>
         <?php if ($_SESSION['sharePopup']): ?>
             <script type="module">
