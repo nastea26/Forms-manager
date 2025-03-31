@@ -91,6 +91,10 @@ header .menu ul li a:hover {
     margin: 5px 0px;
     padding: 3px 0px;
   }
+  header .menu ul li a:hover {
+    color: #e6e6e6;
+    scale: 1.05;
+  }
   header .menu.menu-open {
     display: flex;
     gap: 10px;
