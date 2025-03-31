@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* General Reset */
 * {
   margin: 0;
@@ -18,14 +19,17 @@ body {
 .top-section {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: flex-start; /* Align items at the top */
   padding: 20px;
   background-color: #f7f7f7;
-  gap: 10px;
+  gap: 20px; /* Consistent spacing between elements */
+  max-width: 800px; /* Match the form width */
+  margin: 0 auto; /* Center the section */
 }
 .top-section .create-form-container {
-  flex: 0 0 auto;
-  align-self: flex-end;
+  flex: 0 0 auto; /* Ensure the button doesn’t take up extra space */
+  align-self: center;
+  margin-top: 25px;
 }
 .top-section .create-form-container .create-form-btn {
   background-color: #007bff;
@@ -35,15 +39,15 @@ body {
   padding: 15px 20px;
   font-size: 16px;
   cursor: pointer;
-  margin-right: 10px;
   transition: background-color 0.3s ease;
 }
 .top-section .create-form-container .create-form-btn:hover {
   background-color: #0062cc;
 }
 .top-section .templates-container {
-  flex: 1;
-  /* Carousel Styles */
+  flex: 1; /* Ensure templates take up remaining space */
+  margin-top: 0; /* Ensure there's no extra space above templates */
+  /* Carousel Styles for Templates */
 }
 .top-section .templates-container h2 {
   font-size: 20px;
@@ -54,17 +58,26 @@ body {
   overflow: hidden;
   width: 100%;
   margin: auto;
+  padding: 0 20px 0 0;
 }
-.top-section .templates-container .carousel-container .carousel-track {
+.top-section .templates-container .carousel-track {
   display: flex;
+  align-items: stretch;
   transition: transform 0.5s ease;
+  margin: 0;
+  padding-right: 20px;
+  box-sizing: content-box;
 }
-.top-section .templates-container .carousel-container .carousel-slide {
-  flex: 0 0 33.3333333333%;
+.top-section .templates-container .carousel-track.templates-list {
+  padding: 10px 0;
+}
+.top-section .templates-container .carousel-slide {
+  /* For larger screens, keep the calculated width */
+  flex: 0 0 calc((100% - 80px) / 3);
+  margin: 0 10px;
   box-sizing: border-box;
-  padding: 10px;
 }
-.top-section .templates-container .carousel-container .carousel-slide .template-item {
+.top-section .templates-container .carousel-slide .template-item {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -73,35 +86,62 @@ body {
   text-align: center;
   cursor: pointer;
   transition: transform 0.3s ease;
+  height: 100%;
 }
-.top-section .templates-container .carousel-container .carousel-slide .template-item:hover {
+.top-section .templates-container .carousel-slide .template-item:hover {
   transform: scale(1.05);
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
-.top-section .templates-container .carousel-container .carousel-arrow {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
+.top-section .templates-container .carousel-slide .template-item a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+.top-section .templates-container .carousel-arrow {
   position: absolute;
-  top: 50%;
+  top: 60%;
   transform: translateY(-50%);
+  background: none;
+  font-weight: bold;
+  scale: 1.5;
+  color: #000000;
+  border: none;
+  padding: 8px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
   z-index: 2;
 }
-.top-section .templates-container .carousel-container .carousel-arrow--prev {
+.top-section .templates-container .carousel-arrow:hover {
+  transform: translateY(-50%) scale(1.65);
+}
+.top-section .templates-container .carousel-arrow.disabled {
+  display: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.top-section .templates-container .carousel-arrow--prev {
   left: 10px;
 }
-.top-section .templates-container .carousel-container .carousel-arrow--next {
+.top-section .templates-container .carousel-arrow--next {
   right: 10px;
 }
 
 /* Recent Forms Section Styling */
 .recent-forms-section {
-  margin: 30px;
+  margin: 30px auto;
   padding: 20px;
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px; /* Match the form width */
+  /* Forms Query Section Styling */
 }
 .recent-forms-section h2 {
   font-size: 20px;
@@ -123,6 +163,9 @@ body {
 }
 .recent-forms-section .recent-forms-list .recent-form-item:hover {
   transform: translateY(-5px);
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 .recent-forms-section .recent-forms-list .recent-form-item .recent-form-link {
   display: block;
@@ -141,8 +184,8 @@ body {
 }
 .recent-forms-section .forms-query-section {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: center; /* Vertically center the items */
+  gap: 10px; /* Space between the dropdown and search bar */
   margin-bottom: 20px;
 }
 .recent-forms-section .forms-query-section .order-by-container select {
@@ -164,17 +207,18 @@ body {
   box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 .recent-forms-section .forms-query-section .search-container {
-  display: flex;
-  align-items: center;
-  flex: 1;
+  display: inline-flex; /* Keep elements on one line */
+  align-items: stretch; /* Let the input and button align perfectly */
+  flex: 1; /* Make the search container expand to fill available space */
 }
 .recent-forms-section .forms-query-section .search-container input {
-  max-width: 200px;
+  flex: 1; /* Allow the input to take up available space */
   font-size: 14px;
   padding: 8px;
   border: 1px solid #ccc;
-  border-radius: 10px 0 0 10px;
-  border-right: none;
+  /* If the clear button remains on the same line, round both ends */
+  border-radius: 10px;
+  border-right: none; /* Merge with the button */
   transition: border-color 0.3s ease;
 }
 .recent-forms-section .forms-query-section .search-container input:focus {
@@ -187,7 +231,8 @@ body {
   font-size: 14px;
   background-color: #007bff;
   color: #fff;
-  border: none;
+  border: 1px solid #ccc;
+  /* Round only the right side now that input is fully rounded */
   border-radius: 0 10px 10px 0;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -200,31 +245,109 @@ body {
 }
 
 /* Media Queries */
+@media (max-width: 820px) {
+  .recent-forms-section {
+    margin: 20px 10px;
+  }
+}
 @media (max-width: 768px) {
   .top-section {
     flex-direction: column;
   }
   .top-section .create-form-container {
-    margin-bottom: 10px;
+    margin-bottom: 10px; /* Matches the template gap */
+    align-self: normal;
+  }
+  .top-section .templates-container .carousel-container {
+    padding: 0 10px 0 0;
+  }
+  .top-section .templates-container .carousel-container .carousel-track {
+    /* Reset margins to prevent overflow */
+    margin: 0;
   }
   .top-section .templates-container .carousel-container .carousel-slide {
-    flex: 0 0 50%;
+    /* Adjust slide width for two per view */
+    flex: 0 0 calc((100% - 45px) / 2);
+    margin: 0 5px;
   }
   .forms-query-section {
-    flex-direction: column;
-    align-items: stretch;
+    /* Keep the search container in row layout */
+    flex-direction: row;
+    align-items: center;
+    /* Optionally, reduce gap */
+    gap: 5px;
   }
   .forms-query-section .search-container {
-    flex-direction: column;
+    /* Force inline-flex layout even on smaller screens */
+    flex-direction: row;
   }
   .forms-query-section .search-container input,
   .forms-query-section .search-container button {
-    border-radius: 10px;
-    margin-bottom: 10px;
+    /* Remove additional margin so they stay connected */
+    margin-bottom: 0;
   }
 }
 @media (max-width: 480px) {
   .templates-container .carousel-container .carousel-slide {
     flex: 0 0 100%;
+    margin: 0 5px;
+  }
+}
+@media (max-width: 450px) {
+  .forms-query-section {
+    flex-direction: column; /* Stack elements vertically */
+    align-items: stretch; /* Full-width for both elements */
+    gap: 10px; /* Space between search and dropdown */
+  }
+  /* Ensure the search container appears above the dropdown */
+  .search-container {
+    order: 1;
+    width: 100%;
+    /* Remove any extra horizontal padding/margin causing overflow */
+    padding: 0;
+  }
+  .order-by-container {
+    order: 2;
+    width: 100%;
+  }
+  /* Adjust the search container's children for a seamless look */
+  .search-container {
+    display: flex;
+    flex-direction: row;
+  }
+  .search-container input {
+    flex: 1;
+    border-radius: 10px; /* Full rounding */
+    border-right: none; /* Merge with button */
+  }
+  .search-container button {
+    border-radius: 0 10px 10px 0; /* Only right side rounded */
+  }
+}
+@media (max-width: 550px) {
+  .top-section,
+  .templates-container {
+    max-width: 100% !important;
+    padding: 0 5px;
+  }
+  .templates-container .carousel-container {
+    padding: 0 5px 0 0;
+  }
+  .templates-container .carousel-container .carousel-track {
+    margin: 0;
+  }
+  .templates-container .carousel-container .carousel-slide {
+    /* Calculate the slide width as 100% of the container minus a little margin */
+    flex: 0 0 calc(100% - 40px) !important;
+    margin: 0 5px;
+  }
+  .templates-container .carousel-container .carousel-slide .template-item {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 0.85rem;
+  }
+  .create-form-container {
+    margin-left: 5px;
   }
 }/*# sourceMappingURL=index.css.map */

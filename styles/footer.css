@@ -1,0 +1,28 @@
+main {
+  min-height: 100vh;
+}
+
+.site-footer {
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  padding: 15px 10px;
+  margin-top: 50px;
+  bottom: 0;
+}
+.site-footer .footer-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 550px) {
+  .site-footer {
+    padding: 10px 5px;
+  }
+  .site-footer .footer-content {
+    font-size: 0.9rem;
+  }
+}/*# sourceMappingURL=footer.css.map */

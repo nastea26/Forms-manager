@@ -126,12 +126,14 @@ function renderSlide() {
         slide.classList.add("question-slide", "active");
 
         if (Array.isArray(responses)) {
-            // Handle free-text responses
+            // Filter out empty responses
+            const filteredResponses = responses.filter(response => response.trim() !== "");
             slide.innerHTML = `
                 <h2>${question}</h2>
-                <ul class="result-responses">${responses.map(response => `<li>${response}</li>`).join("")}</ul>
+                ${filteredResponses.length > 0 ? `<ul class="result-responses">${filteredResponses.map(response => `<li>${response}</li>`).join("")}</ul>` : '<p>No responses provided.</p>'}
             `;
-        } else {
+        }
+        else{
             // Handle option-based responses
             const mean = calculateMean(responses);
             const mode = calculateMode(responses);
@@ -166,7 +168,6 @@ function renderSlide() {
                 <p><strong>Kurtosis:</strong> ${kurtosis} ${createTooltip("The sharpness of the peak of the response distribution.")}</p>
             `;
         }
-
         slider.appendChild(slide);
 
         // Render Bar Chart

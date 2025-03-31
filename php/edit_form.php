@@ -64,8 +64,9 @@ if ($template) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Form</title>
-    <link rel="stylesheet" href="../styles/formMaker.css">
     <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/formMaker.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 
@@ -323,6 +324,9 @@ createHeader("../");
             }
         </script>
     </main>
+    <?php
+    include '../assets/footer.php';
+    ?>
 </body>
 
 </html>

@@ -1,14 +1,26 @@
-body {
+.dashboard-body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
   background-color: #f7f7f7;
   color: #333;
+  padding-top: 20px;
+}
+
+.dashboard-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   min-height: 100vh;
-  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.result-body {
+  font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+  margin: 0;
+  padding-top: 20px 0;
 }
 
 .dashboard-form-container, .dashboard-container {
@@ -25,7 +37,8 @@ body {
   margin-bottom: 20px;
 }
 
-.button {
+.button, .share-form-button, .redirect-wrapper a.share-form-button, .navigation-buttons button, .redirect-wrapper a.button,
+.redirect-wrapper button.share-form-button {
   display: inline-block;
   padding: 10px 20px;
   font-size: 1rem;
@@ -36,10 +49,12 @@ body {
   text-decoration: none;
   text-align: center;
 }
-.button:hover {
+.button:hover, .share-form-button:hover, .redirect-wrapper a.share-form-button:hover, .navigation-buttons button:hover, .redirect-wrapper a.button:hover,
+.redirect-wrapper button.share-form-button:hover {
   background-color: #0062cc;
 }
-.button:disabled {
+.button:disabled, .share-form-button:disabled, .redirect-wrapper a.share-form-button:disabled, .navigation-buttons button:disabled, .redirect-wrapper a.button:disabled,
+.redirect-wrapper button.share-form-button:disabled {
   background-color: #3395ff;
   color: #fff;
   cursor: not-allowed;
@@ -75,23 +90,116 @@ body {
   gap: 10px;
 }
 
-.result-responses {
-  padding: 15px;
+.slider-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.results-header {
+.results-title {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 20px;
+  color: #007bff;
+}
+
+.redirect-wrapper {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  gap: 10px;
   margin-bottom: 20px;
 }
-.results-header .back-button {
-  margin: 0;
+.redirect-wrapper a.button, .redirect-wrapper a.share-form-button,
+.redirect-wrapper button.share-form-button {
+  padding: 10px 20px;
+  border-radius: 10px;
 }
-.results-header .share-form-btn-wrapper {
-  margin: 0;
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
-.results-header .share-form-btn-wrapper .share-form-button {
-  margin: 0;
+.question-slide,
+.chart-slide {
+  display: none;
+}
+
+.question-slide.active,
+.chart-slide.active {
+  display: block;
+}
+
+.result-responses {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0;
+}
+.result-responses li {
+  background-color: #cce5ff;
+  border: 1px solid #0062cc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.result-responses li:hover {
+  background-color: #b3d7ff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tooltip-icon {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1.2em;
+  color: #007bff;
+  font-weight: bold;
+}
+.tooltip-icon .tooltip-content {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-35%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  max-width: 90vw;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+.tooltip-icon:hover .tooltip-content {
+  visibility: visible;
+  opacity: 1;
+}
+
+.share-form-button {
+  transition: background-color 0.3s ease;
+}
+.share-form-button:hover {
+  background-color: #0062cc;
+}
+
+@media (max-width: 620px) {
+  .tooltip-icon .tooltip-content {
+    /* Center the tooltip relative to its parent */
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: normal;
+    max-width: 50vh;
+  }
 }/*# sourceMappingURL=dashboard_results.css.map */

@@ -2,18 +2,29 @@
 @use 'sass:color';
 $contrast_color: #fff;
 
-body {
+
+.dashboard-body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
     background-color: $background-color;
     color: $text-color;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
+    padding-top: 20px;
 }
+.dashboard-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  margin-bottom: 25px;
+}
+.result-body{
+    font-family: Arial, sans-serif;
+    background-color: $background-color;
+    color: $text-color;
+    margin: 0;
+    padding-top: 20px 0;
+  }
 
 .dashboard-form-container {
     max-width: 800px;
@@ -90,26 +101,139 @@ body {
     }
 }
 
-.result-responses{
-    padding: 15px;
-}
 
-.results-header {
+//result styles 
+.slider-container {
+    max-width: $form-width;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: $border-radius;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  // Title Styling
+  .results-title {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: $primary-color;
+  }
+  
+  // Redirect Section (My Forms & Share Form buttons)
+  .redirect-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  
+    a.button,
+    button.share-form-button {
+      @extend .button;
+      padding: 10px 20px;
+      border-radius: $border-radius;
+    }
+  }
+
+.navigation-buttons {
     display: flex;
     justify-content: space-between;
-    align-items: center;
     margin-top: 20px;
-    margin-bottom: 20px;
-
-    .back-button {
-        margin: 0;
+  
+    button {
+      @extend .button;
     }
-
-    .share-form-btn-wrapper {
-        margin: 0;
-
-        .share-form-button {
-            margin: 0;
-        }
+  }
+  
+  // Slide Visibility
+  .question-slide,
+  .chart-slide {
+    display: none;
+  }
+  
+  .question-slide.active,
+  .chart-slide.active {
+    display: block;
+  }
+  
+  // Styling for Free-Text Responses
+  .result-responses {
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+  
+    li {
+      background-color: lighten($primary-color, 40%);
+      border: 1px solid darken($primary-color, 10%);
+      border-radius: $border-radius;
+      padding: 10px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: $text-color;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  
+      &:hover {
+        background-color: lighten($primary-color, 35%);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      }
     }
-}
+  }
+  
+  // Tooltip Styles
+  .tooltip-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1.2em;
+    color: $primary-color;
+    font-weight: bold;
+  
+    .tooltip-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-35%);
+      background-color: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: $border-radius;
+      font-size: 0.75em;
+      white-space: nowrap;
+      transition: opacity 0.3s ease;
+      z-index: 10;
+      max-width: 90vw;           // Prevents tooltip from being too wide
+      word-wrap:break-word;
+      box-sizing: border-box;
+    }
+  
+    &:hover .tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  
+  // Share Form Button (inherits base styling)
+  .share-form-button {
+    @extend .button;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: color.adjust($primary-color, $lightness: -10%);
+    }
+  }
+  @media (max-width: 620px) {
+    .tooltip-icon {
+      .tooltip-content {
+        /* Center the tooltip relative to its parent */
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: normal;
+        max-width: 50vh; // let it size to its content up to max-width
+      }
+    }
+  }
+  

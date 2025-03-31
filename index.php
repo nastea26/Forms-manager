@@ -11,9 +11,10 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles/test.css">
+    <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/modal.css">
     <link rel="stylesheet" href="styles/header.css">
+    <link rel="stylesheet" href="styles/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Forms</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -278,6 +279,9 @@ if (!isset($_SESSION['user_id'])) {
             </ul>
         </section>
     </main>
+    <?php
+    include 'assets/footer.php';
+    ?>
 </body>
 
 </html>

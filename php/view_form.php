@@ -56,9 +56,9 @@ $pinLength = isset($form['pin']) ? strlen($form['pin']) : 0;
     <meta property="og:image" content=" " />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="stylesheet" href="../styles/footer.css">
     <link rel="stylesheet" href="../styles/modal.css">
     <link rel="stylesheet" href="../styles/header.css">
-
     <script type="module" src="../js/shareModal.js" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -103,7 +103,7 @@ createHeader("../");
                         </div>
                     <?php endif; ?>
                     <div class="share-form-btn-wrapper">
-                        <button id="shareButton" class="share-form-button">Share</button>
+                        <a id="shareButton" class="share-form-button">Share</a>
                     </div>
                 </div>
                 <form action="submit_response.php" method="POST" onsubmit="validateForm(event)">
@@ -202,6 +202,9 @@ createHeader("../");
                 }
             });
         </script>
+        <?php
+        include '../assets/footer.php';
+        ?>
     </main>
 </body>
 

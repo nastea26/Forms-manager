@@ -69,88 +69,17 @@ include '../assets/header.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Results</title>
-    <link rel="stylesheet" href="../styles/dashboard_results.css">
     <link rel="stylesheet" href="../styles/modal.css">
     <link rel="stylesheet" href="../styles/header.css">
+    <link rel="stylesheet" href="../styles/footer.css">
+    <link rel="stylesheet" href="../styles/dashboard_results.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <script src="../js/results.js" defer data-questions="<?php echo htmlspecialchars(json_encode($answers_array), ENT_QUOTES, 'UTF-8'); ?>"></script>
     <script type="module" src="../js/shareModal.js" defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .question-slide,
-        .chart-slide {
-            display: none;
-        }
-
-        .question-slide.active,
-        .chart-slide.active {
-            display: block;
-        }
-
-        .slider-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .navigation-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .tooltip-icon {
-            position: relative;
-            cursor: pointer;
-            display: inline-block;
-            font-size: 1.2em;
-            color: #007bff;
-            font-weight: bold;
-        }
-
-        .tooltip-content {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.75);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            white-space: nowrap;
-            transition: opacity 0.3s ease;
-            z-index: 10;
-        }
-
-        .tooltip-icon:hover .tooltip-content {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .share-form-btn-wrapper {
-            margin-top: 20px;
-            text-align: center;
-        }
-
-        .share-form-button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-
-        .share-form-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 
-<body>
+<body class="result-body">
     <?php include_once  '../assets/header.php';
     createHeader("../");
     ?>
@@ -189,6 +118,9 @@ include '../assets/header.php';
             });
         });
     </script>
+    <?php
+    include '../assets/footer.php';
+    ?>
 </body>
 
 </html>

@@ -1,0 +1,30 @@
+@use './variables' as *;
+
+main{
+    min-height: 100vh;
+}
+.site-footer {
+  background-color: $primary-color;
+  color: $header-text-color;
+  text-align: center;
+  padding: 15px 10px;
+  margin-top: 50px;
+  bottom:0;
+
+  .footer-content {
+    max-width: $form-width;
+    margin: 0 auto;
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 550px) {
+  .site-footer {
+    padding: 10px 5px;
+    .footer-content {
+      font-size: 0.9rem;
+    }
+  }
+}

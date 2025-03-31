@@ -17,10 +17,23 @@ function checkAccessToFrom(object $formHandler, $formId, string $pageTitle): boo
         <head>
             <meta charset='UTF-8'>
             <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+            <link rel="stylesheet" href="../styles/header.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
             <title><?php echo $pageTitle; ?></title>
+            <style>
+                body {
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, sans-serif;
+                    line-height: 1.6;
+                }
+            </style>
         </head>
 
         <body>
+            <?php include '../assets/header.php';
+            createHeader("../");
+            ?>
             <main>
                 <?php
                 if ($pageTitle == "Edit Form") {
@@ -35,7 +48,6 @@ function checkAccessToFrom(object $formHandler, $formId, string $pageTitle): boo
 
         </html>
 <?php
-        include '../assets/header.php';
     }
     return !$res;
 }

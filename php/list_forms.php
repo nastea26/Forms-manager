@@ -19,7 +19,7 @@ $forms = $formHandler->getActiveForms();
     <title>Active Forms</title>
     <link rel="stylesheet" href="../styles/listForms.css">
     <link rel="stylesheet" href="../styles/header.css">
-
+    <link rel="stylesheet" href="../styles/footer.css">
 </head>
 <?php include '../assets/header.php';
 createHeader("../");
@@ -42,6 +42,9 @@ createHeader("../");
             <?php endforeach; ?>
         </ul>
     </main>
+    <?php
+    include '../assets/footer.php';
+    ?>
 </body>
 
 </html>

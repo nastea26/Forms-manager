@@ -1,4 +1,3 @@
-/* Variables for consistency */
 body {
   margin: 0;
   padding: 0;
@@ -18,7 +17,7 @@ h1, p {
 }
 
 form {
-  max-width: 600px;
+  max-width: 800px;
   margin: 20px auto;
   background: #ffffff;
   padding: 20px;
@@ -81,7 +80,7 @@ form button[type=submit]:disabled {
   opacity: 0.8;
 }
 form p span {
-  color: #d9534f;
+  color: #e74c3c;
   font-weight: bold;
 }
 form .error {
@@ -93,6 +92,8 @@ form .error {
 .edit-form-btn-wrapper {
   max-width: 640px;
   margin: 0 auto;
+  flex: 1;
+  text-align: left;
 }
 .edit-form-btn-wrapper .edit-form-button {
   display: inline-block;
@@ -112,18 +113,19 @@ form .error {
 /* New styles for the form buttons layout */
 .form-buttons {
   display: flex;
-  justify-content: space-between; /* Space between buttons */
-  margin-bottom: 20px; /* Space below the buttons */
-  max-width: 600px; /* Match the form width */
-  margin: 20px auto; /* Center the buttons */
+  justify-content: space-between;
+  margin-bottom: 20px;
+  max-width: 800px;
+  margin: 20px auto;
 }
 
 .share-form-btn-wrapper {
-  flex: 1; /* Allow the share button to take available space */
-  text-align: right; /* Align share button to the right */
+  flex: 1;
+  text-align: right;
 }
 .share-form-btn-wrapper .share-form-button {
   display: inline-block;
+  margin-top: 20px;
   padding: 10px 20px; /* Ensure padding is consistent */
   background-color: #007bff;
   color: #fff;
@@ -137,11 +139,6 @@ form .error {
   background-color: #0062cc;
 }
 
-.edit-form-btn-wrapper {
-  flex: 1; /* Allow the edit button to take available space */
-  text-align: left; /* Align edit button to the left */
-}
-
 #pin-protection {
   text-align: center;
   margin: 20px auto;
@@ -149,7 +146,7 @@ form .error {
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  max-width: 800px;
 }
 
 #pin-inputs {
@@ -196,7 +193,14 @@ form .error {
   }
 }
 .pin-input.invalid {
-  border: 1px solid #d9534f;
-  box-shadow: 0 0 5px rgba(217, 83, 79, 0.5);
+  border: 1px solid #e74c3c;
+  box-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
   animation: shake 0.5s;
+}
+
+@media (max-width: 820px) {
+  form, .form-buttons {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 }/*# sourceMappingURL=style.css.map */
